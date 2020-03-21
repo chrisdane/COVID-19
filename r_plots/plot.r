@@ -465,7 +465,6 @@ for (ci in seq_along(countries)) {
 
 # update readme
 message("\nupdate readme ...")
-this_repo <- "https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots"
 upstream_hash <- system("git rev-parse upstream/master", intern=T)
 upstream_datetime <- file.info("../.git/refs/remotes/upstream")$mtime
 upstream_datetime <- as.POSIXlt(upstream_datetime)
@@ -477,12 +476,14 @@ readme <- c("# International Covid-19 death rates based on CSSEGISandData/COVID-
             paste0("time of last pull of upstream repo: ", upstream_datetime, " ", tz[1], 
                    " (", round(as.numeric(upstream_timediff), 2), " ", attributes(upstream_timediff)$units, " ago)  "),
             paste0("hash of last pull of upstream repo: ", upstream_hash),
-            "", "Countries in alphabetical order (days when number of cumulative deaths doubles):", "")
+            "", 
+            "# Select country", "",
+            "in alphabetical order (days when number of cumulative deaths doubles)", "")
 # toc
 tmp <- c()
 for (ci in seq_along(plotname_all)) {
     tmp <- paste0(tmp, 
-                  paste0(ci, ") [", names(plotname_all)[ci], "](#", 
+                  paste0("[", ci, " ", names(plotname_all)[ci], "](#", 
                          gsub(" ", "-", names(plotname_all)[ci]), ") ("))
     if (!is.na(cumulative_deaths_rates[ci])) {
         tmp <- paste0(tmp, round(cumulative_deaths_rates[ci], 2))
@@ -493,10 +494,11 @@ for (ci in seq_along(plotname_all)) {
 }
 readme <- c(readme, tmp, "")
 # content
+top_link <- "#Select-country"
 for (ci in seq_along(plotname_all)) {
 
     readme <- c(readme, paste0("# ", names(plotname_all)[ci])) # title for link
-    readme <- c(readme, paste0("[top](", this_repo, ")")) # link to top
+    readme <- c(readme, paste0("[top](", top_link, ")")) # link to top
     readme <- c(readme, "<br>")
     for (fi in seq_along(plotname_all[[ci]])) {
         

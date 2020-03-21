@@ -1,15 +1,17 @@
 # International Covid-19 death rates based on CSSEGISandData/COVID-19
 
 upstream repo: https://github.com/CSSEGISandData/COVID-19  
-time of last pull of upstream repo: 2020-03-21 01:54:22 CET (13.57 hours ago)  
+time of last pull of upstream repo: 2020-03-21 01:54:22 CET (13.68 hours ago)  
 hash of last pull of upstream repo: 0d2b104c946045db6a3874c97889c9f98d10ee0c
 
-Countries in alphabetical order (days when number of cumulative deaths doubles):
+# Select country
 
-1) [Austria](#Austria) (3.66) 2) [Belgium](#Belgium) (3.52) 3) [Canada](#Canada) (3.87) 4) [China](#China) (3.67) 5) [Denmark](#Denmark) (3.08) 6) [France](#France) (3.7) 7) [Germany](#Germany) (3) 8) [Iran](#Iran) (4.67) 9) [Italy](#Italy) (3.51) 10) [Japan](#Japan) (9.53) 11) [Netherlands](#Netherlands) (3) 12) [Russia](#Russia) (NA) 13) [Sweden](#Sweden) (2.86) 14) [Switzerland](#Switzerland) (3.5) 15) [US](#US) (5.36) 16) [United Kingdom](#United-Kingdom) (3.01) 
+in alphabetical order (days when number of cumulative deaths doubles)
+
+[1 Austria](#Austria) (3.66) [2 Belgium](#Belgium) (3.52) [3 Canada](#Canada) (3.87) [4 China](#China) (3.67) [5 Denmark](#Denmark) (3.08) [6 France](#France) (3.7) [7 Germany](#Germany) (3) [8 Iran](#Iran) (4.67) [9 Italy](#Italy) (3.51) [10 Japan](#Japan) (9.53) [11 Netherlands](#Netherlands) (3) [12 Russia](#Russia) (NA) [13 Sweden](#Sweden) (2.86) [14 Switzerland](#Switzerland) (3.5) [15 US](#US) (5.36) [16 United Kingdom](#United-Kingdom) (3.01) 
 
 # Austria
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/Austria/Austria_cumulative_deaths_logy.png">
 <br>
@@ -22,7 +24,7 @@ Countries in alphabetical order (days when number of cumulative deaths doubles):
 <br>
 
 # Belgium
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/Belgium/Belgium_cumulative_deaths_logy.png">
 <br>
@@ -35,7 +37,7 @@ Countries in alphabetical order (days when number of cumulative deaths doubles):
 <br>
 
 # Canada
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/Canada/Canada_cumulative_deaths_logy.png">
 <br>
@@ -48,7 +50,7 @@ Countries in alphabetical order (days when number of cumulative deaths doubles):
 <br>
 
 # China
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/China/China_cumulative_deaths_logy.png">
 <br>
@@ -61,7 +63,7 @@ Countries in alphabetical order (days when number of cumulative deaths doubles):
 <br>
 
 # Denmark
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/Denmark/Denmark_cumulative_deaths_logy.png">
 <br>
@@ -74,7 +76,7 @@ Countries in alphabetical order (days when number of cumulative deaths doubles):
 <br>
 
 # France
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/France/France_cumulative_deaths_logy.png">
 <br>
@@ -87,7 +89,7 @@ Countries in alphabetical order (days when number of cumulative deaths doubles):
 <br>
 
 # Germany
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/Germany/Germany_cumulative_deaths_logy.png">
 <br>
@@ -100,7 +102,7 @@ Countries in alphabetical order (days when number of cumulative deaths doubles):
 <br>
 
 # Iran
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/Iran/Iran_cumulative_deaths_logy.png">
 <br>
@@ -113,7 +115,7 @@ Countries in alphabetical order (days when number of cumulative deaths doubles):
 <br>
 
 # Italy
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 national response 1 on 2020-03-04: https://www.theguardian.com/world/2020/mar/04/italy-orders-closure-of-schools-and-universities-due-to-coronavirus
 <br>
@@ -132,7 +134,7 @@ national response 3 on 2020-03-11: https://www.washingtonpost.com/world/europe/m
 <br>
 
 # Japan
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/Japan/Japan_cumulative_deaths_logy.png">
 <br>
@@ -145,7 +147,7 @@ national response 3 on 2020-03-11: https://www.washingtonpost.com/world/europe/m
 <br>
 
 # Netherlands
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/Netherlands/Netherlands_cumulative_deaths_logy.png">
 <br>
@@ -158,7 +160,7 @@ national response 3 on 2020-03-11: https://www.washingtonpost.com/world/europe/m
 <br>
 
 # Russia
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/Russia/Russia_cumulative_deaths_logy.png">
 <br>
@@ -171,7 +173,7 @@ national response 3 on 2020-03-11: https://www.washingtonpost.com/world/europe/m
 <br>
 
 # Sweden
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/Sweden/Sweden_cumulative_deaths_logy.png">
 <br>
@@ -184,7 +186,7 @@ national response 3 on 2020-03-11: https://www.washingtonpost.com/world/europe/m
 <br>
 
 # Switzerland
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/Switzerland/Switzerland_cumulative_deaths_logy.png">
 <br>
@@ -197,7 +199,7 @@ national response 3 on 2020-03-11: https://www.washingtonpost.com/world/europe/m
 <br>
 
 # US
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/US/US_cumulative_deaths_logy.png">
 <br>
@@ -210,7 +212,7 @@ national response 3 on 2020-03-11: https://www.washingtonpost.com/world/europe/m
 <br>
 
 # United Kingdom
-[top](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
+[top](#Select-country)
 <br>
 <img align="center" width="1000" src="plots/United_Kingdom/United_Kingdom_cumulative_deaths_logy.png">
 <br>
