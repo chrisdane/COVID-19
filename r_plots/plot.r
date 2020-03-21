@@ -483,7 +483,7 @@ readme <- c("# International Covid-19 death rates based on CSSEGISandData/COVID-
 tmp <- c()
 for (ci in seq_along(plotname_all)) {
     tmp <- paste0(tmp, 
-                  paste0("[", ci, " ", names(plotname_all)[ci], "](#", 
+                  paste0("[", names(plotname_all)[ci], "](#", 
                          gsub(" ", "-", names(plotname_all)[ci]), ") ("))
     if (!is.na(cumulative_deaths_rates[ci])) {
         tmp <- paste0(tmp, round(cumulative_deaths_rates[ci], 2))
