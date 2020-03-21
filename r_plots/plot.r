@@ -471,13 +471,13 @@ upstream_datetime <- as.POSIXlt(upstream_datetime)
 tz <- attributes(upstream_datetime)$tzone
 if (any(tz == "")) tz <- tz[-which(tz == "")]
 readme <- c("# International Covid-19 death rates based on CSSEGISandData/COVID-19", "",
-            "upstream repo: https://github.com/CSSEGISandData/COVID-19  ",
-            paste0("time of last pull of upstream repo: **", upstream_datetime, " ", tz[1], "**  "), 
-            paste0("hash of last pulled commit of upstream repo: ", upstream_hash, "  "),
+            "  * upstream repo: https://github.com/CSSEGISandData/COVID-19  ",
+            paste0("  * time of last pull of upstream repo: **", upstream_datetime, " ", tz[1], "**  "), 
+            paste0("  * hash of last pulled commit of upstream repo: ", upstream_hash, "  "),
             "", 
             "# Select country", "",
             paste0("in alphabetical order (days when number of cumulative deaths doubles based on ",
-                   "exponential model; blue line in first of ", nplots, " plots of each respective country)"), 
+                   "exponential model; blue line in first of the ", nplots, " plots of each respective country)"), 
             "")
 # toc
 tmp <- c()
