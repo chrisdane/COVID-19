@@ -458,8 +458,8 @@ for (ci in seq_along(plotname_all)) {
         readme <- c(readme,
                     paste0("<img align=\"center\" width=\"1000\" src=\"", plotname_all[[ci]][fi], "\">"), # plot
                     "<br>")
-        if (!is.null(responses_all[[ci]])) { # add national/domestic response refs
-            readme <- c(readme, "<p><small>")
+        if (!is.null(responses_all[[ci]]) && fi == length(plotname_all[[ci]])) { # add national/domestic response refs
+            #readme <- c(readme, "<p><small>")
             for (ri in seq_along(responses_all[[ci]])) {
                 readme <- c(readme, 
                             paste0("national response ", ri, " on ", responses_all[[ci]][[ri]]$date, ": ",
@@ -468,7 +468,7 @@ for (ci in seq_along(plotname_all)) {
                                    ), 
                             "<br>")
             }
-            readme <- c(readme, "</p></small>")
+            #readme <- c(readme, "</p></small>")
         }
     }
     readme <- c(readme, "<br>", "")
