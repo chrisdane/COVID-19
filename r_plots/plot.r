@@ -503,21 +503,17 @@ for (ci in seq_along(plotname_all)) {
 
     readme <- c(readme, paste0("# ", names(plotname_all)[ci])) # title for link
     readme <- c(readme, paste0("[top](", top_link, ")")) # link to top
-    readme <- c(readme, "<br>")
+    readme <- c(readme, "")
     for (fi in seq_along(plotname_all[[ci]])) {
         
         # add national/domestic response refs if any
         if (!is.null(responses_all[[ci]]) && fi == 1) { 
-            #readme <- c(readme, "<p><small>")
             for (ri in seq_along(responses_all[[ci]])) {
                 readme <- c(readme, 
-                            paste0("  * national response ", ri, " on ", responses_all[[ci]][[ri]]$date, ": ",
-                                   #"[", responses_all[[ci]][[ri]]$ref, "](", responses_all[[ci]][[ri]]$ref, ")"
-                                   responses_all[[ci]][[ri]]$ref
-                                   ), 
-                            "<br>")
+                            paste0("  * national response ", ri, " on ", 
+                                   responses_all[[ci]][[ri]]$date, ": ",
+                                   responses_all[[ci]][[ri]]$ref))
             }
-            #readme <- c(readme, "</p></small>")
         }
         # add plot
         readme <- c(readme,
