@@ -476,6 +476,8 @@ readme <- c("# International Covid-19 death rates based on CSSEGISandData/COVID-
                    "** (timestamp of file `.git/refs/remotes/upstream`)  "), 
             paste0("  * hash of last pulled commit of upstream repo: `", upstream_hash, 
                    "` (`git rev-parse upstream/master`)  "),
+            paste0("  * last date of `COVID-19/csse_covid_19_data/time_series_19-covid-*.csv` data: **", 
+                   max(ts_dates), "**"),
             "", 
             "# Select country", "",
             paste0("in alphabetical order (days when number of cumulative deaths doubles based on ",
