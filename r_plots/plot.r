@@ -5,9 +5,10 @@ rm(list=ls()); graphics.off()
 ## which country
 countries <- c("Italy", "Germany", "United Kingdom", "France", "US", "Netherlands", "France", "Canada", "China")
 #countries <- "Canada"
+#countries <- "Germany"
 
 # plot specs
-nplots <- 3
+png_specs <- list(width=1500, height=833, res=157)
 log <- "y" # "", "y"
 yat_log_must_include <- c(0:10, seq(20, 100, b=10), seq(200, 1000, b=100), 
                           seq(2000, 10000, b=1000), seq(20000, 100000, b=10000))
@@ -153,11 +154,12 @@ for (ci in seq_along(countries)) {
     ## plot ts
     if (!is.null(ts)) { # if time series reading ts was successfull
 
+        nplots <- 4
         plotname_tmp <- rep(NA, t=nplots)
         for (ploti in seq_len(nplots)) {
         
             lm_from <- lm_to <- "" # default
-            if (ploti == 1) {
+            if (ploti == 1) { # this order will appear in the README.md
                 x <- ts$time
                 y <- ts$deaths
                 ylab <- "cumulative deaths"
@@ -166,6 +168,10 @@ for (ci in seq_along(countries)) {
                 if (country == "Netherlands") lm_to <- as.POSIXlt("2020-03-07", tz="UTC") 
                 if (country == "US") lm_to <- as.POSIXlt("2020-03-02", tz="UTC") 
             } else if (ploti == 2) {
+                x <- ts$time[2:length(ts$time)]
+                y <- diff(ts$deaths)
+                ylab <- "daily deaths"
+            } else if (ploti == 3) {
                 x <- ts$time
                 y <- ts$confirmed
                 ylab <- "cumulative confirmed"
@@ -178,10 +184,10 @@ for (ci in seq_along(countries)) {
                 if (country == "United Kingdom") lm_from <- as.POSIXlt("2020-02-27", tz="UTC")
                 if (country == "US") lm_from <- as.POSIXlt("2020-03-01", tz="UTC")
                 if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
-            } else if (ploti == 3) {
+            } else if (ploti == 4) {
                 x <- ts$time[2:length(ts$time)]
                 y <- diff(ts$confirmed)
-                ylab <- "daily change of cumulative confirmed"
+                ylab <- "daily confirmed"
                 if (country != "China") {
                     lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
                 }
@@ -293,7 +299,7 @@ for (ci in seq_along(countries)) {
                                ".png")
             plotname_tmp[ploti] <- plotname
             message("\nplot ", plotname)
-            png(plotname, width=3000, height=1666, res=300)
+            png(plotname, width=png_specs$width, height=png_specs$height, res=png_specs$res)
             par(mar=c(5.1, 6.1, 4.1, 6.1) + 0.1)
             plot(x, y, xaxt="n", yaxt="n", t="n",
                  log=log,
