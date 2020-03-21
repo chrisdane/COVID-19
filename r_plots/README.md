@@ -6,7 +6,6 @@
 * [China](#China)
 * [Denmark](#Denmark)
 * [France](#France)
-* [France](#France)
 * [Germany](#Germany)
 * [Iran](#Iran)
 * [Italy](#Italy)
@@ -90,18 +89,6 @@
 <br>
 <br>
 
-# France
-<br>
-<img align="center" width="1000" src="plots/France/France_cumulative_deaths_logy.png">
-<br>
-<img align="center" width="1000" src="plots/France/France_daily_deaths_logy.png">
-<br>
-<img align="center" width="1000" src="plots/France/France_cumulative_confirmed_logy.png">
-<br>
-<img align="center" width="1000" src="plots/France/France_daily_confirmed_logy.png">
-<br>
-<br>
-
 # Germany
 <br>
 <img align="center" width="1000" src="plots/Germany/Germany_cumulative_deaths_logy.png">
@@ -128,13 +115,13 @@
 
 # Italy
 <br>
-<img align="center" width="1000" src="plots/Italy/Italy_cumulative_deaths_logy.png">
-<br>
 national response 1 on 2020-03-04: https://www.theguardian.com/world/2020/mar/04/italy-orders-closure-of-schools-and-universities-due-to-coronavirus
 <br>
 national response 2 on 2020-03-09: https://www.bbc.co.uk/sport/51808683
 <br>
 national response 3 on 2020-03-11: https://www.washingtonpost.com/world/europe/merkel-coronavirus-germany/2020/03/11/e276252a-6399-11ea-8a8e-5c5336b32760_story.html
+<br>
+<img align="center" width="1000" src="plots/Italy/Italy_cumulative_deaths_logy.png">
 <br>
 <img align="center" width="1000" src="plots/Italy/Italy_daily_deaths_logy.png">
 <br>

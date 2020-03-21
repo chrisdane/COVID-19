@@ -3,7 +3,7 @@
 rm(list=ls()); graphics.off()
 
 ## which country
-countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "France", "US", "Netherlands", "France", "Canada", "China", "Russia", "Switzerland", "Iran", "Austria", "Sweden", "Japan")
+countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "US", "Netherlands", "France", "Canada", "China", "Russia", "Switzerland", "Iran", "Austria", "Sweden", "Japan")
 #countries <- "Canada"
 #countries <- "Germany"
 #countries <- "Netherlands"
@@ -47,7 +47,7 @@ ts_countries <- sort(unique(ts_deaths$Country.Region))
 ## read time series and reports
 ts_all <- report_all <- responses_all <- vector("list", l=length(countries))
 report_countries <- plotname_all <- list()
-countries <- sort(countries)
+countries <- sort(unique(countries))
 for (ci in seq_along(countries)) {
 
     country <- countries[ci]
@@ -180,25 +180,24 @@ for (ci in seq_along(countries)) {
             }
 
             if (ploti == 1) { # this order will appear in the README.md
+                ylab <- "cumulative deaths"
                 x <- ts$time
                 y <- ts$deaths
-                ylab <- "cumulative deaths"
                 if (country == "France") lm_from <- as.POSIXlt("2020-03-01", tz="UTC")
                 if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
-                if (country == "Netherlands") lm_from <- as.POSIXlt("2020-03-07", tz="UTC") 
                 #if (country == "US") lm_to <- as.POSIXlt("2020-03-02", tz="UTC") 
             } else if (ploti == 2) {
+                ylab <- "daily deaths"
                 x <- ts$time[2:length(ts$time)]
                 y <- diff(ts$deaths)
                 if (any(y < 0, na.rm=T)) { # only explanation: someone cured AND no new reports compared to day before
                     y[which(y < 0)] <- 0
                 }
-                ylab <- "daily deaths"
                 if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
             } else if (ploti == 3) {
+                ylab <- "cumulative confirmed"
                 x <- ts$time
                 y <- ts$confirmed
-                ylab <- "cumulative confirmed"
                 if (country == "Germany") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
                 if (country == "Italy") lm_from <- as.POSIXlt("2020-02-21", tz="UTC")
                 if (country == "France") lm_from <- as.POSIXlt("2020-02-26", tz="UTC")
@@ -208,19 +207,18 @@ for (ci in seq_along(countries)) {
                 if (country == "United Kingdom") lm_from <- as.POSIXlt("2020-02-27", tz="UTC")
                 if (country == "US") lm_from <- as.POSIXlt("2020-03-01", tz="UTC")
                 if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
+                if (country == "Russia") lm_to <- as.POSIXlt("2020-03-02", tz="UTC") 
+                if (country == "Sweden") lm_to <- as.POSIXlt("2020-02-27", tz="UTC") 
+                if (country == "Belgium") lm_to <- as.POSIXlt("2020-03-02", tz="UTC") 
             } else if (ploti == 4) {
+                ylab <- "daily confirmed"
                 x <- ts$time[2:length(ts$time)]
                 y <- diff(ts$confirmed)
                 if (any(y < 0, na.rm=T)) { # only explanation: someone cured AND no new reports compared to day before
                     y[which(y < 0)] <- 0
                 }
-                ylab <- "daily confirmed"
-                if (country != "China") {
-                    lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
-                }
                 if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
-
-            }
+            } # which ploti 
            
             message("\nplot ", ploti, " of country ", ci, " \"", country, 
                     "\" plot ts data: ", ylab, " ...") 
@@ -460,10 +458,9 @@ for (ci in seq_along(plotname_all)) {
 
     readme <- c(readme, paste0("# ", names(plotname_all)[ci]), "<br>") # title for link
     for (fi in seq_along(plotname_all[[ci]])) {
-        readme <- c(readme,
-                    paste0("<img align=\"center\" width=\"1000\" src=\"", plotname_all[[ci]][fi], "\">"), # plot
-                    "<br>")
-        if (!is.null(responses_all[[ci]]) && fi == 1) { # add national/domestic response refs
+        
+        # add national/domestic response refs if any
+        if (!is.null(responses_all[[ci]]) && fi == 1) { 
             #readme <- c(readme, "<p><small>")
             for (ri in seq_along(responses_all[[ci]])) {
                 readme <- c(readme, 
@@ -475,7 +472,11 @@ for (ci in seq_along(plotname_all)) {
             }
             #readme <- c(readme, "</p></small>")
         }
-    }
+        # add plot
+        readme <- c(readme,
+                    paste0("<img align=\"center\" width=\"1000\" src=\"", plotname_all[[ci]][fi], "\">"), 
+                    "<br>")
+    } # fi plot type
     readme <- c(readme, "<br>", "")
 
 } # for ci plotname_all
