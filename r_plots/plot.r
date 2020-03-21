@@ -184,8 +184,9 @@ for (ci in seq_along(countries)) {
                 x <- ts$time
                 y <- ts$deaths
                 if (country == "France") lm_from <- as.POSIXlt("2020-03-01", tz="UTC")
+                if (country == "Japan") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
+                if (country == "US") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
                 if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
-                #if (country == "US") lm_to <- as.POSIXlt("2020-03-02", tz="UTC") 
             } else if (ploti == 2) {
                 ylab <- "daily deaths"
                 x <- ts$time[2:length(ts$time)]
@@ -194,22 +195,24 @@ for (ci in seq_along(countries)) {
                     y[which(y < 0)] <- 0
                 }
                 if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
+                if (country == "France") lm_from <- as.POSIXlt("2020-03-01", tz="UTC")
+                if (country == "Japan") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
+                if (country == "US") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
             } else if (ploti == 3) {
                 ylab <- "cumulative confirmed"
                 x <- ts$time
                 y <- ts$confirmed
+                if (country == "Belgium") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
+                if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
+                if (country == "Canada") lm_from <- as.POSIXlt("2020-02-27", tz="UTC")
+                if (country == "France") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
                 if (country == "Germany") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
                 if (country == "Italy") lm_from <- as.POSIXlt("2020-02-21", tz="UTC")
-                if (country == "France") lm_from <- as.POSIXlt("2020-02-26", tz="UTC")
                 if (country == "Netherlands") lm_from <- as.POSIXlt("2020-02-29", tz="UTC")
-                if (country == "Canada") lm_from <- as.POSIXlt("2020-02-27", tz="UTC")
-                if (country == "Germany") lm_from <- as.POSIXlt("2020-02-23", tz="UTC")
-                if (country == "United Kingdom") lm_from <- as.POSIXlt("2020-02-27", tz="UTC")
-                if (country == "US") lm_from <- as.POSIXlt("2020-03-01", tz="UTC")
-                if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
-                if (country == "Russia") lm_to <- as.POSIXlt("2020-03-02", tz="UTC") 
-                if (country == "Sweden") lm_to <- as.POSIXlt("2020-02-27", tz="UTC") 
-                if (country == "Belgium") lm_to <- as.POSIXlt("2020-03-02", tz="UTC") 
+                if (country == "Russia") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
+                if (country == "Sweden") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
+                if (country == "US") lm_from <- as.POSIXlt("2020-02-26", tz="UTC") 
+                if (country == "United Kingdom") lm_from <- as.POSIXlt("2020-02-24", tz="UTC")
             } else if (ploti == 4) {
                 ylab <- "daily confirmed"
                 x <- ts$time[2:length(ts$time)]
@@ -217,7 +220,17 @@ for (ci in seq_along(countries)) {
                 if (any(y < 0, na.rm=T)) { # only explanation: someone cured AND no new reports compared to day before
                     y[which(y < 0)] <- 0
                 }
+                if (country == "Belgium") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
                 if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
+                if (country == "Canada") lm_from <- as.POSIXlt("2020-02-27", tz="UTC")
+                if (country == "France") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
+                if (country == "Germany") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
+                if (country == "Italy") lm_from <- as.POSIXlt("2020-02-21", tz="UTC")
+                if (country == "Netherlands") lm_from <- as.POSIXlt("2020-02-29", tz="UTC")
+                if (country == "Russia") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
+                if (country == "Sweden") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
+                if (country == "US") lm_from <- as.POSIXlt("2020-02-26", tz="UTC") 
+                if (country == "United Kingdom") lm_from <- as.POSIXlt("2020-02-24", tz="UTC")
             } # which ploti 
            
             message("\nplot ", ploti, " of country ", ci, " \"", country, 
