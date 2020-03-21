@@ -3,11 +3,12 @@
 rm(list=ls()); graphics.off()
 
 ## which country
-countries <- c("Italy", "Germany", "United Kingdom", "France", "US", "Netherlands", "France", "Canada", "China")
+countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "France", "US", "Netherlands", "France", "Canada", "China")
 #countries <- "Canada"
 #countries <- "Germany"
 #countries <- "Netherlands"
 #countries <- "US"
+#countries <- "Italy"
 
 # plot specs
 png_specs <- list(width=1500, height=833, res=157)
@@ -18,6 +19,8 @@ lm_obs_col <- "blue"
 lm_predict_ntime <- 14
 lm_predict_interval <- "day"
 lm_predict_col <- "red"
+# for underlined text
+#library(arghqtl) # https://rdrr.io/github/ellisztamas/arghqtl/man/underlined.html
 
 # paths
 fconfirmed <- "../csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
@@ -42,7 +45,7 @@ if (ts_dt_unit == "days") ts_dt <- 86400 # days --> seconds
 ts_countries <- sort(unique(ts_deaths$Country.Region))
 
 ## read time series and reports
-ts_all <- report_all <- vector("list", l=length(countries))
+ts_all <- report_all <- responses_all <- vector("list", l=length(countries))
 report_countries <- plotname_all <- list()
 countries <- sort(countries)
 for (ci in seq_along(countries)) {
@@ -161,6 +164,21 @@ for (ci in seq_along(countries)) {
         for (ploti in seq_len(nplots)) {
         
             lm_from <- lm_to <- "" # default
+
+            # mark national/domestic responses
+            responses <- list() # default: nothing
+            if (country == "Italy") {
+                responses[[1]] <- list(date=as.POSIXlt("2020-03-04", tz="UTC"),
+                                       what="",
+                                       ref="https://www.theguardian.com/world/2020/mar/04/italy-orders-closure-of-schools-and-universities-due-to-coronavirus")
+                responses[[2]] <- list(date=as.POSIXlt("2020-03-09", tz="UTC"),
+                                       what="",
+                                       ref="https://www.bbc.co.uk/sport/51808683")
+                responses[[3]] <- list(date=as.POSIXlt("2020-03-11", tz="UTC"),
+                                       what="",
+                                       ref="https://www.washingtonpost.com/world/europe/merkel-coronavirus-germany/2020/03/11/e276252a-6399-11ea-8a8e-5c5336b32760_story.html")
+            }
+
             if (ploti == 1) { # this order will appear in the README.md
                 x <- ts$time
                 y <- ts$deaths
@@ -315,7 +333,8 @@ for (ci in seq_along(countries)) {
             message("par(\"usr\") = ", appendLF=F)
             dput(par("usr"))
             axis(1, at=ts_tatn, labels=rep("", t=length(ts_tatn)))
-            text(x=ts_tatn, y=grconvertY(-0.08, from="npc"), labels=ts_tlablt, xpd=T, srt=90, cex=0.5)
+            text(x=ts_tatn, y=grconvertY(-0.08, from="npc"), labels=ts_tlablt, 
+                 xpd=T, srt=90, cex=0.5)
             axis(2, at=yat, las=2, cex.axis=0.5)
             mtext(side=2, text=ylab, line=3)
             axis(4, at=yat, las=2, cex.axis=0.5)
@@ -328,14 +347,36 @@ for (ci in seq_along(countries)) {
             # add title
             title(paste0(ylab, " in ", country, " at ", max(x)), cex.main=0.85)
 
+            # mark national/domestic responses if any
+            if (length(responses) > 0) {
+
+                for (ri in seq_along(responses)) {
+                    date_ind <- which.min(abs(responses[[ri]]$date - x))
+                    abline(v=as.numeric(x[date_ind]), lwd=0.5)
+                    # mark response date in underlined format that it looks like a hyperref
+                    points(x[date_ind], y=1, pch=15, col="white", cex=2) # box below number
+                    text(x=x[date_ind], 
+                         #y=grconvertY(0.75, from="npc"), # in middle of plot, independent of linear/logarithmic y-axis 
+                         y=1, # at bottom (count = 0)
+                         #labels=bquote(underline(~.label)), 
+                         substitute(paste(underline(label)),
+                                    list(label=ri)),
+                         col="blue", cex=0.75)
+                }
+                
+                # for readme:
+                responses_all[[ci]] <- responses
+
+            } # if (length(responses) > 0)
+
             # add obs
             points(x, y, t="o")
             
             if (F) { # add day of month of obs
-                text(x, y, labels=x$mday, pos=3, cex=0.5) # pos=3: above; todo: pos destroys center adjustment
+                text(x, y, labels=paste0("  ", x$mday), cex=0.5, adj=0)
 
             } else if (T) { # add value of obs
-                text(x, y, labels=y, pos=3, cex=0.5, srt=90) # pos=3: above; todo: pos destroys center adjustment
+                text(x, y, labels=paste0("  ", y), cex=0.5, srt=90, adj=0)
             }
 
             # add exponential model of obs
@@ -351,10 +392,13 @@ for (ci in seq_along(countries)) {
                 points(x_lm_log_future, y_lm_log_future[,"fit"], t="o", col=lm_predict_col)
 
                 if (F) { # add day of month of prediction
-                    text(x_lm_log_future, y_lm_log_future[,"fit"], labels=x_lm_log_future$mday, pos=3, cex=0.5) # pos=3: above
+                    text(x_lm_log_future, y_lm_log_future[,"fit"], 
+                         labels=paste0("  ", x_lm_log_future$mday), 
+                         cex=0.5, adj=0)
                 } else if (T) { # add value of prediction
-                    text(x_lm_log_future, y_lm_log_future[,"fit"], labels=round(y_lm_log_future[,"fit"]), 
-                         pos=3, cex=0.5, srt=90) # pos=3: above
+                    text(x_lm_log_future, y_lm_log_future[,"fit"], 
+                         labels=paste0("  ", round(y_lm_log_future[,"fit"])), 
+                         cex=0.5, srt=90, adj=0)
                 }
             }
 
@@ -398,7 +442,7 @@ for (ci in seq_along(countries)) {
 } # for ci countries
 
 # update readme
-message("update readme ...")
+message("\nupdate readme ...")
 readme <- c("# CSSEGISandData/COVID-19 data", "")
 # toc
 for (ci in seq_along(plotname_all)) {
@@ -409,10 +453,19 @@ readme <- c(readme, "")
 # content
 for (ci in seq_along(plotname_all)) {
 
-    readme <- c(readme, paste0("# ", names(plotname_all)[ci]))
+    readme <- c(readme, paste0("# ", names(plotname_all)[ci]), "<br>") # title for link
     for (fi in seq_along(plotname_all[[ci]])) {
-        readme <- c(readme, "<br>",
-                    paste0("<img align=\"center\" width=\"1000\" src=\"", plotname_all[[ci]][fi], "\">"))
+        readme <- c(readme,
+                    paste0("<img align=\"center\" width=\"1000\" src=\"", plotname_all[[ci]][fi], "\">"), # plot
+                    "<br>")
+        if (!is.null(responses_all[[ci]])) { # add national/domestic response refs
+            for (ri in seq_along(responses_all[[ci]])) {
+                readme <- c(readme, 
+                            paste0("national response ", ri, " on ", responses_all[[ci]][[ri]]$date , 
+                                   ": [", responses_all[[ci]][[ri]]$ref, "](", responses_all[[ci]][[ri]]$ref, ")"), 
+                            "<br>")
+            }
+        }
     }
     readme <- c(readme, "<br>", "")
 
