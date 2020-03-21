@@ -194,6 +194,8 @@ for (ci in seq_along(countries)) {
                 if (country != "China") {
                     lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
                 }
+                if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
+
             }
            
             message("\nplot ", ploti, " of country ", ci, " \"", country, 
