@@ -362,7 +362,7 @@ for (ci in seq_along(countries)) {
             abline(v=ts_tatn, col="gray", lwd=0.5)
            
             # add title
-            title(paste0(ylab, " in ", country, " at ", max(x)), cex.main=0.85)
+            title(paste0(ploti, "/", nplots, ": ", ylab, " in ", country, " at ", max(x)), cex.main=0.85)
 
             # mark national/domestic responses if any
             if (length(responses) > 0) {
@@ -459,6 +459,7 @@ for (ci in seq_along(countries)) {
 
 # update readme
 message("\nupdate readme ...")
+this_repo <- "https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots"
 upstream_hash <- system("git rev-parse upstream/master", intern=T)
 upstream_datetime <- file.info("../.git/refs/remotes/upstream")$mtime
 upstream_datetime <- as.POSIXlt(upstream_datetime)
@@ -483,7 +484,7 @@ readme <- c(readme, tmp, "")
 for (ci in seq_along(plotname_all)) {
 
     readme <- c(readme, paste0("# ", names(plotname_all)[ci]), "<br>") # title for link
-    #readme <- c(readme, "[", ) # link to top
+    readme <- c(readme, "[top](", this_repo, ")") # link to top
     for (fi in seq_along(plotname_all[[ci]])) {
         
         # add national/domestic response refs if any
