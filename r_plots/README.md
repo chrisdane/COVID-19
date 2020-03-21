@@ -1,21 +1,9 @@
 # CSSEGISandData/COVID-19 data
 
-* [Austria](#Austria)
-* [Belgium](#Belgium)
-* [Canada](#Canada)
-* [China](#China)
-* [Denmark](#Denmark)
-* [France](#France)
-* [Germany](#Germany)
-* [Iran](#Iran)
-* [Italy](#Italy)
-* [Japan](#Japan)
-* [Netherlands](#Netherlands)
-* [Russia](#Russia)
-* [Sweden](#Sweden)
-* [Switzerland](#Switzerland)
-* [US](#US)
-* [United Kingdom](#United-Kingdom)
+[Austria](#Austria) [Belgium](#Belgium) [Canada](#Canada) [China](#China) [Denmark](#Denmark)
+[France](#France) [Germany](#Germany) [Iran](#Iran) [Italy](#Italy) 
+[Japan](#Japan) [Netherlands](#Netherlands) [Russia](#Russia) [Sweden](#Sweden)
+[Switzerland](#Switzerland) [US](#US) [United Kingdom](#United-Kingdom)
 
 # Austria
 <br>
