@@ -472,8 +472,10 @@ tz <- attributes(upstream_datetime)$tzone
 if (any(tz == "")) tz <- tz[-which(tz == "")]
 readme <- c("# International Covid-19 death rates based on CSSEGISandData/COVID-19", "",
             "  * upstream repo: https://github.com/CSSEGISandData/COVID-19  ",
-            paste0("  * time of last pull of upstream repo: **", upstream_datetime, " ", tz[1], "**  "), 
-            paste0("  * hash of last pulled commit of upstream repo: ", upstream_hash, "  "),
+            paste0("  * time of last pull of upstream repo: **", upstream_datetime, " ", tz[1], 
+                   "** (timestamp of file `.git/refs/remotes/upstream`)  "), 
+            paste0("  * hash of last pulled commit of upstream repo: ", upstream_hash, 
+                   " (`git rev-parse upstream/master`)  "),
             "", 
             "# Select country", "",
             paste0("in alphabetical order (days when number of cumulative deaths doubles based on ",
