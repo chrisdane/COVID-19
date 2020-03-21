@@ -2,7 +2,7 @@
 
   * upstream repo: https://github.com/CSSEGISandData/COVID-19  
   * time of last pull of upstream repo: **2020-03-21 15:37:54 CET** (timestamp of file `.git/refs/remotes/upstream`)  
-  * hash of last pulled commit of upstream repo: 02be34e5ec0409835f79f61a547b2b42f2c6dfd7 (`git rev-parse upstream/master`)  
+  * hash of last pulled commit of upstream repo: `02be34e5ec0409835f79f61a547b2b42f2c6dfd7` (`git rev-parse upstream/master`)  
 
 # Select country
 
