@@ -465,12 +465,12 @@ upstream_datetime <- as.POSIXlt(upstream_datetime)
 tz <- attributes(upstream_datetime)$tzone
 upstream_timediff <- difftime(Sys.time(), upstream_datetime)
 if (any(tz == "")) tz <- tz[-which(tz == "")]
-readme <- c("# covid death rates based on CSSEGISandData/COVID-19 data", "",
-            "forked from: https://github.com/CSSEGISandData/COVID-19  ",
-            paste0("time of upstream repo: ", upstream_datetime, " ", tz[1], 
+readme <- c("# International Covid-19 death rates based on CSSEGISandData/COVID-19", "",
+            "upstream repo: https://github.com/CSSEGISandData/COVID-19  ",
+            paste0("time of last pull of upstream repo: ", upstream_datetime, " ", tz[1], 
                    " (", round(as.numeric(upstream_timediff), 2), " ", attributes(upstream_timediff)$units, " ago)  "),
-            paste0("hash of upstream repo: ", upstream_hash),
-            "", "select country:", "")
+            paste0("hash of last pull of upstream repo: ", upstream_hash),
+            "", "select country (alphabetical order):", "")
 # toc
 tmp <- c()
 for (ci in seq_along(plotname_all)) {

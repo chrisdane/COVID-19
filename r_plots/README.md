@@ -1,10 +1,10 @@
-# covid death rates based on CSSEGISandData/COVID-19 data
+# International Covid-19 death rates based on CSSEGISandData/COVID-19
 
-forked from: https://github.com/CSSEGISandData/COVID-19  
-time of upstream repo: 2020-03-21 01:54:22 CET (13.22 hours ago)  
-hash of upstream repo: 0d2b104c946045db6a3874c97889c9f98d10ee0c
+upstream repo: https://github.com/CSSEGISandData/COVID-19  
+time of last pull of upstream repo: 2020-03-21 01:54:22 CET (13.26 hours ago)  
+hash of last pull of upstream repo: 0d2b104c946045db6a3874c97889c9f98d10ee0c
 
-select country:
+select country (alphabetical order):
 
 1) [Austria](#Austria) 2) [Belgium](#Belgium) 3) [Canada](#Canada) 4) [China](#China) 5) [Denmark](#Denmark) 6) [France](#France) 7) [Germany](#Germany) 8) [Iran](#Iran) 9) [Italy](#Italy) 10) [Japan](#Japan) 11) [Netherlands](#Netherlands) 12) [Russia](#Russia) 13) [Sweden](#Sweden) 14) [Switzerland](#Switzerland) 15) [US](#US) 16) [United Kingdom](#United-Kingdom) 
 
