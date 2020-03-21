@@ -465,22 +465,22 @@ upstream_datetime <- as.POSIXlt(upstream_datetime)
 tz <- attributes(upstream_datetime)$tzone
 if (any(tz == "")) tz <- tz[-which(tz == "")]
 readme <- c("# covid death rates based on CSSEGISandData/COVID-19 data", "",
-            "forked from: https://github.com/CSSEGISandData/COVID-19",
+            "forked from: https://github.com/CSSEGISandData/COVID-19  ",
+            paste0("upstream time: ", upstream_datetime, " ", tz[1], "  "),
             paste0("upstream hash: ", upstream_hash),
-            paste0("upstream time: ", upstream_datetime, " ", tz[1]),
             "", "select country:", "")
 # toc
 tmp <- c()
 for (ci in seq_along(plotname_all)) {
     tmp <- paste0(tmp, 
-                  paste0("[", ci, ") ", names(plotname_all)[ci], "](#", 
+                  paste0(ci, ") [", names(plotname_all)[ci], "](#", 
                          gsub(" ", "-", names(plotname_all)[ci]), ") "))
 }
 readme <- c(readme, tmp, "")
 # content
 for (ci in seq_along(plotname_all)) {
 
-    readme <- c(readme, paste0("# ", ci, " ", names(plotname_all)[ci]), "<br>") # title for link
+    readme <- c(readme, paste0("# ", names(plotname_all)[ci]), "<br>") # title for link
     for (fi in seq_along(plotname_all[[ci]])) {
         
         # add national/domestic response refs if any
