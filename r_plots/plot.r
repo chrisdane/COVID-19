@@ -3,7 +3,7 @@
 rm(list=ls()); graphics.off()
 
 ## which country
-countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "France", "US", "Netherlands", "France", "Canada", "China", "Russia")
+countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "France", "US", "Netherlands", "France", "Canada", "China", "Russia", "Switzerland", "Iran", "Austria", "Sweden", "Japan")
 #countries <- "Canada"
 #countries <- "Germany"
 #countries <- "Netherlands"
@@ -190,6 +190,9 @@ for (ci in seq_along(countries)) {
             } else if (ploti == 2) {
                 x <- ts$time[2:length(ts$time)]
                 y <- diff(ts$deaths)
+                if (any(y < 0, na.rm=T)) { # only explanation: someone cured AND no new reports compared to day before
+                    y[which(y < 0)] <- 0
+                }
                 ylab <- "daily deaths"
                 if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
             } else if (ploti == 3) {
@@ -208,6 +211,9 @@ for (ci in seq_along(countries)) {
             } else if (ploti == 4) {
                 x <- ts$time[2:length(ts$time)]
                 y <- diff(ts$confirmed)
+                if (any(y < 0, na.rm=T)) { # only explanation: someone cured AND no new reports compared to day before
+                    y[which(y < 0)] <- 0
+                }
                 ylab <- "daily confirmed"
                 if (country != "China") {
                     lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
@@ -354,14 +360,12 @@ for (ci in seq_along(countries)) {
                     date_ind <- which.min(abs(responses[[ri]]$date - x))
                     abline(v=as.numeric(x[date_ind]), lwd=0.5)
                     # mark response date in underlined format that it looks like a hyperref
-                    points(x[date_ind], y=1, pch=15, col="white", cex=2) # box below number
+                    points(x[date_ind], y=grconvertY(0.04, from="npc"), pch=15, col="white", cex=2) # box below number
                     text(x=x[date_ind], 
                          #y=grconvertY(0.75, from="npc"), # in middle of plot, independent of linear/logarithmic y-axis 
                          #y=1, # at bottom (count = 0)
-                         y=grconvertY(0.025, from="npc"), # at bottom of plot, independent of linear/logarithmic y-axis 
-                         #labels=bquote(underline(~.label)), 
-                         substitute(paste(underline(label)),
-                                    list(label=ri)),
+                         y=grconvertY(0.04, from="npc"), # at bottom of plot, independent of linear/logarithmic y-axis 
+                         labels=substitute(paste(underline(label)), list(label=ri)),
                          col="blue", cex=0.75)
                 }
                 
