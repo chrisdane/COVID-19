@@ -469,16 +469,15 @@ upstream_hash <- system("git rev-parse upstream/master", intern=T)
 upstream_datetime <- file.info("../.git/refs/remotes/upstream")$mtime
 upstream_datetime <- as.POSIXlt(upstream_datetime)
 tz <- attributes(upstream_datetime)$tzone
-upstream_timediff <- difftime(Sys.time(), upstream_datetime)
 if (any(tz == "")) tz <- tz[-which(tz == "")]
 readme <- c("# International Covid-19 death rates based on CSSEGISandData/COVID-19", "",
             "upstream repo: https://github.com/CSSEGISandData/COVID-19  ",
-            paste0("time of last pull of upstream repo: ", upstream_datetime, " ", tz[1], 
-                   " (**", round(as.numeric(upstream_timediff), 2), " ", attributes(upstream_timediff)$units, " ago**)  "),
-            paste0("hash of last pull of upstream repo: ", upstream_hash),
+            paste0("time of last pull of upstream repo: **", upstream_datetime, " ", tz[1], "**  "), 
+            paste0("hash of last pulled commit of upstream repo: ", upstream_hash, "  "),
             "", 
             "# Select country", "",
-            "in alphabetical order (days when number of cumulative deaths doubles based on exponential model; blue line in plots)", 
+            paste0("in alphabetical order (days when number of cumulative deaths doubles based on ",
+                   "exponential model; blue line in first of ", nplots, " plots of each respective country)"), 
             "")
 # toc
 tmp <- c()
