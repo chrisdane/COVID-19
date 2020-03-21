@@ -461,8 +461,10 @@ for (ci in seq_along(plotname_all)) {
         if (!is.null(responses_all[[ci]])) { # add national/domestic response refs
             for (ri in seq_along(responses_all[[ci]])) {
                 readme <- c(readme, 
-                            paste0("national response ", ri, " on ", responses_all[[ci]][[ri]]$date , 
-                                   ": [", responses_all[[ci]][[ri]]$ref, "](", responses_all[[ci]][[ri]]$ref, ")"), 
+                            paste0("national response ", ri, " on ", responses_all[[ci]][[ri]]$date, ": ",
+                                   #"[", responses_all[[ci]][[ri]]$ref, "](", responses_all[[ci]][[ri]]$ref, ")"
+                                   responses_all[[ci]][[ri]]$ref
+                                   ), 
                             "<br>")
             }
         }
