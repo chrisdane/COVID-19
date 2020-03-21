@@ -1,4 +1,4 @@
-# International Covid-19 death rates based on CSSEGISandData/COVID-19
+# International Covid-19 death predictions based on CSSEGISandData/COVID-19
 
   * upstream repo: https://github.com/CSSEGISandData/COVID-19  
   * time of last pull of upstream repo: **2020-03-21 15:37:54 CET** (timestamp of file `.git/refs/remotes/upstream`)  
@@ -118,11 +118,11 @@ in alphabetical order (days when number of cumulative deaths doubles based on ex
 # Italy
 [top](#Select-country)
 <br>
-national response 1 on 2020-03-04: https://www.theguardian.com/world/2020/mar/04/italy-orders-closure-of-schools-and-universities-due-to-coronavirus
+  * national response 1 on 2020-03-04: https://www.theguardian.com/world/2020/mar/04/italy-orders-closure-of-schools-and-universities-due-to-coronavirus
 <br>
-national response 2 on 2020-03-09: https://www.bbc.co.uk/sport/51808683
+  * national response 2 on 2020-03-09: https://www.bbc.co.uk/sport/51808683
 <br>
-national response 3 on 2020-03-11: https://www.washingtonpost.com/world/europe/merkel-coronavirus-germany/2020/03/11/e276252a-6399-11ea-8a8e-5c5336b32760_story.html
+  * national response 3 on 2020-03-11: https://www.washingtonpost.com/world/europe/merkel-coronavirus-germany/2020/03/11/e276252a-6399-11ea-8a8e-5c5336b32760_story.html
 <br>
 <img align="center" width="1000" src="plots/Italy/Italy_cumulative_deaths_logy.png">
 <br>

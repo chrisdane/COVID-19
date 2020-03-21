@@ -470,7 +470,7 @@ upstream_datetime <- file.info("../.git/refs/remotes/upstream")$mtime
 upstream_datetime <- as.POSIXlt(upstream_datetime)
 tz <- attributes(upstream_datetime)$tzone
 if (any(tz == "")) tz <- tz[-which(tz == "")]
-readme <- c("# International Covid-19 death rates based on CSSEGISandData/COVID-19", "",
+readme <- c("# International Covid-19 death predictions based on CSSEGISandData/COVID-19", "",
             "  * upstream repo: https://github.com/CSSEGISandData/COVID-19  ",
             paste0("  * time of last pull of upstream repo: **", upstream_datetime, " ", tz[1], 
                    "** (timestamp of file `.git/refs/remotes/upstream`)  "), 
@@ -511,7 +511,7 @@ for (ci in seq_along(plotname_all)) {
             #readme <- c(readme, "<p><small>")
             for (ri in seq_along(responses_all[[ci]])) {
                 readme <- c(readme, 
-                            paste0("national response ", ri, " on ", responses_all[[ci]][[ri]]$date, ": ",
+                            paste0("  * national response ", ri, " on ", responses_all[[ci]][[ri]]$date, ": ",
                                    #"[", responses_all[[ci]][[ri]]$ref, "](", responses_all[[ci]][[ri]]$ref, ")"
                                    responses_all[[ci]][[ri]]$ref
                                    ), 
