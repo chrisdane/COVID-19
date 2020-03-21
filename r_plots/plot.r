@@ -6,6 +6,8 @@ rm(list=ls()); graphics.off()
 countries <- c("Italy", "Germany", "United Kingdom", "France", "US", "Netherlands", "France", "Canada", "China")
 #countries <- "Canada"
 #countries <- "Germany"
+#countries <- "Netherlands"
+#countries <- "US"
 
 # plot specs
 png_specs <- list(width=1500, height=833, res=157)
@@ -165,12 +167,13 @@ for (ci in seq_along(countries)) {
                 ylab <- "cumulative deaths"
                 if (country == "France") lm_from <- as.POSIXlt("2020-03-01", tz="UTC")
                 if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
-                if (country == "Netherlands") lm_to <- as.POSIXlt("2020-03-07", tz="UTC") 
-                if (country == "US") lm_to <- as.POSIXlt("2020-03-02", tz="UTC") 
+                if (country == "Netherlands") lm_from <- as.POSIXlt("2020-03-07", tz="UTC") 
+                #if (country == "US") lm_to <- as.POSIXlt("2020-03-02", tz="UTC") 
             } else if (ploti == 2) {
                 x <- ts$time[2:length(ts$time)]
                 y <- diff(ts$deaths)
                 ylab <- "daily deaths"
+                if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
             } else if (ploti == 3) {
                 x <- ts$time
                 y <- ts$confirmed
@@ -363,7 +366,7 @@ for (ci in seq_along(countries)) {
                                                               " ]; r = ", rsq, "; p ", p)),
                                              list(estimate=round(lm_log_estimate, 2), uncert=round(lm_log_uncert, 2),
                                                   ts_dt_unit=ts_dt_unit, rsq=round(sqrt(rsq), 2), 
-                                                  p=ifelse(pvalue < 1e-5, "<= 1e-5", paste0("= ", pvalue))))),
+                                                  p=ifelse(pvalue < 1e-3, "<= 1e-3", paste0("= ", round(pvalue, 2)))))),
                              eval(substitute(expression(paste("exponential prediction (doubling time = [", estimate, " ", 
                                                               ts_dt_unit, ""^paste(-1), "]"^paste(-1), " = ", doubling_time, " ",
                                                               ts_dt_unit, ")")),
