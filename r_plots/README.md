@@ -1,14 +1,14 @@
 # International Covid-19 death rates based on CSSEGISandData/COVID-19
 
 upstream repo: https://github.com/CSSEGISandData/COVID-19  
-time of last pull of upstream repo: 2020-03-21 01:54:22 CET (13.7 hours ago)  
-hash of last pull of upstream repo: 0d2b104c946045db6a3874c97889c9f98d10ee0c
+time of last pull of upstream repo: 2020-03-21 15:37:54 CET (**1.4 mins ago**)  
+hash of last pull of upstream repo: 02be34e5ec0409835f79f61a547b2b42f2c6dfd7
 
 # Select country
 
-in alphabetical order (days when number of cumulative deaths doubles)
+in alphabetical order (days when number of cumulative deaths doubles based on exponential model; blue line in plots)
 
-[Austria](#Austria) (3.66) [Belgium](#Belgium) (3.52) [Canada](#Canada) (3.87) [China](#China) (3.67) [Denmark](#Denmark) (3.08) [France](#France) (3.7) [Germany](#Germany) (3) [Iran](#Iran) (4.67) [Italy](#Italy) (3.51) [Japan](#Japan) (9.53) [Netherlands](#Netherlands) (3) [Russia](#Russia) (NA) [Sweden](#Sweden) (2.86) [Switzerland](#Switzerland) (3.5) [US](#US) (5.36) [United Kingdom](#United-Kingdom) (3.01) 
+[Austria](#Austria) (3.66) [Belgium](#Belgium) (3.52) [Canada](#Canada) (3.87) [China](#China) (3.67) [Denmark](#Denmark) (3.08) [France](#France) (3.7) [Germany](#Germany) (3) [Iran](#Iran) (4.67) [Italy](#Italy) (3.51) [Japan](#Japan) (9.53) [Netherlands](#Netherlands) (3) [Russia](#Russia) (NA) [Sweden](#Sweden) (2.86) [Switzerland](#Switzerland) (3.5) [US](#US) (5.23) [United Kingdom](#United-Kingdom) (3.01) 
 
 # Austria
 [top](#Select-country)

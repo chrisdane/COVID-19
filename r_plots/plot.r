@@ -474,11 +474,12 @@ if (any(tz == "")) tz <- tz[-which(tz == "")]
 readme <- c("# International Covid-19 death rates based on CSSEGISandData/COVID-19", "",
             "upstream repo: https://github.com/CSSEGISandData/COVID-19  ",
             paste0("time of last pull of upstream repo: ", upstream_datetime, " ", tz[1], 
-                   " (", round(as.numeric(upstream_timediff), 2), " ", attributes(upstream_timediff)$units, " ago)  "),
+                   " (**", round(as.numeric(upstream_timediff), 2), " ", attributes(upstream_timediff)$units, " ago**)  "),
             paste0("hash of last pull of upstream repo: ", upstream_hash),
             "", 
             "# Select country", "",
-            "in alphabetical order (days when number of cumulative deaths doubles)", "")
+            "in alphabetical order (days when number of cumulative deaths doubles based on exponential model; blue line in plots)", 
+            "")
 # toc
 tmp <- c()
 for (ci in seq_along(plotname_all)) {
