@@ -47,6 +47,7 @@ ts_countries <- sort(unique(ts_deaths$Country.Region))
 ## read time series and reports
 ts_all <- report_all <- responses_all <- vector("list", l=length(countries))
 report_countries <- plotname_all <- list()
+cumulative_deaths_rates <- rep(NA, t=length(countries))
 countries <- sort(unique(countries))
 for (ci in seq_along(countries)) {
 
@@ -290,6 +291,11 @@ for (ci in seq_along(countries)) {
                 pvalue <- lm_log_summary$coefficients[2,4]
                 message("exponential model estimate = ", lm_log_estimate, " +- ", lm_log_uncert, " ", 
                         ts_dt_unit, "^-1; r^2 = ", rsq, "; p = ", pvalue) 
+                if (ylab == "cumulative deaths") {
+                    cumulative_deaths_rate <- ts_dt/(lm_log_estimate*ts_dt)
+                    message("cumulative death rate = ", cumulative_deaths_rate)
+                    cumulative_deaths_rates[ci] <- cumulative_deaths_rate 
+                }
             }
 
             # exponential prediction
@@ -471,20 +477,27 @@ readme <- c("# International Covid-19 death rates based on CSSEGISandData/COVID-
             paste0("time of last pull of upstream repo: ", upstream_datetime, " ", tz[1], 
                    " (", round(as.numeric(upstream_timediff), 2), " ", attributes(upstream_timediff)$units, " ago)  "),
             paste0("hash of last pull of upstream repo: ", upstream_hash),
-            "", "select country (alphabetical order):", "")
+            "", "Countries in alphabetical order (days when number of cumulative deaths doubles):", "")
 # toc
 tmp <- c()
 for (ci in seq_along(plotname_all)) {
     tmp <- paste0(tmp, 
                   paste0(ci, ") [", names(plotname_all)[ci], "](#", 
-                         gsub(" ", "-", names(plotname_all)[ci]), ") "))
+                         gsub(" ", "-", names(plotname_all)[ci]), ") ("))
+    if (!is.na(cumulative_deaths_rates[ci])) {
+        tmp <- paste0(tmp, round(cumulative_deaths_rates[ci], 2))
+    } else {
+        tmp <- paste0(tmp, "NA")
+    }
+    tmp <- paste0(tmp, ") ")
 }
 readme <- c(readme, tmp, "")
 # content
 for (ci in seq_along(plotname_all)) {
 
-    readme <- c(readme, paste0("# ", names(plotname_all)[ci]), "<br>") # title for link
-    readme <- c(readme, "[top](", this_repo, ")") # link to top
+    readme <- c(readme, paste0("# ", names(plotname_all)[ci])) # title for link
+    readme <- c(readme, paste0("[top](", this_repo, ")")) # link to top
+    readme <- c(readme, "<br>")
     for (fi in seq_along(plotname_all[[ci]])) {
         
         # add national/domestic response refs if any
