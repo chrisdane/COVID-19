@@ -483,6 +483,7 @@ readme <- c(readme, tmp, "")
 for (ci in seq_along(plotname_all)) {
 
     readme <- c(readme, paste0("# ", names(plotname_all)[ci]), "<br>") # title for link
+    #readme <- c(readme, "[", ) # link to top
     for (fi in seq_along(plotname_all[[ci]])) {
         
         # add national/domestic response refs if any
