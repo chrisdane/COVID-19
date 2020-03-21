@@ -1,7 +1,7 @@
 # covid death rates based on CSSEGISandData/COVID-19 data
 
 forked from: https://github.com/CSSEGISandData/COVID-19  
-time of upstream repo: 2020-03-21 01:54:22 CET  
+time of upstream repo: 2020-03-21 01:54:22 CET (13.22 hours ago)  
 hash of upstream repo: 0d2b104c946045db6a3874c97889c9f98d10ee0c
 
 select country:
