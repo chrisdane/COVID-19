@@ -357,7 +357,8 @@ for (ci in seq_along(countries)) {
                     points(x[date_ind], y=1, pch=15, col="white", cex=2) # box below number
                     text(x=x[date_ind], 
                          #y=grconvertY(0.75, from="npc"), # in middle of plot, independent of linear/logarithmic y-axis 
-                         y=1, # at bottom (count = 0)
+                         #y=1, # at bottom (count = 0)
+                         y=grconvertY(0.025, from="npc"), # at bottom of plot, independent of linear/logarithmic y-axis 
                          #labels=bquote(underline(~.label)), 
                          substitute(paste(underline(label)),
                                     list(label=ri)),
