@@ -9,7 +9,7 @@ select country (alphabetical order):
 1) [Austria](#Austria) 2) [Belgium](#Belgium) 3) [Canada](#Canada) 4) [China](#China) 5) [Denmark](#Denmark) 6) [France](#France) 7) [Germany](#Germany) 8) [Iran](#Iran) 9) [Italy](#Italy) 10) [Japan](#Japan) 11) [Netherlands](#Netherlands) 12) [Russia](#Russia) 13) [Sweden](#Sweden) 14) [Switzerland](#Switzerland) 15) [US](#US) 16) [United Kingdom](#United-Kingdom) 
 
 # Austria
-# [back](#International-Covid-19-death-rates-based-on-CSSEGISandData/COVID-19)
+[up](https://github.com/chrisdane/COVID-19/tree/mybranch/r_plots)
 <br>
 <img align="center" width="1000" src="plots/Austria/Austria_cumulative_deaths_logy.png">
 <br>
