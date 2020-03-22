@@ -433,13 +433,13 @@ for (ci in seq_along(countries)) {
                              eval(substitute(expression(paste("exponential model = exp[ (", estimate, "" %+-% "", uncert, 
                                                               ") ", ts_dt_unit, ""^paste(-1), " " %*% " ", ts_dt_unit, 
                                                               " ]; r = ", rsq, "; p ", p)),
-                                             list(estimate=round(lm_log_estimate, 2), uncert=round(lm_log_uncert, 2),
-                                                  ts_dt_unit=ts_dt_unit, rsq=round(sqrt(rsq), 2), 
+                                             list(estimate=round(lm_log_estimate, 3), uncert=round(lm_log_uncert, 3),
+                                                  ts_dt_unit=ts_dt_unit, rsq=round(sqrt(rsq), 2),
                                                   p=ifelse(pvalue < 1e-3, "<= 1e-3", paste0("= ", round(pvalue, 2)))))),
                              eval(substitute(expression(paste("exponential prediction (doubling time = log(2)[", estimate, " ", 
                                                               ts_dt_unit, ""^paste(-1), "]"^paste(-1), " = ", doubling_time, " ",
                                                               ts_dt_unit, ")")),
-                                             list(estimate=round(lm_log_estimate, 2), ts_dt_unit=ts_dt_unit, 
+                                             list(estimate=round(lm_log_estimate, 3), ts_dt_unit=ts_dt_unit, 
                                                   doubling_time=round(lm_log_doubling_time, 2)))))
                 le_col <- c(le_col, lm_obs_col, lm_predict_col)
             }
