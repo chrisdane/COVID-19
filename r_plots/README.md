@@ -1,15 +1,15 @@
 # International Covid-19 death predictions based on CSSEGISandData/COVID-19
 
   * upstream repo: https://github.com/CSSEGISandData/COVID-19  
-  * time of last pull of upstream repo: **2020-03-21 15:37:54 CET** (timestamp of file `.git/refs/remotes/upstream`)  
-  * hash of last pulled commit of upstream repo: `02be34e5ec0409835f79f61a547b2b42f2c6dfd7` (`git rev-parse upstream/master`)  
-  * last date of `COVID-19/csse_covid_19_data/time_series_19-covid-*.csv` data: **2020-03-20**
+  * time of last pull of upstream repo: **2020-03-22 04:09:39 CET** (timestamp of file `.git/refs/remotes/upstream`)  
+  * hash of last pulled commit of upstream repo: `66ca3a6253b2d00d0629348c8635a8fe009dde5d` (`git rev-parse upstream/master`)  
+  * last date of `COVID-19/csse_covid_19_data/time_series_19-covid-*.csv` data: **2020-03-21**
 
 # Select country
 
 in alphabetical order (days when number of cumulative deaths doubles based on exponential model; blue line in first of the 4 plots of each respective country)
 
-[Austria](#Austria) (2.53) [Belgium](#Belgium) (2.44) [Canada](#Canada) (2.68) [China](#China) (2.55) [Denmark](#Denmark) (2.14) [France](#France) (2.56) [Germany](#Germany) (2.08) [Iran](#Iran) (3.23) [Italy](#Italy) (2.44) [Japan](#Japan) (6.61) [Netherlands](#Netherlands) (2.08) [Russia](#Russia) (NA) [Sweden](#Sweden) (1.98) [Switzerland](#Switzerland) (2.43) [US](#US) (3.63) [United Kingdom](#United-Kingdom) (2.08) 
+[Austria](#Austria) (2.58) [Belgium](#Belgium) (2.19) [Canada](#Canada) (2.54) [China](#China) (2.55) [Denmark](#Denmark) (2.11) [France](#France) (2.55) [Germany](#Germany) (2.08) [Iran](#Iran) (3.28) [Italy](#Italy) (2.48) [Japan](#Japan) (6.66) [Netherlands](#Netherlands) (2.09) [Russia](#Russia) (NA) [Sweden](#Sweden) (2.04) [Switzerland](#Switzerland) (2.42) [US](#US) (3.56) [United Kingdom](#United-Kingdom) (2.07) 
 
 # Austria
 [top](#Select-country)
