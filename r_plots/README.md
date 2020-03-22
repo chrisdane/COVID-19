@@ -9,7 +9,7 @@
 
 in alphabetical order (days when number of cumulative deaths doubles based on exponential model; blue line in first of the 4 plots of each respective country)
 
-[Austria](#Austria) (3.66) [Belgium](#Belgium) (3.52) [Canada](#Canada) (3.87) [China](#China) (3.67) [Denmark](#Denmark) (3.08) [France](#France) (3.7) [Germany](#Germany) (3) [Iran](#Iran) (4.67) [Italy](#Italy) (3.51) [Japan](#Japan) (9.53) [Netherlands](#Netherlands) (3) [Russia](#Russia) (NA) [Sweden](#Sweden) (2.86) [Switzerland](#Switzerland) (3.5) [US](#US) (5.23) [United Kingdom](#United-Kingdom) (3.01) 
+[Austria](#Austria) (2.53) [Belgium](#Belgium) (2.44) [Canada](#Canada) (2.68) [China](#China) (2.55) [Denmark](#Denmark) (2.14) [France](#France) (2.56) [Germany](#Germany) (2.08) [Iran](#Iran) (3.23) [Italy](#Italy) (2.44) [Japan](#Japan) (6.61) [Netherlands](#Netherlands) (2.08) [Russia](#Russia) (NA) [Sweden](#Sweden) (1.98) [Switzerland](#Switzerland) (2.43) [US](#US) (3.63) [United Kingdom](#United-Kingdom) (2.08) 
 
 # Austria
 [top](#Select-country)

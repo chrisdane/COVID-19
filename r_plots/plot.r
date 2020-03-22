@@ -47,7 +47,7 @@ ts_countries <- sort(unique(ts_deaths$Country.Region))
 ## read time series and reports
 ts_all <- report_all <- responses_all <- vector("list", l=length(countries))
 report_countries <- plotname_all <- list()
-cumulative_deaths_rates <- rep(NA, t=length(countries))
+cumulative_deaths_doubling_times <- rep(NA, t=length(countries))
 countries <- sort(unique(countries))
 for (ci in seq_along(countries)) {
 
@@ -287,14 +287,15 @@ for (ci in seq_along(countries)) {
                 add_lm_log_to_plot <- T
                 lm_log_estimate <- lm_log_summary$coefficients[2,1]*ts_dt
                 lm_log_uncert <- lm_log_summary$coefficients[2,2]*ts_dt
+                # https://github.com/valeriupredoi/COVID-19_LINEAR/issues/6
+                lm_log_doubling_time <- log(2)/lm_log_estimate
                 rsq <- lm_log_summary$r.squared
                 pvalue <- lm_log_summary$coefficients[2,4]
                 message("exponential model estimate = ", lm_log_estimate, " +- ", lm_log_uncert, " ", 
-                        ts_dt_unit, "^-1; r^2 = ", rsq, "; p = ", pvalue) 
+                        ts_dt_unit, "^-1; doubling time = ", lm_log_doubling_time, 
+                        "; r^2 = ", rsq, "; p = ", pvalue) 
                 if (ylab == "cumulative deaths") {
-                    cumulative_deaths_rate <- ts_dt/(lm_log_estimate*ts_dt)
-                    message("cumulative death rate = ", cumulative_deaths_rate)
-                    cumulative_deaths_rates[ci] <- cumulative_deaths_rate 
+                    cumulative_deaths_doubling_times[ci] <- lm_log_doubling_time
                 }
             }
 
@@ -435,11 +436,11 @@ for (ci in seq_along(countries)) {
                                              list(estimate=round(lm_log_estimate, 2), uncert=round(lm_log_uncert, 2),
                                                   ts_dt_unit=ts_dt_unit, rsq=round(sqrt(rsq), 2), 
                                                   p=ifelse(pvalue < 1e-3, "<= 1e-3", paste0("= ", round(pvalue, 2)))))),
-                             eval(substitute(expression(paste("exponential prediction (doubling time = [", estimate, " ", 
+                             eval(substitute(expression(paste("exponential prediction (doubling time = log(2)[", estimate, " ", 
                                                               ts_dt_unit, ""^paste(-1), "]"^paste(-1), " = ", doubling_time, " ",
                                                               ts_dt_unit, ")")),
                                              list(estimate=round(lm_log_estimate, 2), ts_dt_unit=ts_dt_unit, 
-                                                  doubling_time=round(ts_dt/(lm_log_estimate*ts_dt), 2)))))
+                                                  doubling_time=round(lm_log_doubling_time, 2)))))
                 le_col <- c(le_col, lm_obs_col, lm_predict_col)
             }
             legend("topleft", legend=le_text,
@@ -489,8 +490,8 @@ for (ci in seq_along(plotname_all)) {
     tmp <- paste0(tmp, 
                   paste0("[", names(plotname_all)[ci], "](#", 
                          gsub(" ", "-", names(plotname_all)[ci]), ") ("))
-    if (!is.na(cumulative_deaths_rates[ci])) {
-        tmp <- paste0(tmp, round(cumulative_deaths_rates[ci], 2))
+    if (!is.na(cumulative_deaths_doubling_times[ci])) {
+        tmp <- paste0(tmp, round(cumulative_deaths_doubling_times[ci], 2))
     } else {
         tmp <- paste0(tmp, "NA")
     }
