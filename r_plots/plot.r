@@ -23,15 +23,17 @@ lm_predict_col <- "red"
 #library(arghqtl) # https://rdrr.io/github/ellisztamas/arghqtl/man/underlined.html
 
 # paths
-fconfirmed <- "../csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
-fdeaths <- "../csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv"
-frecovered <- "../csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv"
+fconfirmed <- "../csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
+fdeaths <- "../csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
+#fconfirmed <- "../csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
+#fdeaths <- "../csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv"
+#frecovered <- "../csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv"
 report_path <- "../csse_covid_19_data/csse_covid_19_daily_reports"
         
 message("\nread time series ...")
 ts_confirmed <- read.csv(fconfirmed, header=T, stringsAsFactors=F, na.strings="")
 ts_deaths <- read.csv(fdeaths, header=T, stringsAsFactors=F, na.strings="")
-ts_recovered <- read.csv(frecovered, header=T, stringsAsFactors=F, na.strings="")
+#ts_recovered <- read.csv(frecovered, header=T, stringsAsFactors=F, na.strings="")
 ts_dates <- colnames(ts_confirmed)
 ts_data_col_inds <- which(substr(ts_dates, 1, 1) == "X") # stupid
 ts_dates <- ts_dates[ts_data_col_inds] # X1.22.20 = January 22, 2020
@@ -78,16 +80,16 @@ for (ci in seq_along(countries)) {
             attr(tmp1, "names") <- NULL
             tmp2 <- unlist(ts_deaths[country_ts_ind[provincei],ts_data_col_inds])
             attr(tmp2, "names") <- NULL
-            tmp3 <- unlist(ts_recovered[country_ts_ind[provincei],ts_data_col_inds])
-            attr(tmp3, "names") <- NULL
+            #tmp3 <- unlist(ts_recovered[country_ts_ind[provincei],ts_data_col_inds])
+            #attr(tmp3, "names") <- NULL
             if (provincei == 1) {
                 ts$confirmed <- tmp1
                 ts$deaths <- tmp2
-                ts$recovered <- tmp3
+                #ts$recovered <- tmp3
             } else {
                 ts$confirmed <- ts$confirmed + tmp1
                 ts$deaths <- ts$deaths + tmp2
-                ts$recovered <- ts$recovered + tmp3
+                #ts$recovered <- ts$recovered + tmp3
             }
             #cat(capture.output(str(ts$confirmed)), sep="\n")
             #if (provincei == length(country_ts_ind)) message()
@@ -103,7 +105,8 @@ for (ci in seq_along(countries)) {
     message("\nread reports ...")
     report_files <- list.files(report_path, pattern=glob2rx("*.csv"))
     report_dates <- rep(NA, t=length(report_files)) 
-    confirmed <- deaths <- recovered <- rep(0, t=length(report_files))
+    confirmed <- deaths <- rep(0, t=length(report_files))
+    #recovered 
     report_countries_tmp <- list()
     for (fi in seq_along(report_files)) {
         
@@ -129,15 +132,15 @@ for (ci in seq_along(countries)) {
                 # --> use date from file
                 confi <- tmp[country_report_ind[provincei],"Confirmed"]
                 deathi <- tmp[country_report_ind[provincei],"Deaths"]
-                recovi <- tmp[country_report_ind[provincei],"Recovered"]
+                #recovi <- tmp[country_report_ind[provincei],"Recovered"]
                 if (provincei == 1) {
                     confirmed[fi] <- confi
                     deaths[fi] <- deathi
-                    recovered[fi] <- recovi
+                    #recovered[fi] <- recovi
                 } else {
                     confirmed[fi] <- confirmed[fi] + confi
                     deaths[fi] <- deaths[fi] + deathi
-                    recovered[fi] <- recovered[fi] + recovi
+                    #recovered[fi] <- recovered[fi] + recovi
                 }
             } # provincei
         }
@@ -146,7 +149,8 @@ for (ci in seq_along(countries)) {
         report_dates <- as.Date(report_dates, format="%m-%d-%y")
         report_dates <- as.POSIXlt(report_dates)
         report <- list(time=report_dates, confirmed=confirmed, 
-                       deaths=deaths, recovered=recovered)
+                       deaths=deaths#, recovered=recovered
+                      )
         message("\n", country, " report:")
         cat(capture.output(str(report)), sep="\n")
         report_all[[ci]] <- report
@@ -477,7 +481,7 @@ readme <- c("# International Covid-19 death predictions based on CSSEGISandData/
                    "** (timestamp of file `.git/refs/remotes/upstream`)  "), 
             paste0("  * hash of last pulled commit of upstream repo: `", upstream_hash, 
                    "` (`git rev-parse upstream/master`)  "),
-            paste0("  * last date of `COVID-19/csse_covid_19_data/time_series_19-covid-*.csv` data: **", 
+            paste0("  * last date of `COVID-19/csse_covid_19_data/time_series_covid19_*_global.csv` data: **", 
                    max(ts_dates), "**"),
             "", 
             "# Select country", "",
