@@ -10,23 +10,41 @@
 ordererd by time when cumulative number of deaths doubles (increasing)
 country | cumulative number of deaths doubles in | period of a estimation | rsq | p
 --- | --- | --- | --- | ---
-[United Kingdom](#United-Kingdom) | 1.83 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[Canada](#Canada) | 1.93 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[Belgium](#Belgium) | 1.93 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[Netherlands](#Netherlands) | 1.98 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[Sweden](#Sweden) | 2.09 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[Germany](#Germany) | 2.09 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[Spain](#Spain) | 2.21 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[Denmark](#Denmark) | 2.25 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[Austria](#Austria) | 2.43 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[Switzerland](#Switzerland) | 2.48 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[France](#France) | 2.74 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[US](#US) | 2.89 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[Italy](#Italy) | 3.91 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[Iran](#Iran) | 5 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[Japan](#Japan) | 8.48 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
-[China](#China) | 218.97 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
+[Portugal](#Portugal) | 1.26 days | 2020-03-12 to 2020-03-22 (10 days) | 0.98 | < 1e-3
+[United Kingdom](#United-Kingdom) | 1.83 days | 2020-03-12 to 2020-03-22 (10 days) | 0.97 | < 1e-3
+[Canada](#Canada) | 1.93 days | 2020-03-12 to 2020-03-22 (10 days) | 0.93 | < 1e-3
+[Belgium](#Belgium) | 1.93 days | 2020-03-12 to 2020-03-22 (10 days) | 0.95 | < 1e-3
+[Netherlands](#Netherlands) | 1.98 days | 2020-03-12 to 2020-03-22 (10 days) | 0.99 | < 1e-3
+[Sweden](#Sweden) | 2.09 days | 2020-03-12 to 2020-03-22 (10 days) | 0.96 | < 1e-3
+[Germany](#Germany) | 2.09 days | 2020-03-12 to 2020-03-22 (10 days) | 0.98 | < 1e-3
+[Spain](#Spain) | 2.21 days | 2020-03-12 to 2020-03-22 (10 days) | 0.96 | < 1e-3
+[Denmark](#Denmark) | 2.25 days | 2020-03-12 to 2020-03-22 (10 days) | 0.96 | < 1e-3
+[Austria](#Austria) | 2.43 days | 2020-03-12 to 2020-03-22 (10 days) | 0.93 | < 1e-3
+[Switzerland](#Switzerland) | 2.48 days | 2020-03-12 to 2020-03-22 (10 days) | 0.95 | < 1e-3
+[France](#France) | 2.74 days | 2020-03-12 to 2020-03-22 (10 days) | 0.95 | < 1e-3
+[US](#US) | 2.89 days | 2020-03-12 to 2020-03-22 (10 days) | 0.98 | < 1e-3
+[Italy](#Italy) | 3.91 days | 2020-03-12 to 2020-03-22 (10 days) | 0.98 | < 1e-3
+[Poland](#Poland) | 4.71 days | 2020-03-12 to 2020-03-22 (10 days) | 0.78 | < 1e-3
+[Norway](#Norway) | 4.91 days | 2020-03-12 to 2020-03-22 (10 days) | 0.8 | 0.001
+[Iran](#Iran) | 5 days | 2020-03-12 to 2020-03-22 (10 days) | 0.98 | < 1e-3
+[Australia](#Australia) | 6.23 days | 2020-03-12 to 2020-03-22 (10 days) | 0.86 | < 1e-3
+[Japan](#Japan) | 8.48 days | 2020-03-12 to 2020-03-22 (10 days) | 0.95 | < 1e-3
+[China](#China) | 218.97 days | 2020-03-12 to 2020-03-22 (10 days) | 0.99 | < 1e-3
+[Romania](#Romania) | NA | NA | NA | NA
 [Russia](#Russia) | NA | NA | NA | NA
+
+# Australia
+[top](#Select-country)
+
+<img align="center" width="1000" src="plots/Australia/Australia_cumulative_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Australia/Australia_daily_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Australia/Australia_cumulative_confirmed_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Australia/Australia_daily_confirmed_logy.png">
+<br>
+<br>
 
 # Austria
 [top](#Select-country)
@@ -172,6 +190,58 @@ national responses:
 <img align="center" width="1000" src="plots/Netherlands/Netherlands_cumulative_confirmed_logy.png">
 <br>
 <img align="center" width="1000" src="plots/Netherlands/Netherlands_daily_confirmed_logy.png">
+<br>
+<br>
+
+# Norway
+[top](#Select-country)
+
+<img align="center" width="1000" src="plots/Norway/Norway_cumulative_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Norway/Norway_daily_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Norway/Norway_cumulative_confirmed_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Norway/Norway_daily_confirmed_logy.png">
+<br>
+<br>
+
+# Poland
+[top](#Select-country)
+
+<img align="center" width="1000" src="plots/Poland/Poland_cumulative_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Poland/Poland_daily_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Poland/Poland_cumulative_confirmed_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Poland/Poland_daily_confirmed_logy.png">
+<br>
+<br>
+
+# Portugal
+[top](#Select-country)
+
+<img align="center" width="1000" src="plots/Portugal/Portugal_cumulative_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Portugal/Portugal_daily_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Portugal/Portugal_cumulative_confirmed_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Portugal/Portugal_daily_confirmed_logy.png">
+<br>
+<br>
+
+# Romania
+[top](#Select-country)
+
+<img align="center" width="1000" src="plots/Romania/Romania_cumulative_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Romania/Romania_daily_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Romania/Romania_cumulative_confirmed_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Romania/Romania_daily_confirmed_logy.png">
 <br>
 <br>
 

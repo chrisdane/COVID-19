@@ -3,7 +3,7 @@
 rm(list=ls()); graphics.off()
 
 ## which country
-countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "US", "Netherlands", "France", "Canada", "China", "Russia", "Switzerland", "Iran", "Austria", "Sweden", "Japan", "Spain")
+countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "US", "Netherlands", "France", "Canada", "China", "Russia", "Switzerland", "Iran", "Austria", "Sweden", "Japan", "Spain", "Australia", "Norway", "Poland", "Portugal", "Romania")
 #countries <- "Canada"
 #countries <- "Germany"
 #countries <- "Netherlands"
@@ -539,10 +539,10 @@ if (!all(is.na(lm_time_death_double))) {
                           lm_list[[allinds[ci]]]$from, " to ", lm_list[[allinds[ci]]]$to, " (",
                           as.numeric(lm_list[[allinds[ci]]]$lm_time_range), " ", 
                           lm_list[[allinds[ci]]]$lm_time_range_unit, ") | ",
-                          round(lm_list[[allinds[ci]]]$cumulative_deaths_rsq), " | ", 
+                          round(lm_list[[allinds[ci]]]$cumulative_deaths_rsq, 2), " | ", 
                           ifelse(lm_list[[allinds[ci]]]$cumulative_deaths_p < 1e-3, 
                                  "< 1e-3",
-                                 round(lm_list[[allinds[ci]]]$p, 3)))
+                                 round(lm_list[[allinds[ci]]]$cumulative_deaths_p, 3)))
         } else {
             tmp <- paste0(tmp, lm_time_death_double[ci], " | ", lm_time_death_double[ci], " | ",
                           lm_time_death_double[ci], " | ", lm_time_death_double[ci])
