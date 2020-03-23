@@ -16,6 +16,7 @@ country | cumulative number of deaths doubles in | period of a estimation | rsq 
 [Netherlands](#Netherlands) | 1.98 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
 [Sweden](#Sweden) | 2.09 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
 [Germany](#Germany) | 2.09 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
+[Spain](#Spain) | 2.21 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
 [Denmark](#Denmark) | 2.25 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
 [Austria](#Austria) | 2.43 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
 [Switzerland](#Switzerland) | 2.48 days | 2020-03-12 to 2020-03-22 (10 days) | 1 | < 1e-3
@@ -184,6 +185,19 @@ national responses:
 <img align="center" width="1000" src="plots/Russia/Russia_cumulative_confirmed_logy.png">
 <br>
 <img align="center" width="1000" src="plots/Russia/Russia_daily_confirmed_logy.png">
+<br>
+<br>
+
+# Spain
+[top](#Select-country)
+
+<img align="center" width="1000" src="plots/Spain/Spain_cumulative_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Spain/Spain_daily_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Spain/Spain_cumulative_confirmed_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Spain/Spain_daily_confirmed_logy.png">
 <br>
 <br>
 

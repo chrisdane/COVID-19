@@ -3,7 +3,7 @@
 rm(list=ls()); graphics.off()
 
 ## which country
-countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "US", "Netherlands", "France", "Canada", "China", "Russia", "Switzerland", "Iran", "Austria", "Sweden", "Japan")
+countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "US", "Netherlands", "France", "Canada", "China", "Russia", "Switzerland", "Iran", "Austria", "Sweden", "Japan", "Spain")
 #countries <- "Canada"
 #countries <- "Germany"
 #countries <- "Netherlands"
