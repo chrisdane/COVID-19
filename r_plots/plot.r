@@ -15,6 +15,9 @@ png_specs <- list(width=1500, height=833, res=157)
 log <- "y" # "", "y"
 yat_log_must_include <- c(0:10, seq(20, 100, b=10), seq(200, 1000, b=100), 
                           seq(2000, 10000, b=1000), seq(20000, 100000, b=10000))
+nplots_per_country <- 4
+
+# linear model specs
 lm_obs_col <- "blue"
 lm_predict_ntime <- 14
 lm_predict_interval <- "day"
@@ -47,9 +50,8 @@ if (ts_dt_unit == "days") ts_dt <- 86400 # days --> seconds
 ts_countries <- sort(unique(ts_deaths$Country.Region))
 
 ## read time series and reports
-ts_all <- report_all <- responses_all <- vector("list", l=length(countries))
+ts_all <- report_all <- responses_all <- lm_list <- vector("list", l=length(countries))
 report_countries <- plotname_all <- list()
-cumulative_deaths_doubling_times <- rep(NA, t=length(countries))
 countries <- sort(unique(countries))
 for (ci in seq_along(countries)) {
 
@@ -162,36 +164,53 @@ for (ci in seq_along(countries)) {
 
 
     ## plot ts
-    if (!is.null(ts)) { # if time series reading ts was successfull
+    if (!is.null(ts)) { # if time series reading was successfull
 
-        nplots <- 4
-        plotname_tmp <- rep(NA, t=nplots)
-        for (ploti in seq_len(nplots)) {
+        # default: exponential model over the last 10 days
+        lm_to_ind <- length(ts_dates)
+        lm_to <- ts_dates[lm_to_ind]
+        lm_from <- lm_to - 10
+        lm_from_ind <- which.min(abs(ts_dates - lm_from))[1]
+        lm_from <- ts_dates[lm_from_ind]
+        lm_dt <- difftime(lm_to, lm_from)
+        if (attributes(lm_dt)$units != "days") {
+            stop("\nlm_dt = ", lm_dt, " not implemented")
+        } else {
+            message("\ncalc exponential model from ", lm_from, " to ", lm_to, 
+                    " --> dt = ", lm_dt, " ", attributes(lm_dt)$units, " ...")
+        }
+        lm_list[[ci]] <- list(from=lm_from, to=lm_to, 
+                              lm_time_range=lm_dt, 
+                              lm_time_range_unit=attributes(lm_dt)$units)
+        names(lm_list)[ci] <- country_fname
+            
+        # mark national/domestic responses
+        responses <- list() # default: nothing
+        if (country == "Italy") {
+            responses[[1]] <- list(date=as.POSIXlt("2020-03-04", tz="UTC"),
+                                   what="",
+                                   ref="https://www.theguardian.com/world/2020/mar/04/italy-orders-closure-of-schools-and-universities-due-to-coronavirus")
+            responses[[2]] <- list(date=as.POSIXlt("2020-03-09", tz="UTC"),
+                                   what="",
+                                   ref="https://www.bbc.co.uk/sport/51808683")
+            responses[[3]] <- list(date=as.POSIXlt("2020-03-11", tz="UTC"),
+                                   what="",
+                                   ref="https://www.washingtonpost.com/world/europe/merkel-coronavirus-germany/2020/03/11/e276252a-6399-11ea-8a8e-5c5336b32760_story.html")
+        }
         
-            lm_from <- lm_to <- "" # default
-
-            # mark national/domestic responses
-            responses <- list() # default: nothing
-            if (country == "Italy") {
-                responses[[1]] <- list(date=as.POSIXlt("2020-03-04", tz="UTC"),
-                                       what="",
-                                       ref="https://www.theguardian.com/world/2020/mar/04/italy-orders-closure-of-schools-and-universities-due-to-coronavirus")
-                responses[[2]] <- list(date=as.POSIXlt("2020-03-09", tz="UTC"),
-                                       what="",
-                                       ref="https://www.bbc.co.uk/sport/51808683")
-                responses[[3]] <- list(date=as.POSIXlt("2020-03-11", tz="UTC"),
-                                       what="",
-                                       ref="https://www.washingtonpost.com/world/europe/merkel-coronavirus-germany/2020/03/11/e276252a-6399-11ea-8a8e-5c5336b32760_story.html")
-            }
+        plotname_tmp <- rep(NA, t=nplots_per_country)
+        for (ploti in seq_len(nplots_per_country)) {
 
             if (ploti == 1) { # this order will appear in the README.md
                 ylab <- "cumulative deaths"
                 x <- ts$time
                 y <- ts$deaths
-                if (country == "France") lm_from <- as.POSIXlt("2020-03-01", tz="UTC")
-                if (country == "Japan") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
-                if (country == "US") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
-                if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
+                if (F) {
+                    if (country == "France") lm_from <- as.POSIXlt("2020-03-01", tz="UTC")
+                    if (country == "Japan") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
+                    if (country == "US") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
+                    if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC")
+                }
             } else if (ploti == 2) {
                 ylab <- "daily deaths"
                 x <- ts$time[2:length(ts$time)]
@@ -199,25 +218,29 @@ for (ci in seq_along(countries)) {
                 if (any(y < 0, na.rm=T)) { # only explanation: someone cured AND no new reports compared to day before
                     y[which(y < 0)] <- 0
                 }
-                if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
-                if (country == "France") lm_from <- as.POSIXlt("2020-03-01", tz="UTC")
-                if (country == "Japan") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
-                if (country == "US") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
+                if (F) {
+                    if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
+                    if (country == "France") lm_from <- as.POSIXlt("2020-03-01", tz="UTC")
+                    if (country == "Japan") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
+                    if (country == "US") lm_from <- as.POSIXlt("2020-03-02", tz="UTC")
+                }
             } else if (ploti == 3) {
                 ylab <- "cumulative confirmed"
                 x <- ts$time
                 y <- ts$confirmed
-                if (country == "Belgium") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
-                if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
-                if (country == "Canada") lm_from <- as.POSIXlt("2020-02-27", tz="UTC")
-                if (country == "France") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
-                if (country == "Germany") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
-                if (country == "Italy") lm_from <- as.POSIXlt("2020-02-21", tz="UTC")
-                if (country == "Netherlands") lm_from <- as.POSIXlt("2020-02-29", tz="UTC")
-                if (country == "Russia") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
-                if (country == "Sweden") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
-                if (country == "US") lm_from <- as.POSIXlt("2020-02-26", tz="UTC") 
-                if (country == "United Kingdom") lm_from <- as.POSIXlt("2020-02-24", tz="UTC")
+                if (F) {
+                    if (country == "Belgium") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
+                    if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
+                    if (country == "Canada") lm_from <- as.POSIXlt("2020-02-27", tz="UTC")
+                    if (country == "France") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
+                    if (country == "Germany") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
+                    if (country == "Italy") lm_from <- as.POSIXlt("2020-02-21", tz="UTC")
+                    if (country == "Netherlands") lm_from <- as.POSIXlt("2020-02-29", tz="UTC")
+                    if (country == "Russia") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
+                    if (country == "Sweden") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
+                    if (country == "US") lm_from <- as.POSIXlt("2020-02-26", tz="UTC") 
+                    if (country == "United Kingdom") lm_from <- as.POSIXlt("2020-02-24", tz="UTC")
+                }
             } else if (ploti == 4) {
                 ylab <- "daily confirmed"
                 x <- ts$time[2:length(ts$time)]
@@ -225,41 +248,25 @@ for (ci in seq_along(countries)) {
                 if (any(y < 0, na.rm=T)) { # only explanation: someone cured AND no new reports compared to day before
                     y[which(y < 0)] <- 0
                 }
-                if (country == "Belgium") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
-                if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
-                if (country == "Canada") lm_from <- as.POSIXlt("2020-02-27", tz="UTC")
-                if (country == "France") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
-                if (country == "Germany") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
-                if (country == "Italy") lm_from <- as.POSIXlt("2020-02-21", tz="UTC")
-                if (country == "Netherlands") lm_from <- as.POSIXlt("2020-02-29", tz="UTC")
-                if (country == "Russia") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
-                if (country == "Sweden") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
-                if (country == "US") lm_from <- as.POSIXlt("2020-02-26", tz="UTC") 
-                if (country == "United Kingdom") lm_from <- as.POSIXlt("2020-02-24", tz="UTC")
+                if (F) {
+                    if (country == "Belgium") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
+                    if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
+                    if (country == "Canada") lm_from <- as.POSIXlt("2020-02-27", tz="UTC")
+                    if (country == "France") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
+                    if (country == "Germany") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
+                    if (country == "Italy") lm_from <- as.POSIXlt("2020-02-21", tz="UTC")
+                    if (country == "Netherlands") lm_from <- as.POSIXlt("2020-02-29", tz="UTC")
+                    if (country == "Russia") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
+                    if (country == "Sweden") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
+                    if (country == "US") lm_from <- as.POSIXlt("2020-02-26", tz="UTC") 
+                    if (country == "United Kingdom") lm_from <- as.POSIXlt("2020-02-24", tz="UTC")
+                }
             } # which ploti 
            
             message("\nplot ", ploti, " of country ", ci, " \"", country, 
                     "\" plot ts data: ", ylab, " ...") 
             
             # exponential model of obs
-            if (!is.character(lm_from)) { # lm only from
-                if (lm_from %in% x) {
-                    lm_from_ind <- which.min(abs(lm_from - x))
-                } else {
-                    message("\nlm_from = ", lm_from, " is given but not in range of x = ", min(x), " to ", max(x))
-                }
-            } else {
-                lm_from_ind <- 1
-            }
-            if (!is.character(lm_to)) { # lm only to
-                if (lm_to %in% x) {
-                    lm_to_ind <- which.min(abs(lm_to - x))
-                } else {
-                    message("\nlm_to = ", lm_to, " is given but not in range of x = ", min(x), " to ", max(x))
-                }
-            } else {
-                lm_to_ind <- length(x)
-            }
             lm_inds <- lm_from_ind:lm_to_ind
             #lm_inds <- seq_along(x)
             x_lm <- as.numeric(x)[lm_inds] # posix cannot be input for lm
@@ -286,6 +293,7 @@ for (ci in seq_along(countries)) {
             if (any(is.na(lm_log_summary$coefficients))) { # exponential model yield bad results
                 message("\n--> model is bad")
                 add_lm_log_to_plot <- F
+                lm_list[[ci]]$cumulative_deaths_doubling_time <- NA
             } else {
                 message("\n--> model is ok")
                 add_lm_log_to_plot <- T
@@ -299,7 +307,12 @@ for (ci in seq_along(countries)) {
                         ts_dt_unit, "^-1; doubling time = ", lm_log_doubling_time, 
                         "; r^2 = ", rsq, "; p = ", pvalue) 
                 if (ylab == "cumulative deaths") {
-                    cumulative_deaths_doubling_times[ci] <- lm_log_doubling_time
+                    lm_list[[ci]]$cumulative_deaths_estimate <- lm_log_estimate
+                    lm_list[[ci]]$cumulative_deaths_uncertainty <- lm_log_uncert
+                    lm_list[[ci]]$cumulative_deaths_rsq <- rsq
+                    lm_list[[ci]]$cumulative_deaths_p <- pvalue
+                    lm_list[[ci]]$cumulative_deaths_doubling_time <- lm_log_doubling_time
+                    lm_list[[ci]]$cumulative_deaths_doubling_time_unit <- ts_dt_unit
                 }
             }
 
@@ -373,7 +386,8 @@ for (ci in seq_along(countries)) {
             abline(v=ts_tatn, col="gray", lwd=0.5)
            
             # add title
-            title(paste0(ploti, "/", nplots, ": ", ylab, " in ", country, " at ", max(x)), cex.main=0.85)
+            title(paste0(ploti, "/", nplots_per_country, ": ", ylab, " in ", 
+                         country, " at ", max(x)), cex.main=0.85)
 
             # mark national/domestic responses if any
             if (length(responses) > 0) {
@@ -400,10 +414,10 @@ for (ci in seq_along(countries)) {
             points(x, y, t="o")
             
             if (F) { # add day of month of obs
-                text(x, y, labels=paste0("  ", x$mday), cex=0.5, adj=0)
+                text(x, y, labels=paste0("   ", x$mday), cex=0.5, adj=0)
 
             } else if (T) { # add value of obs
-                text(x, y, labels=paste0("  ", y), cex=0.5, srt=90, adj=0)
+                text(x, y, labels=paste0("   ", y), cex=0.5, srt=90, adj=0)
             }
 
             # add exponential model of obs
@@ -420,16 +434,18 @@ for (ci in seq_along(countries)) {
 
                 if (F) { # add day of month of prediction
                     text(x_lm_log_future, y_lm_log_future[,"fit"], 
-                         labels=paste0("  ", x_lm_log_future$mday), 
+                         labels=paste0("   ", x_lm_log_future$mday), 
                          cex=0.5, adj=0)
                 } else if (T) { # add value of prediction
                     text(x_lm_log_future, y_lm_log_future[,"fit"], 
-                         labels=paste0("  ", round(y_lm_log_future[,"fit"])), 
+                         labels=paste0("   ", round(y_lm_log_future[,"fit"])), 
                          cex=0.5, srt=90, adj=0)
                 }
             }
 
             # legend
+            le_pos <- "topleft"
+            if (country == "China") le_pos <- "bottomleft"
             le_text <- "obs"
             le_col <- "black"
             if (add_lm_log_to_plot) {
@@ -439,7 +455,7 @@ for (ci in seq_along(countries)) {
                                                               " ]; r = ", rsq, "; p ", p)),
                                              list(estimate=round(lm_log_estimate, 3), uncert=round(lm_log_uncert, 3),
                                                   ts_dt_unit=ts_dt_unit, rsq=round(sqrt(rsq), 2),
-                                                  p=ifelse(pvalue < 1e-3, "<= 1e-3", paste0("= ", round(pvalue, 2)))))),
+                                                  p=ifelse(pvalue < 1e-3, "< 1e-3", paste0("= ", round(pvalue, 3)))))),
                              eval(substitute(expression(paste("exponential prediction (doubling time = log(2)[", estimate, " ", 
                                                               ts_dt_unit, ""^paste(-1), "]"^paste(-1), " = ", doubling_time, " ",
                                                               ts_dt_unit, ")")),
@@ -462,10 +478,10 @@ for (ci in seq_along(countries)) {
         
     } else {
 
-        message("\ncannot plot because did not find ts data")
+        warning("reading country ", ci, " \"", country, "\" data was not successfull")
 
     } # if !is.null(ts)
-    
+   
 } # for ci countries
 
 # update readme
@@ -484,24 +500,83 @@ readme <- c("# International Covid-19 death predictions based on CSSEGISandData/
             paste0("  * last date of `COVID-19/csse_covid_19_data/time_series_covid19_*_global.csv` data: **", 
                    max(ts_dates), "**"),
             "", 
-            "# Select country", "",
-            paste0("in alphabetical order (days when number of cumulative deaths doubles based on ",
-                   "exponential model; blue line in first of the ", nplots, " plots of each respective country)"), 
-            "")
-# toc
-tmp <- c()
-for (ci in seq_along(plotname_all)) {
-    tmp <- paste0(tmp, 
-                  paste0("[", names(plotname_all)[ci], "](#", 
-                         gsub(" ", "-", names(plotname_all)[ci]), ") ("))
-    if (!is.na(cumulative_deaths_doubling_times[ci])) {
-        tmp <- paste0(tmp, round(cumulative_deaths_doubling_times[ci], 2))
+            "# Select country", "")
+
+# toc: available countries ordered by their deaths doubling 
+#      time (shortest first) or, if not available, in alphabetic order
+lm_time_death_double <- sapply(lm_list, "[[", "cumulative_deaths_doubling_time")
+if (!all(is.na(lm_time_death_double))) {
+    notnainds <- which(!is.na(lm_time_death_double))
+    if (any(is.na(lm_time_death_double))) {
+        nainds <- which(is.na(lm_time_death_double))
+        lm_time_death_double_na <- lm_time_death_double[nainds]
     } else {
-        tmp <- paste0(tmp, "NA")
+        nainds <- NULL
     }
-    tmp <- paste0(tmp, ") ")
-}
-readme <- c(readme, tmp, "")
+    lm_time_death_double_sort_inds <- sort(lm_time_death_double[notnainds], index.return=T)$ix
+    lm_time_death_double <- lm_time_death_double[notnainds][lm_time_death_double_sort_inds]
+    allinds <- notnainds[lm_time_death_double_sort_inds]
+    if (!is.null(nainds)) {
+        lm_time_death_double <- c(lm_time_death_double, lm_time_death_double_na)
+        allinds <- c(allinds, nainds)
+    }
+    
+    # Markdown | Less | Pretty
+    #--- | --- | --- # <-- miniumum 3 dashes
+    #*Still* | `renders` | **nicely**
+    #1 | 2 | 3   
+    readme <- c(readme,
+                paste0("ordererd by time when cumulative number of deaths doubles (increasing)", ""))
+    toc <- "country | cumulative number of deaths doubles in | period of a estimation | rsq | p" # 5 columns
+    toc <- c(toc, "--- | --- | --- | --- | ---")
+    cnt <- length(toc)
+    for (ci in seq_along(plotname_all)) {
+        tmp <- paste0("[", names(plotname_all)[allinds[ci]], "](#", 
+                      gsub(" ", "-", names(plotname_all)[allinds[ci]]), ") | ")
+        if (!is.na(lm_time_death_double[ci])) {
+            tmp <- paste0(tmp, round(lm_time_death_double[ci], 2), " ", 
+                          lm_list[[allinds[ci]]]$cumulative_deaths_doubling_time_unit, " | ",
+                          lm_list[[allinds[ci]]]$from, " to ", lm_list[[allinds[ci]]]$to, " (",
+                          as.numeric(lm_list[[allinds[ci]]]$lm_time_range), " ", 
+                          lm_list[[allinds[ci]]]$lm_time_range_unit, ") | ",
+                          round(lm_list[[allinds[ci]]]$cumulative_deaths_rsq), " | ", 
+                          ifelse(lm_list[[allinds[ci]]]$cumulative_deaths_p < 1e-3, 
+                                 "< 1e-3",
+                                 round(lm_list[[allinds[ci]]]$p, 3)))
+        } else {
+            tmp <- paste0(tmp, lm_time_death_double[ci], " | ", lm_time_death_double[ci], " | ",
+                          lm_time_death_double[ci], " | ", lm_time_death_double[ci])
+        }
+        cnt <- cnt + 1
+        toc[cnt] <- tmp 
+    } # for ci 
+
+} else { # no lm available
+    
+    readme <- c(readme,
+                paste0("in alphabetical order (days when number of cumulative deaths doubles based on ",
+                       "exponential model; blue line in first of the ", nplots_per_country, 
+                       " plots of each respective country)")) 
+    
+    toc <- c() # toc
+    for (ci in seq_along(plotname_all)) {
+
+        toc <- paste0(toc, 
+                      paste0("[", names(plotname_all)[ci], "](#", 
+                             gsub(" ", "-", names(plotname_all)[ci]), ") ("))
+        if (!is.na(lm_list[[ci]]$cumulative_deaths_doubling_time)) {
+            toc <- paste0(toc, 
+                          round(lm_list[[ci]]$cumulative_deaths_doubling_time, 2), " ", 
+                          lm_list[[ci]]$cumulative_deaths_doubling_time_unit)
+        } else {
+            toc <- paste0(toc, "NA")
+        }
+        toc <- paste0(toc, ") ")
+    }
+
+} # if lm is available or not
+readme <- c(readme, toc, "")
+
 # content
 top_link <- "#Select-country"
 for (ci in seq_along(plotname_all)) {
@@ -513,9 +588,12 @@ for (ci in seq_along(plotname_all)) {
         
         # add national/domestic response refs if any
         if (!is.null(responses_all[[ci]]) && fi == 1) { 
+            readme <- c(readme, 
+                        paste0("national response", 
+                               ifelse(length(responses_all[[ci]]) > 1, "s", ""), ":"))
             for (ri in seq_along(responses_all[[ci]])) {
-                readme <- c(readme, 
-                            paste0("  * national response ", ri, " on ", 
+                readme <- c(readme,
+                            paste0(ri, ". ", 
                                    responses_all[[ci]][[ri]]$date, ": ",
                                    responses_all[[ci]][[ri]]$ref))
             }
