@@ -463,7 +463,7 @@ for (ci in seq_along(countries)) {
                                                   doubling_time=round(lm_log_doubling_time, 2)))))
                 le_col <- c(le_col, lm_obs_col, lm_predict_col)
             }
-            legend("topleft", legend=le_text,
+            legend(le_pos, legend=le_text,
                    col=le_col,
                    lty=1, lwd=1, pch=1, 
                    bty="n", x.intersp=0.2)
