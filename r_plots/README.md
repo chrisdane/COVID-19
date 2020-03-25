@@ -8,31 +8,31 @@
 # Select country
 
 ordererd by time when cumulative number of deaths doubles (increasing)
-country | cumulative number of<br>deaths doubles in | period of a estimation | rsq | p
+country | cumulative number<br>of deaths doubles in | period of a estimation | rsq | p | cumulative<br>deaths | cumulative<br>confirmed
 --- | --- | --- | --- | ---
-[Romania](#Romania) | 1.07 days | 2020-03-14 to 2020-03-24 (10 days) | 0.97 | 0.111
-[Portugal](#Portugal) | 1.39 days | 2020-03-14 to 2020-03-24 (10 days) | 0.98 | < 1e-3
-[Belgium](#Belgium) | 1.8 days | 2020-03-14 to 2020-03-24 (10 days) | 0.98 | < 1e-3
-[Canada](#Canada) | 2.05 days | 2020-03-14 to 2020-03-24 (10 days) | 0.91 | < 1e-3
-[Austria](#Austria) | 2.1 days | 2020-03-14 to 2020-03-24 (10 days) | 0.96 | < 1e-3
-[Denmark](#Denmark) | 2.19 days | 2020-03-14 to 2020-03-24 (10 days) | 0.98 | < 1e-3
-[United Kingdom](#United-Kingdom) | 2.2 days | 2020-03-14 to 2020-03-24 (10 days) | 0.96 | < 1e-3
-[Netherlands](#Netherlands) | 2.23 days | 2020-03-14 to 2020-03-24 (10 days) | 0.98 | < 1e-3
-[Germany](#Germany) | 2.35 days | 2020-03-14 to 2020-03-24 (10 days) | 0.99 | < 1e-3
-[France](#France) | 2.56 days | 2020-03-14 to 2020-03-24 (10 days) | 0.96 | < 1e-3
-[Sweden](#Sweden) | 2.61 days | 2020-03-14 to 2020-03-24 (10 days) | 0.96 | < 1e-3
-[US](#US) | 2.61 days | 2020-03-14 to 2020-03-24 (10 days) | 0.99 | < 1e-3
-[Spain](#Spain) | 2.63 days | 2020-03-14 to 2020-03-24 (10 days) | 1 | < 1e-3
-[Switzerland](#Switzerland) | 2.69 days | 2020-03-14 to 2020-03-24 (10 days) | 0.97 | < 1e-3
-[Italy](#Italy) | 4.48 days | 2020-03-14 to 2020-03-24 (10 days) | 0.99 | < 1e-3
-[Norway](#Norway) | 4.72 days | 2020-03-14 to 2020-03-24 (10 days) | 0.88 | < 1e-3
-[Iran](#Iran) | 6.04 days | 2020-03-14 to 2020-03-24 (10 days) | 0.97 | < 1e-3
-[Australia](#Australia) | 6.54 days | 2020-03-14 to 2020-03-24 (10 days) | 0.83 | < 1e-3
-[Poland](#Poland) | 6.56 days | 2020-03-14 to 2020-03-24 (10 days) | 0.89 | < 1e-3
-[Japan](#Japan) | 9.91 days | 2020-03-14 to 2020-03-24 (10 days) | 0.96 | < 1e-3
-[China](#China) | 255.95 days | 2020-03-14 to 2020-03-24 (10 days) | 0.97 | < 1e-3
-[Nepal](#Nepal) | NA | NA | NA | NA
-[Russia](#Russia) | NA | NA | NA | NA
+[Romania](#Romania) | 1.07 days | 2020-03-14 to 2020-03-24 (10 days) | 0.97 | 0.111 | 794 | 11
+[Portugal](#Portugal) | 1.39 days | 2020-03-14 to 2020-03-24 (10 days) | 0.98 | < 1e-3 | 2362 | 33
+[Belgium](#Belgium) | 1.8 days | 2020-03-14 to 2020-03-24 (10 days) | 0.98 | < 1e-3 | 4269 | 122
+[Canada](#Canada) | 2.05 days | 2020-03-14 to 2020-03-24 (10 days) | 0.91 | < 1e-3 | 2790 | 26
+[Austria](#Austria) | 2.1 days | 2020-03-14 to 2020-03-24 (10 days) | 0.96 | < 1e-3 | 5283 | 28
+[Denmark](#Denmark) | 2.19 days | 2020-03-14 to 2020-03-24 (10 days) | 0.98 | < 1e-3 | 1718 | 32
+[United Kingdom](#United-Kingdom) | 2.2 days | 2020-03-14 to 2020-03-24 (10 days) | 0.96 | < 1e-3 | 8164 | 423
+[Netherlands](#Netherlands) | 2.23 days | 2020-03-14 to 2020-03-24 (10 days) | 0.98 | < 1e-3 | 5580 | 277
+[Germany](#Germany) | 2.35 days | 2020-03-14 to 2020-03-24 (10 days) | 0.99 | < 1e-3 | 32986 | 157
+[France](#France) | 2.56 days | 2020-03-14 to 2020-03-24 (10 days) | 0.96 | < 1e-3 | 22622 | 1102
+[Sweden](#Sweden) | 2.61 days | 2020-03-14 to 2020-03-24 (10 days) | 0.96 | < 1e-3 | 2286 | 36
+[US](#US) | 2.61 days | 2020-03-14 to 2020-03-24 (10 days) | 0.99 | < 1e-3 | 53740 | 706
+[Spain](#Spain) | 2.63 days | 2020-03-14 to 2020-03-24 (10 days) | 1 | < 1e-3 | 39885 | 2808
+[Switzerland](#Switzerland) | 2.69 days | 2020-03-14 to 2020-03-24 (10 days) | 0.97 | < 1e-3 | 9877 | 122
+[Italy](#Italy) | 4.48 days | 2020-03-14 to 2020-03-24 (10 days) | 0.99 | < 1e-3 | 69176 | 6820
+[Norway](#Norway) | 4.72 days | 2020-03-14 to 2020-03-24 (10 days) | 0.88 | < 1e-3 | 2863 | 12
+[Iran](#Iran) | 6.04 days | 2020-03-14 to 2020-03-24 (10 days) | 0.97 | < 1e-3 | 24811 | 1934
+[Australia](#Australia) | 6.54 days | 2020-03-14 to 2020-03-24 (10 days) | 0.83 | < 1e-3 | 2044 | 8
+[Poland](#Poland) | 6.56 days | 2020-03-14 to 2020-03-24 (10 days) | 0.89 | < 1e-3 | 901 | 10
+[Japan](#Japan) | 9.91 days | 2020-03-14 to 2020-03-24 (10 days) | 0.96 | < 1e-3 | 1193 | 43
+[China](#China) | 255.95 days | 2020-03-14 to 2020-03-24 (10 days) | 0.97 | < 1e-3 | 81591 | 3281
+[Nepal](#Nepal) | NA | NA | NA | NA | 2 | 0
+[Russia](#Russia) | NA | NA | NA | NA | 495 | 1
 
 # Australia
 [top](#Select-country)
