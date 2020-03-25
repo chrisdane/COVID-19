@@ -8,7 +8,7 @@
 # Select country
 
 ordererd by time when cumulative number of deaths doubles (increasing)
-country | <div style="width:100px">cumulative number of deaths doubles in</div> | period of a estimation | rsq | p
+country | cumulative number of<br>deaths doubles in | period of a estimation | rsq | p
 --- | --- | --- | --- | ---
 [Romania](#Romania) | 1.07 days | 2020-03-14 to 2020-03-24 (10 days) | 0.97 | 0.111
 [Portugal](#Portugal) | 1.39 days | 2020-03-14 to 2020-03-24 (10 days) | 0.98 | < 1e-3

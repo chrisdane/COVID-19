@@ -548,7 +548,7 @@ if (!all(is.na(lm_time_death_double))) {
                 paste0("ordererd by time when cumulative number of deaths doubles (increasing)", ""))
     # 5 columns:
     toc <- paste0("country | ",
-                  "<div style=\"width:100px\">cumulative number of deaths doubles in</div> | ",
+                  "cumulative number of<br>deaths doubles in | ",
                   "period of a estimation | ",
                   "rsq | ",
                   "p") 
