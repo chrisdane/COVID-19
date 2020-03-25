@@ -8,7 +8,7 @@
 # Select country
 
 ordererd by time when cumulative number of deaths doubles (increasing)
-country | cumulative number of deaths doubles in | period of a estimation | rsq | p
+country | <div style="width:100px">cumulative number of deaths doubles in</div> | period of a estimation | rsq | p
 --- | --- | --- | --- | ---
 [Romania](#Romania) | 1.07 days | 2020-03-14 to 2020-03-24 (10 days) | 0.97 | 0.111
 [Portugal](#Portugal) | 1.39 days | 2020-03-14 to 2020-03-24 (10 days) | 0.98 | < 1e-3
@@ -31,6 +31,7 @@ country | cumulative number of deaths doubles in | period of a estimation | rsq 
 [Poland](#Poland) | 6.56 days | 2020-03-14 to 2020-03-24 (10 days) | 0.89 | < 1e-3
 [Japan](#Japan) | 9.91 days | 2020-03-14 to 2020-03-24 (10 days) | 0.96 | < 1e-3
 [China](#China) | 255.95 days | 2020-03-14 to 2020-03-24 (10 days) | 0.97 | < 1e-3
+[Nepal](#Nepal) | NA | NA | NA | NA
 [Russia](#Russia) | NA | NA | NA | NA
 
 # Australia
@@ -177,6 +178,19 @@ national responses:
 <img align="center" width="1000" src="plots/Japan/Japan_cumulative_confirmed_logy.png">
 <br>
 <img align="center" width="1000" src="plots/Japan/Japan_daily_confirmed_logy.png">
+<br>
+<br>
+
+# Nepal
+[top](#Select-country)
+
+<img align="center" width="1000" src="plots/Nepal/Nepal_cumulative_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Nepal/Nepal_daily_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Nepal/Nepal_cumulative_confirmed_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Nepal/Nepal_daily_confirmed_logy.png">
 <br>
 <br>
 

@@ -3,12 +3,13 @@
 rm(list=ls()); graphics.off()
 
 ## which country
-countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "US", "Netherlands", "France", "Canada", "China", "Russia", "Switzerland", "Iran", "Austria", "Sweden", "Japan", "Spain", "Australia", "Norway", "Poland", "Portugal", "Romania")
+countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "US", "Netherlands", "France", "Canada", "China", "Russia", "Switzerland", "Iran", "Austria", "Sweden", "Japan", "Spain", "Australia", "Norway", "Poland", "Portugal", "Romania", "Nepal")
 #countries <- "Canada"
 #countries <- "Germany"
 #countries <- "Netherlands"
 #countries <- "US"
 #countries <- "Italy"
+#countries <- "Nepal"
 
 # plot specs
 png_specs <- list(width=1500, height=833, res=157)
@@ -267,6 +268,7 @@ for (ci in seq_along(countries)) {
                     "\" plot ts data: ", ylab, " ...") 
             
             # exponential model of obs
+            add_lm_log_to_plot <- T # default
             lm_inds <- lm_from_ind:lm_to_ind
             #lm_inds <- seq_along(x)
             x_lm <- as.numeric(x)[lm_inds] # posix cannot be input for lm
@@ -274,47 +276,54 @@ for (ci in seq_along(countries)) {
             x_lm[which(y_lm == 0)] <- NA 
             y_lm[which(y_lm == 0)] <- NA
 
-            message("\ncalc lm from ", x[lm_from_ind], " to ", x[lm_to_ind], " ...")
-            if (T) { # var = exp(time) <=> log(var) = time
-                lm_log <- lm(log(y_lm) ~ x_lm) # if data is exponential: take log of data and fit against linear time
-                x_lm_log_obs <- lm_log$model[,2]
-                y_lm_log_obs <- exp(lm_log$fitted.values)
-            } else if (F) { # exp(var) = exp(time) <=> log(var) = log(time)
-                lm_log <- lm(log(y_lm) ~ log(x_lm))
-                x_lm_log_obs <- exp(lm_log$model[,2])
-                y_lm_log_obs <- exp(lm_log$fitted.values)
-            }
-            #nls_log <- nls(log(y_lm) ~ x_lm)
+            # if all counts equal 0 
+            if (all(is.na(y_lm))) add_lm_log_to_plot <- F 
 
-            # exponential model summary
-            lm_log_summary <- summary(lm_log)
-            message("\nlm_log_summary$coefficients:")
-            print(lm_log_summary$coefficients)
-            if (any(is.na(lm_log_summary$coefficients))) { # exponential model yield bad results
-                message("\n--> model is bad")
-                add_lm_log_to_plot <- F
-                lm_list[[ci]]$cumulative_deaths_doubling_time <- NA
-            } else {
-                message("\n--> model is ok")
-                add_lm_log_to_plot <- T
-                lm_log_estimate <- lm_log_summary$coefficients[2,1]*ts_dt
-                lm_log_uncert <- lm_log_summary$coefficients[2,2]*ts_dt
-                # https://github.com/valeriupredoi/COVID-19_LINEAR/issues/6
-                lm_log_doubling_time <- log(2)/lm_log_estimate
-                rsq <- lm_log_summary$r.squared
-                pvalue <- lm_log_summary$coefficients[2,4]
-                message("exponential model estimate = ", lm_log_estimate, " +- ", lm_log_uncert, " ", 
-                        ts_dt_unit, "^-1; doubling time = ", lm_log_doubling_time, 
-                        "; r^2 = ", rsq, "; p = ", pvalue) 
-                if (ylab == "cumulative deaths") {
-                    lm_list[[ci]]$cumulative_deaths_estimate <- lm_log_estimate
-                    lm_list[[ci]]$cumulative_deaths_uncertainty <- lm_log_uncert
-                    lm_list[[ci]]$cumulative_deaths_rsq <- rsq
-                    lm_list[[ci]]$cumulative_deaths_p <- pvalue
-                    lm_list[[ci]]$cumulative_deaths_doubling_time <- lm_log_doubling_time
-                    lm_list[[ci]]$cumulative_deaths_doubling_time_unit <- ts_dt_unit
+            if (add_lm_log_to_plot) {
+                message("\ncalc lm from ", x[lm_from_ind], " to ", x[lm_to_ind], " ...")
+                if (T) { # var = exp(time) <=> log(var) = time
+                    lm_log <- lm(log(y_lm) ~ x_lm) # if data is exponential: take log of data and fit against linear time
+                    x_lm_log_obs <- lm_log$model[,2]
+                    y_lm_log_obs <- exp(lm_log$fitted.values)
+                } else if (F) { # exp(var) = exp(time) <=> log(var) = log(time)
+                    lm_log <- lm(log(y_lm) ~ log(x_lm))
+                    x_lm_log_obs <- exp(lm_log$model[,2])
+                    y_lm_log_obs <- exp(lm_log$fitted.values)
                 }
-            }
+                #nls_log <- nls(log(y_lm) ~ x_lm)
+
+                # exponential model summary
+                lm_log_summary <- summary(lm_log)
+                message("\nlm_log_summary$coefficients:")
+                print(lm_log_summary$coefficients)
+                if (any(is.na(lm_log_summary$coefficients))) { # exponential model yield bad results
+                    message("\n--> model is bad")
+                    add_lm_log_to_plot <- F
+                    lm_list[[ci]]$cumulative_deaths_doubling_time <- NA
+                } else {
+                    message("\n--> model is ok")
+                    add_lm_log_to_plot <- T
+                    lm_log_estimate <- lm_log_summary$coefficients[2,1]*ts_dt
+                    lm_log_uncert <- lm_log_summary$coefficients[2,2]*ts_dt
+                    # https://github.com/valeriupredoi/COVID-19_LINEAR/issues/6
+                    lm_log_doubling_time <- log(2)/lm_log_estimate
+                    rsq <- lm_log_summary$r.squared
+                    pvalue <- lm_log_summary$coefficients[2,4]
+                    message("exponential model estimate = ", lm_log_estimate, " +- ", lm_log_uncert, " ", 
+                            ts_dt_unit, "^-1; doubling time = ", lm_log_doubling_time, 
+                            "; r^2 = ", rsq, "; p = ", pvalue) 
+                    if (ylab == "cumulative deaths") {
+                        lm_list[[ci]]$cumulative_deaths_estimate <- lm_log_estimate
+                        lm_list[[ci]]$cumulative_deaths_uncertainty <- lm_log_uncert
+                        lm_list[[ci]]$cumulative_deaths_rsq <- rsq
+                        lm_list[[ci]]$cumulative_deaths_p <- pvalue
+                        lm_list[[ci]]$cumulative_deaths_doubling_time <- lm_log_doubling_time
+                        lm_list[[ci]]$cumulative_deaths_doubling_time_unit <- ts_dt_unit
+                    }
+                }
+            } else {
+                lm_list[[ci]]$cumulative_deaths_doubling_time <- NA
+            } # if add_lm_log_to_plot
 
             # exponential prediction
             if (add_lm_log_to_plot) {
@@ -327,7 +336,8 @@ for (ci in seq_along(countries)) {
                 y_lm_log_future <- exp(lm_log_future)
             }
 
-            # prepare plot
+            ## prepare plot
+            # xaxis
             if (add_lm_log_to_plot) {
                 ts_tlimlt <- range(x, x_lm_log_future)
             } else {
@@ -343,11 +353,20 @@ for (ci in seq_along(countries)) {
             }
             ts_tatn <- as.numeric(ts_tlablt)
             ts_tlablt <- paste0(month.abb[ts_tlablt$mon+1], " ", ts_tlablt$mday)
+            
+            # yaxis
             if (log == "y") y[which(y == 0)] <- NA
-            if (add_lm_log_to_plot) {
-                ylim <- range(y, y_lm_log_obs, y_lm_log_future, na.rm=T)
+            if (all(is.na(y))) {
+                if (log == "y") {
+                    ylim <- c(1, 2)
+                } else {
+                    ylim <- c(0, 1)
+                }
             } else {
                 ylim <- range(y, na.rm=T)
+            }
+            if (add_lm_log_to_plot) {
+                ylim <- range(ylim, y_lm_log_obs, y_lm_log_future, na.rm=T)
             }
             ylim[2] <- ylim[2] + 0.05*diff(ylim)
             yat <- pretty(ylim, n=30)
@@ -527,7 +546,12 @@ if (!all(is.na(lm_time_death_double))) {
     #1 | 2 | 3   
     readme <- c(readme,
                 paste0("ordererd by time when cumulative number of deaths doubles (increasing)", ""))
-    toc <- "country | cumulative number of deaths doubles in | period of a estimation | rsq | p" # 5 columns
+    # 5 columns:
+    toc <- paste0("country | ",
+                  "<div style=\"width:100px\">cumulative number of deaths doubles in</div> | ",
+                  "period of a estimation | ",
+                  "rsq | ",
+                  "p") 
     toc <- c(toc, "--- | --- | --- | --- | ---")
     cnt <- length(toc)
     for (ci in seq_along(plotname_all)) {
