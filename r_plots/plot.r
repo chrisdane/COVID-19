@@ -549,7 +549,7 @@ if (!all(is.na(lm_time_death_double))) {
     # 7 columns:
     toc <- paste0("country | ", # col 1
                   "cumulative number<br>of deaths doubles in | ", # col 2
-                  "period of a estimation | ", # col 3
+                  "period of<br>estimation | ", # col 3
                   "rsq | ", # col 4
                   "p | ", # col 5
                   "cumulative<br>deaths | ", # col 6
@@ -563,7 +563,7 @@ if (!all(is.na(lm_time_death_double))) {
             tmp <- paste0(tmp, 
                           round(lm_time_death_double[ci], 2), " ",
                           lm_list[[allinds[ci]]]$cumulative_deaths_doubling_time_unit, " | ", # col 2
-                          lm_list[[allinds[ci]]]$from, " to ", lm_list[[allinds[ci]]]$to, " (",
+                          lm_list[[allinds[ci]]]$from, " to<br>", lm_list[[allinds[ci]]]$to, " (",
                           as.numeric(lm_list[[allinds[ci]]]$lm_time_range), " ", 
                           lm_list[[allinds[ci]]]$lm_time_range_unit, ") | ", # col 3
                           round(lm_list[[allinds[ci]]]$cumulative_deaths_rsq, 2), " | ", # col 4 
@@ -575,8 +575,8 @@ if (!all(is.na(lm_time_death_double))) {
                           paste0(rep(paste0(lm_time_death_double[ci], " | "), t=4), collapse="")) # col 2, 3, 4, 5
         }
         tmp <- paste0(tmp, 
-                      ts_all[[allinds[ci]]]$confirmed[length(ts_dates)], " | ", # col 6
-                      ts_all[[allinds[ci]]]$deaths[length(ts_dates)]) # col 7
+                      ts_all[[allinds[ci]]]$deaths[length(ts_dates)], " | ",  # col 6
+                      ts_all[[allinds[ci]]]$confirmed[length(ts_dates)]) # col 7
         cnt <- cnt + 1
         toc[cnt] <- tmp 
     } # for ci 
