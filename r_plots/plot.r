@@ -12,6 +12,11 @@ countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "US",
 #countries <- "Nepal"
 
 # plot specs
+jhu_text <- "JHU" # johns hopkins university
+jhu_col <- "black"
+jhu_lty <- 1
+jhu_lwd <- 1
+jhu_pch <- 1
 png_specs <- list(width=1500, height=833, res=157)
 log <- "y" # "", "y"
 yat_log_must_include <- c(0:10, seq(20, 100, b=10), seq(200, 1000, b=100), 
@@ -20,9 +25,15 @@ nplots_per_country <- 4
 
 # linear model specs
 lm_obs_col <- "blue"
+lm_obs_lty <- 1
+lm_obs_lwd <- 1
+lm_obs_pch <- 1
 lm_predict_ntime <- 14
 lm_predict_interval <- "day"
 lm_predict_col <- "red"
+lm_predict_lty <- 1
+lm_predict_lwd <- 1
+lm_predict_pch <- 1
 # for underlined text
 #library(arghqtl) # https://rdrr.io/github/ellisztamas/arghqtl/man/underlined.html
 
@@ -33,7 +44,19 @@ fdeaths <- "../csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_
 #fdeaths <- "../csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv"
 #frecovered <- "../csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv"
 report_path <- "../csse_covid_19_data/csse_covid_19_daily_reports"
-        
+
+#####################################
+
+message("\nread rki ...")
+frki <- "rki.txt"
+rki <- read.table(frki, header=T, stringsAsFactors=F)
+rki$date <- as.POSIXlt(rki$date, tz="UTC")
+rki_text <- "RKI"
+rki_col <- "darkgreen"
+rki_lty <- 1
+rki_lwd <- 1
+rki_pch <- 4
+
 message("\nread time series ...")
 ts_confirmed <- read.csv(fconfirmed, header=T, stringsAsFactors=F, na.strings="")
 ts_deaths <- read.csv(fdeaths, header=T, stringsAsFactors=F, na.strings="")
@@ -76,7 +99,7 @@ for (ci in seq_along(countries)) {
         }
         
         ts <- vector("list")
-        ts$time <- as.POSIXlt(ts_dates)
+        ts$time <- as.POSIXlt(ts_dates, tz="UTC")
         for (provincei in seq_along(country_ts_ind)) {
             #message("\"", ts_confirmed$Province.State[country_ts_ind][provincei], "\" ", appendLF=F)
             tmp1 <- unlist(ts_confirmed[country_ts_ind[provincei],ts_data_col_inds])
@@ -150,7 +173,7 @@ for (ci in seq_along(countries)) {
     } # for fi report_files
     if (!all(is.na(report_dates))) {
         report_dates <- as.Date(report_dates, format="%m-%d-%y")
-        report_dates <- as.POSIXlt(report_dates)
+        report_dates <- as.POSIXlt(report_dates, tz="UTC")
         report <- list(time=report_dates, confirmed=confirmed, 
                        deaths=deaths#, recovered=recovered
                       )
@@ -212,18 +235,28 @@ for (ci in seq_along(countries)) {
                     if (country == "US") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
                     if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC")
                 }
+                if (country == "Germany") {
+                    x_rki <- rki$date
+                    y_rki <- rki$deaths
+                }
             } else if (ploti == 2) {
                 ylab <- "daily deaths"
                 x <- ts$time[2:length(ts$time)]
                 y <- diff(ts$deaths)
-                if (any(y < 0, na.rm=T)) { # only explanation: someone cured AND no new reports compared to day before
-                    y[which(y < 0)] <- 0
+                if (log == "y") {
+                    if (any(y < 0, na.rm=T)) { # only explanation: someone cured AND no new reports compared to day before
+                        y[which(y < 0)] <- 0
+                    }
                 }
                 if (F) {
                     if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
                     if (country == "France") lm_from <- as.POSIXlt("2020-03-01", tz="UTC")
                     if (country == "Japan") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
                     if (country == "US") lm_from <- as.POSIXlt("2020-03-02", tz="UTC")
+                }
+                if (country == "Germany") {
+                    x_rki <- rki$date[2:length(rki$date)]
+                    y_rki <- diff(rki$deaths)
                 }
             } else if (ploti == 3) {
                 ylab <- "cumulative confirmed"
@@ -241,6 +274,10 @@ for (ci in seq_along(countries)) {
                     if (country == "Sweden") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
                     if (country == "US") lm_from <- as.POSIXlt("2020-02-26", tz="UTC") 
                     if (country == "United Kingdom") lm_from <- as.POSIXlt("2020-02-24", tz="UTC")
+                }
+                if (country == "Germany") {
+                    x_rki <- rki$date
+                    y_rki <- rki$confirmed
                 }
             } else if (ploti == 4) {
                 ylab <- "daily confirmed"
@@ -262,6 +299,10 @@ for (ci in seq_along(countries)) {
                     if (country == "US") lm_from <- as.POSIXlt("2020-02-26", tz="UTC") 
                     if (country == "United Kingdom") lm_from <- as.POSIXlt("2020-02-24", tz="UTC")
                 }
+                if (country == "Germany") {
+                    x_rki <- rki$date[2:length(rki$date)]
+                    y_rki <- diff(rki$confirmed)
+                }
             } # which ploti 
            
             message("\nplot ", ploti, " of country ", ci, " \"", country, 
@@ -272,7 +313,7 @@ for (ci in seq_along(countries)) {
             lm_inds <- lm_from_ind:lm_to_ind
             #lm_inds <- seq_along(x)
             x_lm <- as.numeric(x)[lm_inds] # posix cannot be input for lm
-            y_lm <- y[lm_inds] # numeric 0 cannot be input for lm
+            y_lm <- y[lm_inds] # numeric 0 cannot be input for exponential lm
             x_lm[which(y_lm == 0)] <- NA 
             y_lm[which(y_lm == 0)] <- NA
 
@@ -429,14 +470,24 @@ for (ci in seq_along(countries)) {
 
             } # if (length(responses) > 0)
 
-            # add obs
-            points(x, y, t="o")
-            
-            if (F) { # add day of month of obs
-                text(x, y, labels=paste0("   ", x$mday), cex=0.5, adj=0)
+            # add jhu obs
+            points(x, y, t="o", col=jhu_col, lty=jhu_lty, lwd=jhu_lwd, pch=jhu_pch)
+            if (F) { # add day of month of jhu obs
+                text(x, y, labels=paste0("   ", x$mday), col=jhu_col, cex=0.5, adj=0)
 
-            } else if (T) { # add value of obs
-                text(x, y, labels=paste0("   ", y), cex=0.5, srt=90, adj=0)
+            } else if (T) { # add value of jhu obs
+                text(x, y, labels=paste0("   ", y), col=jhu_col, cex=0.5, srt=90, adj=0)
+            }
+            
+            # add rki obs
+            if (country == "Germany") {
+                points(x_rki, y_rki, t="o", col=rki_col, lty=rki_lty, lwd=rki_lwd, pch=rki_pch)
+                if (F) { # add day of month of rki obs
+                    text(x_rki, y_rki, labels=paste0(x_rki$mday, "   "), col=rki_col, cex=0.5, adj=0)
+
+                } else if (T) { # add value of rki obs
+                    text(x_rki, y_rki, labels=paste0(y_rki, "   "), col=rki_col, cex=0.5, srt=90, adj=1)
+                }
             }
 
             # add exponential model of obs
@@ -464,9 +515,11 @@ for (ci in seq_along(countries)) {
 
             # legend
             le_pos <- "topleft"
-            if (country == "China") le_pos <- "bottomleft"
-            le_text <- "obs"
-            le_col <- "black"
+            le_text <- jhu_text
+            le_col <- jhu_col
+            le_lty <- jhu_lty
+            le_lwd <- jhu_lwd
+            le_pch <- jhu_pch
             if (add_lm_log_to_plot) {
                 le_text <- c(le_text,
                              eval(substitute(expression(paste("exponential model = exp[ (", estimate, "" %+-% "", uncert, 
@@ -481,10 +534,20 @@ for (ci in seq_along(countries)) {
                                              list(estimate=round(lm_log_estimate, 3), ts_dt_unit=ts_dt_unit, 
                                                   doubling_time=round(lm_log_doubling_time, 2)))))
                 le_col <- c(le_col, lm_obs_col, lm_predict_col)
+                le_lty <- c(le_lty, lm_obs_lty, lm_predict_lty)
+                le_lty <- c(le_lwd, lm_obs_lwd, lm_predict_lwd)
+            }
+            if (country == "China") le_pos <- "bottomleft"
+            if (country == "Germany") {
+                le_text <- c(le_text, rki_text)
+                le_col <- c(le_col, rki_col)
+                le_lty <- c(le_lty, rki_lty)
+                le_lwd <- c(le_lwd, rki_lwd)
+                le_pch <- c(le_pch, rki_pch)
             }
             legend(le_pos, legend=le_text,
                    col=le_col,
-                   lty=1, lwd=1, pch=1, 
+                   lty=le_lty, lwd=le_lwd, pch=le_pch, 
                    bty="n", x.intersp=0.2)
 
             # save plot
@@ -512,9 +575,9 @@ tz <- attributes(upstream_datetime)$tzone
 if (any(tz == "")) tz <- tz[-which(tz == "")]
 readme <- c("# International Covid-19 death predictions based on CSSEGISandData/COVID-19", "",
             "  * upstream repo: https://github.com/CSSEGISandData/COVID-19  ",
-            paste0("  * time of last pull of upstream repo: **", upstream_datetime, " ", tz[1], 
+            paste0("  * time of last fetch of upstream repo: **", upstream_datetime, " ", tz[1], 
                    "** (timestamp of file `.git/refs/remotes/upstream`)  "), 
-            paste0("  * hash of last pulled commit of upstream repo: `", upstream_hash, 
+            paste0("  * hash of last fetched commit of upstream repo: `", upstream_hash, 
                    "` (`git rev-parse upstream/master`)  "),
             paste0("  * last date of `COVID-19/csse_covid_19_data/time_series_covid19_*_global.csv` data: **", 
                    max(ts_dates), "**"),
