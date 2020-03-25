@@ -554,7 +554,7 @@ if (!all(is.na(lm_time_death_double))) {
                   "p | ", # col 5
                   "cumulative<br>deaths | ", # col 6
                   "cumulative<br>confirmed")  # col 7
-    toc <- c(toc, "--- | --- | --- | --- | ---")
+    toc <- c(toc, "--- | --- | --- | --- | --- | --- | ---")
     cnt <- length(toc)
     for (ci in seq_along(plotname_all)) {
         tmp <- paste0("[", names(plotname_all)[allinds[ci]], "](#", 
