@@ -11,6 +11,8 @@ countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "US",
 #countries <- "Italy"
 #countries <- "Nepal"
 #countries <- "Russia"
+#countries <- "Romania"
+#countries <- c("Germany", "Romania", "Russia")
 
 # plot specs
 jhu_text <- "JHU" # johns hopkins university
@@ -29,6 +31,7 @@ lm_obs_col <- "blue"
 lm_obs_lty <- 1
 lm_obs_lwd <- 1
 lm_obs_pch <- 1
+lm_obs_estimate_ndays <- 10
 lm_predict_ntime <- 14
 lm_predict_interval <- "day"
 lm_predict_col <- "red"
@@ -75,9 +78,12 @@ if (ts_dt_unit == "days") ts_dt <- 86400 # days --> seconds
 ts_countries <- sort(unique(ts_deaths$Country.Region))
 
 ## read time series and reports
-ts_all <- report_all <- responses_all <- lm_list <- vector("list", l=length(countries))
+ts_all <- vector("list", l=length(countries))
+names(ts_all) <- countries
+report_all <- responses_all <- lm_list <- ts_all
 report_countries <- plotname_all <- list()
 countries <- sort(unique(countries))
+
 for (ci in seq_along(countries)) {
 
     country <- countries[ci]
@@ -190,24 +196,6 @@ for (ci in seq_along(countries)) {
 
     ## plot ts
     if (!is.null(ts)) { # if time series reading was successfull
-
-        # default: exponential model over the last 10 days
-        lm_to_ind <- length(ts_dates)
-        lm_to <- ts_dates[lm_to_ind]
-        lm_from <- lm_to - 10
-        lm_from_ind <- which.min(abs(ts_dates - lm_from))[1]
-        lm_from <- ts_dates[lm_from_ind]
-        lm_dt <- difftime(lm_to, lm_from)
-        if (attributes(lm_dt)$units != "days") {
-            stop("\nlm_dt = ", lm_dt, " not implemented")
-        } else {
-            message("\ncalc exponential model from ", lm_from, " to ", lm_to, 
-                    " --> dt = ", lm_dt, " ", attributes(lm_dt)$units, " ...")
-        }
-        lm_list[[ci]] <- list(from=lm_from, to=lm_to, 
-                              lm_time_range=lm_dt, 
-                              lm_time_range_unit=attributes(lm_dt)$units)
-        names(lm_list)[ci] <- country_fname
             
         # mark national/domestic responses
         responses <- list() # default: nothing
@@ -309,19 +297,45 @@ for (ci in seq_along(countries)) {
             message("\nplot ", ploti, " of country ", ci, " \"", country, 
                     "\" plot ts data: ", ylab, " ...") 
             
-            # exponential model of obs
+            # prepare time series for exponential model
             add_lm_log_to_plot <- T # default
-            lm_inds <- lm_from_ind:lm_to_ind
-            #lm_inds <- seq_along(x)
-            x_lm <- as.numeric(x)[lm_inds] # posix cannot be input for lm
-            y_lm <- y[lm_inds] # numeric 0 cannot be input for exponential lm
-            x_lm[which(y_lm == 0)] <- NA 
-            y_lm[which(y_lm == 0)] <- NA
+            x_lm <- as.numeric(x) # posix cannot be input for lm
+            y_lm <- y
+
+            # numeric 0 cannot be input for exponential lm
+            x_lm_posix <- x
+            if (any(y_lm == 0)) {
+                x_lm[which(y_lm == 0)] <- NA 
+                x_lm_posix[which(y_lm == 0)] <- NA
+                y_lm[which(y_lm == 0)] <- NA
+            }
 
             # if all counts equal 0 (here NA) 
             if (all(is.na(y_lm))) add_lm_log_to_plot <- F 
-
+            
+            # prepare exponential model over the last 10 days
             if (add_lm_log_to_plot) {
+                lm_to <- max(x_lm_posix, na.rm=T)
+                lm_to_ind <- which.min(abs(x_lm_posix - lm_to))
+                lm_from <- seq.POSIXt(lm_to, b=paste0("-", lm_obs_estimate_ndays-1, " days"), l=2)[2]
+                lm_from_ind <- which.min(abs(x_lm_posix - lm_from))
+                lm_from <- x_lm_posix[lm_from_ind]
+                lm_ndays <- lm_to-lm_from
+                if (attributes(lm_ndays)$units != "days") {
+                    stop("lm_ndays = ", lm_ndays, " not implemented")
+                }
+                lm_ndays <- lm_ndays + 1 
+                message("\ncalc exponential model from ", lm_from, " to ", lm_to, 
+                        " --> dt = ", lm_ndays, " ", attributes(lm_ndays)$units, " ...")
+                lm_list_ploti <- list(from=lm_from, to=lm_to, 
+                                      lm_time_range=as.numeric(lm_ndays), 
+                                      lm_time_range_unit=attributes(lm_ndays)$units)
+            
+                # expontential model
+                lm_inds <- lm_from_ind:lm_to_ind
+                #lm_inds <- seq_along(x)
+                x_lm <- x_lm[lm_inds] 
+                y_lm <- y_lm[lm_inds] 
                 message("\ncalc lm from ", x[lm_from_ind], " to ", x[lm_to_ind], " ...")
                 if (T) { # var = exp(time) <=> log(var) = time
                     lm_log <- lm(log(y_lm) ~ x_lm) # if data is exponential: take log of data and fit against linear time
@@ -341,9 +355,7 @@ for (ci in seq_along(countries)) {
                 if (any(is.na(lm_log_summary$coefficients))) { # exponential model yield bad results
                     message("\n--> model is bad")
                     add_lm_log_to_plot <- F
-                    if (ylab == "cumulative deaths") {
-                        lm_list[[ci]]$cumulative_deaths_doubling_time <- NA
-                    }
+                    lm_list_ploti$doubling_time <- NA
                 } else {
                     message("\n--> model is ok")
                     add_lm_log_to_plot <- T
@@ -356,20 +368,18 @@ for (ci in seq_along(countries)) {
                     message("exponential model estimate = ", lm_log_estimate, " +- ", lm_log_uncert, " ", 
                             ts_dt_unit, "^-1; doubling time = ", lm_log_doubling_time, 
                             "; r^2 = ", rsq, "; p = ", pvalue) 
-                    if (ylab == "cumulative deaths") {
-                        lm_list[[ci]]$cumulative_deaths_estimate <- lm_log_estimate
-                        lm_list[[ci]]$cumulative_deaths_uncertainty <- lm_log_uncert
-                        lm_list[[ci]]$cumulative_deaths_rsq <- rsq
-                        lm_list[[ci]]$cumulative_deaths_p <- pvalue
-                        lm_list[[ci]]$cumulative_deaths_doubling_time <- lm_log_doubling_time
-                        lm_list[[ci]]$cumulative_deaths_doubling_time_unit <- ts_dt_unit
-                    }
+                    lm_list_ploti$estimate <- lm_log_estimate
+                    lm_list_ploti$uncertainty <- lm_log_uncert
+                    lm_list_ploti$rsq <- rsq
+                    lm_list_ploti$p <- pvalue
+                    lm_list_ploti$doubling_time <- lm_log_doubling_time
+                    lm_list_ploti$doubling_time_unit <- ts_dt_unit
                 }
             } else { # if !add_lm_log_to_plot
-                if (ylab == "cumulative deaths") {
-                    lm_list[[ci]]$cumulative_deaths_doubling_time <- NA
-                }
+                lm_list_ploti <- list(doubling_time=NA)
             } # if add_lm_log_to_plot
+            lm_list[[ci]][[ploti]] <- list(lm_list_ploti)
+            names(lm_list[[ci]])[ploti] <- ylab
 
             # exponential prediction
             if (add_lm_log_to_plot) {
@@ -591,7 +601,14 @@ readme <- c("# International Covid-19 death predictions based on CSSEGISandData/
             "# Select country", "")
 
 # toc: available countries ordered by their deaths doubling 
-lm_time_death_double <- sapply(lm_list, "[[", "cumulative_deaths_doubling_time")
+lm_time_death_double <- rep(NA, t=length(lm_list))
+names(lm_time_death_double) <- names(lm_list)
+for (ci in seq_along(lm_list)) {
+    if (!is.null(lm_list[[ci]]$"cumulative deaths")) {
+        lm_time_death_double[ci] <- lm_list[[ci]]$"cumulative deaths"[[1]]$doubling_time
+    }
+}
+
 if (!all(is.na(lm_time_death_double))) {
     notnainds <- which(!is.na(lm_time_death_double))
     if (any(is.na(lm_time_death_double))) {
@@ -630,14 +647,15 @@ if (!all(is.na(lm_time_death_double))) {
         if (!is.na(lm_time_death_double[ci])) {
             tmp <- paste0(tmp, 
                           round(lm_time_death_double[ci], 2), " ",
-                          lm_list[[allinds[ci]]]$cumulative_deaths_doubling_time_unit, " | ", # col 2
-                          lm_list[[allinds[ci]]]$from, " to<br>", lm_list[[allinds[ci]]]$to, " (",
-                          as.numeric(lm_list[[allinds[ci]]]$lm_time_range), " ", 
-                          lm_list[[allinds[ci]]]$lm_time_range_unit, ") | ", # col 3
-                          round(lm_list[[allinds[ci]]]$cumulative_deaths_rsq, 2), " | ", # col 4 
-                          ifelse(lm_list[[allinds[ci]]]$cumulative_deaths_p < 1e-3, 
+                          lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$doubling_time_unit, " | ", # col 2
+                          lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$from, " to<br>", 
+                          lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$to, " (",
+                          as.numeric(lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$lm_time_range), " ", 
+                          lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$lm_time_range_unit, ") | ", # col 3
+                          round(lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$rsq, 2), " | ", # col 4 
+                          ifelse(lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$p < 1e-3, 
                                  "< 1e-3",
-                                 round(lm_list[[allinds[ci]]]$cumulative_deaths_p, 3)), " | ") # col 5
+                                 round(lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$p, 3)), " | ") # col 5
         } else {
             tmp <- paste0(tmp, 
                           paste0(rep(paste0(lm_time_death_double[ci], " | "), t=4), collapse="")) # col 2, 3, 4, 5
@@ -662,10 +680,10 @@ if (!all(is.na(lm_time_death_double))) {
         toc <- paste0(toc, 
                       paste0("[", names(plotname_all)[ci], "](#", 
                              gsub(" ", "-", names(plotname_all)[ci]), ") ("))
-        if (!is.na(lm_list[[ci]]$cumulative_deaths_doubling_time)) {
+        if (!is.na(lm_list[[ci]]$"cumulative deaths"[[1]]$doubling_time)) {
             toc <- paste0(toc, 
-                          round(lm_list[[ci]]$cumulative_deaths_doubling_time, 2), " ", 
-                          lm_list[[ci]]$cumulative_deaths_doubling_time_unit)
+                          round(lm_list[[ci]]$"cumulative deaths"[[1]]$doubling_time, 2), " ", 
+                          lm_list[[ci]]$"cumulative deaths"[[1]]$doubling_time_unit)
         } else {
             toc <- paste0(toc, "NA")
         }
