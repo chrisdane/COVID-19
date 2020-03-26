@@ -49,7 +49,7 @@ report_path <- "../csse_covid_19_data/csse_covid_19_daily_reports"
 
 message("\nread rki ...")
 frki <- "rki.txt"
-rki <- read.table(frki, header=T, stringsAsFactors=F)
+rki <- read.table(frki, header=T, skip=1, stringsAsFactors=F)
 rki$date <- as.POSIXlt(rki$date, tz="UTC")
 rki_text <- "RKI"
 rki_col <- "darkgreen"
