@@ -10,6 +10,7 @@ countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "US",
 #countries <- "US"
 #countries <- "Italy"
 #countries <- "Nepal"
+#countries <- "Russia"
 
 # plot specs
 jhu_text <- "JHU" # johns hopkins university
@@ -317,7 +318,7 @@ for (ci in seq_along(countries)) {
             x_lm[which(y_lm == 0)] <- NA 
             y_lm[which(y_lm == 0)] <- NA
 
-            # if all counts equal 0 
+            # if all counts equal 0 (here NA) 
             if (all(is.na(y_lm))) add_lm_log_to_plot <- F 
 
             if (add_lm_log_to_plot) {
@@ -340,7 +341,9 @@ for (ci in seq_along(countries)) {
                 if (any(is.na(lm_log_summary$coefficients))) { # exponential model yield bad results
                     message("\n--> model is bad")
                     add_lm_log_to_plot <- F
-                    lm_list[[ci]]$cumulative_deaths_doubling_time <- NA
+                    if (ylab == "cumulative deaths") {
+                        lm_list[[ci]]$cumulative_deaths_doubling_time <- NA
+                    }
                 } else {
                     message("\n--> model is ok")
                     add_lm_log_to_plot <- T
@@ -362,8 +365,10 @@ for (ci in seq_along(countries)) {
                         lm_list[[ci]]$cumulative_deaths_doubling_time_unit <- ts_dt_unit
                     }
                 }
-            } else {
-                lm_list[[ci]]$cumulative_deaths_doubling_time <- NA
+            } else { # if !add_lm_log_to_plot
+                if (ylab == "cumulative deaths") {
+                    lm_list[[ci]]$cumulative_deaths_doubling_time <- NA
+                }
             } # if add_lm_log_to_plot
 
             # exponential prediction
@@ -535,7 +540,8 @@ for (ci in seq_along(countries)) {
                                                   doubling_time=round(lm_log_doubling_time, 2)))))
                 le_col <- c(le_col, lm_obs_col, lm_predict_col)
                 le_lty <- c(le_lty, lm_obs_lty, lm_predict_lty)
-                le_lty <- c(le_lwd, lm_obs_lwd, lm_predict_lwd)
+                le_lwd <- c(le_lwd, lm_obs_lwd, lm_predict_lwd)
+                le_pch <- c(le_pch, lm_obs_pch, lm_predict_pch)
             }
             if (country == "China") le_pos <- "bottomleft"
             if (country == "Germany") {
@@ -585,7 +591,6 @@ readme <- c("# International Covid-19 death predictions based on CSSEGISandData/
             "# Select country", "")
 
 # toc: available countries ordered by their deaths doubling 
-#      time (shortest first) or, if not available, in alphabetic order
 lm_time_death_double <- sapply(lm_list, "[[", "cumulative_deaths_doubling_time")
 if (!all(is.na(lm_time_death_double))) {
     notnainds <- which(!is.na(lm_time_death_double))

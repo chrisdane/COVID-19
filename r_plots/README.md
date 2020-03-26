@@ -27,12 +27,12 @@ country | cumulative number<br>of deaths doubles in | period of<br>estimation | 
 [Norway](#Norway) | 4.44 days | 2020-03-15 to<br>2020-03-25 (10 days) | 0.9 | < 1e-3 | 14 | 3084
 [Italy](#Italy) | 4.78 days | 2020-03-15 to<br>2020-03-25 (10 days) | 0.99 | < 1e-3 | 7503 | 74386
 [Poland](#Poland) | 5.67 days | 2020-03-15 to<br>2020-03-25 (10 days) | 0.87 | < 1e-3 | 14 | 1051
+[Russia](#Russia) | 5.89 days | 2020-03-15 to<br>2020-03-25 (10 days) | 0.37 | 0.144 | 3 | 658
 [Iran](#Iran) | 6.72 days | 2020-03-15 to<br>2020-03-25 (10 days) | 0.97 | < 1e-3 | 2077 | 27017
 [Australia](#Australia) | 7.4 days | 2020-03-15 to<br>2020-03-25 (10 days) | 0.78 | < 1e-3 | 8 | 2364
 [Japan](#Japan) | 10.26 days | 2020-03-15 to<br>2020-03-25 (10 days) | 0.95 | < 1e-3 | 45 | 1307
 [China](#China) | 283.32 days | 2020-03-15 to<br>2020-03-25 (10 days) | 0.97 | < 1e-3 | 3285 | 81661
 [Nepal](#Nepal) | NA | NA | NA | NA | 0 | 3
-[Russia](#Russia) | NA | NA | NA | NA | 3 | 658
 
 # Australia
 [top](#Select-country)
