@@ -693,7 +693,7 @@ if (!all(is.na(lm_time_death_double))) {
 } # if lm is available or not
 readme <- c(readme, toc, "")
 
-# content
+# readme everything after toc
 top_link <- "#Select-country"
 for (ci in seq_along(plotname_all)) {
 
@@ -724,6 +724,33 @@ for (ci in seq_along(plotname_all)) {
 } # for ci plotname_all
 write(readme, file="README.md")
 
+
+## confirmed vs deaths
+if (F) {
+    if (!all(sapply(ts_all, is.null))) {
+        xlim <- range(lapply(ts_all, "[", "confirmed"))
+        ylim <- range(lapply(ts_all, "[", "deaths"))
+        scatter_log <- "xy"
+        if (grepl("x", scatter_log)) { 
+            if (xlim[1] == 0) xlim[1] <- 1
+        }
+        if (grepl("y", scatter_log)) { 
+            if (ylim[1] == 0) ylim[1] <- 1
+        }
+        plot(ts_all[[1]]$confirmed, ts_all[[1]]$deaths, t="n",
+             log="xy",
+             xlim=xlim, ylim=ylim)
+        for (ci in seq_along(ts_all)) {
+            text(ts_all[[ci]]$confirmed, ts_all[[ci]]$deaths,
+                 labels=substr(countries[ci], 1, 3), col=ci 
+                 #, cex=0.5
+                 )
+        }
+    }
+}
+
+
+## ending
 message("\nts data available of ", length(ts_countries), " countries:\n",
         "\"", paste(ts_countries, collapse="\", \""), "\"")
 
