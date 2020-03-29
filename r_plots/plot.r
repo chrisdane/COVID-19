@@ -582,6 +582,108 @@ for (ci in seq_along(countries)) {
    
 } # for ci countries
 
+
+# plot some stuff
+if (!all(sapply(ts_all, is.null))) {
+
+    if (F) { # confirmed vs deaths
+        message("\nplot confirmed vs deaths ...")
+        xscatter <- vector("list", l=length(ts_all))
+        names(xscatter) <- countries
+        yscatter <- xscatter
+        for (ci in seq_along(ts_all)) {
+            more_than_one_death_inds <- which(ts_all[[ci]]$deaths > 1)
+            if (length(more_than_one_death_inds) > 0) {
+                xscatter[[ci]] <- ts_all[[ci]]$confirmed[more_than_one_death_inds]
+                yscatter[[ci]] <- ts_all[[ci]]$deaths[more_than_one_death_inds]
+            }
+        }
+        #xlim <- range(lapply(ts_all, "[", "confirmed"))
+        #ylim <- range(lapply(ts_all, "[", "deaths"))
+        xlim <- range(xscatter)
+        ylim <- range(yscatter)
+        scatter_log <- "xy"
+        if (grepl("x", scatter_log)) { 
+            if (xlim[1] == 0) xlim[1] <- 1
+        }
+        if (grepl("y", scatter_log)) { 
+            if (ylim[1] == 0) ylim[1] <- 1
+        }
+        plot(#ts_all[[1]]$confirmed, ts_all[[1]]$deaths, 
+             xscatter[[ci]], yscatter[[ci]],
+             t="n", log="xy",
+             xlab="Confirmed", ylab="Deaths",
+             xlim=xlim, ylim=ylim)
+        for (ci in seq_along(ts_all)) {
+            if (!is.null(xscatter[[ci]])) {
+                text(#ts_all[[ci]]$confirmed, ts_all[[ci]]$deaths,
+                     xscatter[[ci]], yscatter[[ci]],
+                     labels=substr(countries[ci], 1, 3), col=ci 
+                     #, cex=0.5
+                     )
+            }
+        }
+    } # F
+
+    if (T) { # ratio: deaths/confirmed*100
+        message("\nplot deaths/confirmed*100 ...")
+        deaths_per_confirmed_x <- vector("list", l=length(ts_all))
+        names(deaths_per_confirmed_x) <- countries
+        deaths_per_confirmed_y <- deaths_per_confirmed_x
+        for (ci in seq_along(ts_all)) {
+            more_than_one_death_inds <- which(ts_all[[ci]]$deaths > 1)
+            if (length(more_than_one_death_inds) > 0) {
+                tmp <- ts_all[[ci]]$time[more_than_one_death_inds]
+                deaths_per_confirmed_x[[ci]] <- as.numeric(difftime(tmp, rep(tmp[1], t=length(tmp)), units="day"))
+                deaths_per_confirmed_y[[ci]] <- ts_all[[ci]]$deaths[more_than_one_death_inds]/ts_all[[ci]]$confirmed[more_than_one_death_inds]*100
+            }
+        }
+        xlim <- range(deaths_per_confirmed_x)
+        xat <- pretty(xlim, n=50) 
+        #ylim <- range(deaths_per_confirmed_y)
+        deaths_per_confirmed_mean <- as.numeric(sapply(lapply(deaths_per_confirmed_y, summary), "[", "Mean"))
+        deaths_per_confirmed_median <- as.numeric(sapply(lapply(deaths_per_confirmed_y, summary), "[", "Median"))
+        ylim <- range(deaths_per_confirmed_mean, na.rm=T)
+        yat <- pretty(ylim, n=20)
+        library(RColorBrewer) # https://www.r-bloggers.com/palettes-in-r/
+        cols <- brewer.pal(8, "Dark2")
+        if (length(cols) != length(ts_all)) {
+            cols <- c(cols, rep(cols, t=ceiling(length(ts_all)/length(cols))))
+        }
+        if (length(cols) > length(ts_all)) {
+            cols <- cols[1:length(ts_all)]
+        } else if (length(cols) < length(ts_all)) {
+            stop("this never happened")
+        }
+        png("plots/death_per_confirmed.png",
+            width=png_specs$width, height=png_specs$height, res=png_specs$res)
+        par(mar=c(5.1, 6.1, 4.1, 6.1) + 0.1)
+        plot(deaths_per_confirmed_x[[1]], deaths_per_confirmed_y[[1]],
+             t="n", xaxt="n", yaxt="n", log="y",
+             xlab="days since number of deaths >= 2", 
+             ylab="deaths/confirmed*100 (in %)",
+             xlim=xlim, ylim=ylim)
+        axis(1, at=xat)
+        axis(2, at=yat, las=2)
+        axis(4, at=yat, las=2)
+        mtext(side=4, text="deaths/confirmed*100 (in %)", line=3)
+        abline(v=xat, col="gray", lwd=0.5)
+        abline(h=yat, col="gray", lwd=0.5)
+        title("death rate = deaths/confirmed*100")
+        for (ci in seq_along(ts_all)) {
+            if (!is.null(deaths_per_confirmed_x[[ci]])) {
+                text(deaths_per_confirmed_x[[ci]], deaths_per_confirmed_y[[ci]],
+                     labels=substr(countries[ci], 1, 3), col=cols[ci] 
+                     , cex=0.5
+                     )
+            }
+        }
+        dev.off()
+    } # F
+    
+} # if ts not all null
+
+
 # update readme
 message("\nupdate readme ...")
 upstream_hash <- system("git rev-parse upstream/master", intern=T)
@@ -597,8 +699,9 @@ readme <- c("# International Covid-19 death predictions based on CSSEGISandData/
                    "` (`git rev-parse upstream/master`)  "),
             paste0("  * last date of `COVID-19/csse_covid_19_data/time_series_covid19_*_global.csv` data: **", 
                    max(ts_dates), "**"),
-            "", 
-            "# Select country", "")
+            "", "# death rate evolution", "",
+            "<img align=\"center\" width=\"1000\" src=\"plots/death_per_confirmed.png\">",
+            "", "# Select country", "")
 
 # toc: available countries ordered by their deaths doubling 
 lm_time_death_double <- rep(NA, t=length(lm_list))
@@ -724,103 +827,6 @@ for (ci in seq_along(plotname_all)) {
 } # for ci plotname_all
 write(readme, file="README.md")
 
-
-# plot some stuff
-if (!all(sapply(ts_all, is.null))) {
-
-    if (F) { # confirmed vs deaths
-        message("\nplot confirmed vs deaths ...")
-        xscatter <- vector("list", l=length(ts_all))
-        names(xscatter) <- countries
-        yscatter <- xscatter
-        for (ci in seq_along(ts_all)) {
-            more_than_one_death_inds <- which(ts_all[[ci]]$deaths > 1)
-            if (length(more_than_one_death_inds) > 0) {
-                xscatter[[ci]] <- ts_all[[ci]]$confirmed[more_than_one_death_inds]
-                yscatter[[ci]] <- ts_all[[ci]]$deaths[more_than_one_death_inds]
-            }
-        }
-        #xlim <- range(lapply(ts_all, "[", "confirmed"))
-        #ylim <- range(lapply(ts_all, "[", "deaths"))
-        xlim <- range(xscatter)
-        ylim <- range(yscatter)
-        scatter_log <- "xy"
-        if (grepl("x", scatter_log)) { 
-            if (xlim[1] == 0) xlim[1] <- 1
-        }
-        if (grepl("y", scatter_log)) { 
-            if (ylim[1] == 0) ylim[1] <- 1
-        }
-        plot(#ts_all[[1]]$confirmed, ts_all[[1]]$deaths, 
-             xscatter[[ci]], yscatter[[ci]],
-             t="n", log="xy",
-             xlab="Confirmed", ylab="Deaths",
-             xlim=xlim, ylim=ylim)
-        for (ci in seq_along(ts_all)) {
-            if (!is.null(xscatter[[ci]])) {
-                text(#ts_all[[ci]]$confirmed, ts_all[[ci]]$deaths,
-                     xscatter[[ci]], yscatter[[ci]],
-                     labels=substr(countries[ci], 1, 3), col=ci 
-                     #, cex=0.5
-                     )
-            }
-        }
-    } # F
-
-    if (T) { # ratio: deaths/confirmed*100
-        message("\nplot deaths/confirmed*100 ...")
-        deaths_per_confirmed_x <- vector("list", l=length(ts_all))
-        names(deaths_per_confirmed_x) <- countries
-        deaths_per_confirmed_y <- deaths_per_confirmed_x
-        for (ci in seq_along(ts_all)) {
-            more_than_one_death_inds <- which(ts_all[[ci]]$deaths > 1)
-            if (length(more_than_one_death_inds) > 0) {
-                tmp <- ts_all[[ci]]$time[more_than_one_death_inds]
-                deaths_per_confirmed_x[[ci]] <- as.numeric(difftime(tmp, rep(tmp[1], t=length(tmp)), units="day"))
-                deaths_per_confirmed_y[[ci]] <- ts_all[[ci]]$deaths[more_than_one_death_inds]/ts_all[[ci]]$confirmed[more_than_one_death_inds]*100
-            }
-        }
-        xlim <- range(deaths_per_confirmed_x)
-        xat <- pretty(xlim, n=50) 
-        #ylim <- range(deaths_per_confirmed_y)
-        deaths_per_confirmed_mean <- as.numeric(sapply(lapply(deaths_per_confirmed_y, summary), "[", "Mean"))
-        deaths_per_confirmed_median <- as.numeric(sapply(lapply(deaths_per_confirmed_y, summary), "[", "Median"))
-        ylim <- range(deaths_per_confirmed_mean, na.rm=T)
-        yat <- pretty(ylim, n=20)
-        library(RColorBrewer) # https://www.r-bloggers.com/palettes-in-r/
-        cols <- brewer.pal(8, "Dark2")
-        if (length(cols) != length(ts_all)) {
-            cols <- c(cols, rep(cols, t=ceiling(length(ts_all)/length(cols))))
-        }
-        if (length(cols) > length(ts_all)) {
-            cols <- cols[1:length(ts_all)]
-        } else if (length(cols) < length(ts_all)) {
-            stop("this never happened")
-        }
-        png("plots/death_per_confirmed.png",
-            width=png_specs$width, height=png_specs$height, res=png_specs$res)
-        plot(deaths_per_confirmed_x[[1]], deaths_per_confirmed_y[[1]],
-             t="n", xaxt="n", yaxt="n", log="y",
-             xlab="days since number of deaths >= 2", 
-             ylab="deaths/confirmed*100 (in %)",
-             xlim=xlim, ylim=ylim)
-        axis(1, at=xat)
-        axis(2, at=yat, las=2)
-        abline(v=xat, col="gray", lwd=0.5)
-        abline(h=yat, col="gray", lwd=0.5)
-        title("death rate = deaths/confirmed*100")
-        for (ci in seq_along(ts_all)) {
-            if (!is.null(deaths_per_confirmed_x[[ci]])) {
-                text(deaths_per_confirmed_x[[ci]], deaths_per_confirmed_y[[ci]],
-                     labels=substr(countries[ci], 1, 3), col=cols[ci] 
-                     , cex=0.5
-                     )
-            }
-        }
-        dev.off()
-    } # F
-    
-} # if ts not all null
 
 
 ## ending
