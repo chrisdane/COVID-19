@@ -5,6 +5,10 @@
   * hash of last fetched commit of upstream repo: `63649e417fc6750faaec10a8a3826644aefc9fb6` (`git rev-parse upstream/master`)  
   * last date of `COVID-19/csse_covid_19_data/time_series_covid19_*_global.csv` data: **2020-03-28**
 
+# death rate evolution
+
+<img align="center" width="1000" src="plots/death_per_confirmed.png">
+
 # Select country
 
 ordererd by time when cumulative number of deaths doubles (increasing)
