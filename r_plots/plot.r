@@ -660,7 +660,7 @@ if (!all(sapply(ts_all, is.null))) {
         par(mar=c(5.1, 6.1, 4.1, 6.1) + 0.1)
         plot(deaths_per_confirmed_x[[1]], deaths_per_confirmed_y[[1]],
              t="n", xaxt="n", yaxt="n", log="y",
-             xlab="days since number of deaths >= 2", 
+             xlab="days since cumulative deaths > 1", 
              ylab="deaths/confirmed*100 (in %)",
              xlim=xlim, ylim=ylim)
         axis(1, at=xat)
