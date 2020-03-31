@@ -17,6 +17,7 @@ country | cumulative number<br>of deaths doubles in | period of<br>estimation | 
 [Romania](#Romania) | 2.02 days | 2020-03-22 to<br>2020-03-30 (9 days) | 0.95 | < 1e-3 | 65 | 2109
 [Portugal](#Portugal) | 2.42 days | 2020-03-21 to<br>2020-03-30 (10 days) | 0.98 | < 1e-3 | 140 | 6408
 [Russia](#Russia) | 2.52 days | 2020-03-21 to<br>2020-03-30 (10 days) | 0.91 | < 1e-3 | 9 | 1836
+[Turkey](#Turkey) | 2.57 days | 2020-03-21 to<br>2020-03-30 (10 days) | 0.9 | < 1e-3 | 168 | 10827
 [Austria](#Austria) | 2.61 days | 2020-03-21 to<br>2020-03-30 (10 days) | 0.97 | < 1e-3 | 108 | 9618
 [US](#US) | 2.72 days | 2020-03-21 to<br>2020-03-30 (10 days) | 1 | < 1e-3 | 2978 | 161807
 [Belgium](#Belgium) | 2.84 days | 2020-03-21 to<br>2020-03-30 (10 days) | 0.99 | < 1e-3 | 513 | 11899
@@ -31,6 +32,7 @@ country | cumulative number<br>of deaths doubles in | period of<br>estimation | 
 [Norway](#Norway) | 4.07 days | 2020-03-21 to<br>2020-03-30 (10 days) | 0.98 | < 1e-3 | 32 | 4445
 [Switzerland](#Switzerland) | 4.08 days | 2020-03-21 to<br>2020-03-30 (10 days) | 0.99 | < 1e-3 | 359 | 15922
 [Canada](#Canada) | 4.14 days | 2020-03-21 to<br>2020-03-30 (10 days) | 0.97 | < 1e-3 | 80 | 7398
+[Hungary](#Hungary) | 5.75 days | 2020-03-21 to<br>2020-03-30 (10 days) | 0.88 | < 1e-3 | 15 | 447
 [Australia](#Australia) | 5.96 days | 2020-03-21 to<br>2020-03-30 (10 days) | 0.91 | < 1e-3 | 17 | 4361
 [Italy](#Italy) | 7.1 days | 2020-03-21 to<br>2020-03-30 (10 days) | 1 | < 1e-3 | 11591 | 101739
 [Iran](#Iran) | 10.76 days | 2020-03-21 to<br>2020-03-30 (10 days) | 0.99 | < 1e-3 | 2757 | 41495
@@ -139,6 +141,19 @@ country | cumulative number<br>of deaths doubles in | period of<br>estimation | 
 <img align="center" width="1000" src="plots/Germany/Germany_cumulative_confirmed_logy.png">
 <br>
 <img align="center" width="1000" src="plots/Germany/Germany_daily_confirmed_logy.png">
+<br>
+<br>
+
+# Hungary
+[top](#Select-country)
+
+<img align="center" width="1000" src="plots/Hungary/Hungary_cumulative_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Hungary/Hungary_daily_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Hungary/Hungary_cumulative_confirmed_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Hungary/Hungary_daily_confirmed_logy.png">
 <br>
 <br>
 
@@ -312,6 +327,19 @@ national responses:
 <img align="center" width="1000" src="plots/Switzerland/Switzerland_cumulative_confirmed_logy.png">
 <br>
 <img align="center" width="1000" src="plots/Switzerland/Switzerland_daily_confirmed_logy.png">
+<br>
+<br>
+
+# Turkey
+[top](#Select-country)
+
+<img align="center" width="1000" src="plots/Turkey/Turkey_cumulative_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Turkey/Turkey_daily_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Turkey/Turkey_cumulative_confirmed_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Turkey/Turkey_daily_confirmed_logy.png">
 <br>
 <br>
 
