@@ -59,7 +59,7 @@ rki_text <- "RKI"
 rki_col <- "darkgreen"
 rki_lty <- 1
 rki_lwd <- 1
-rki_pch <- 4
+rki_pch <- 1
 
 message("\nread time series ...")
 ts_confirmed <- read.csv(fconfirmed, header=T, stringsAsFactors=F, na.strings="")
