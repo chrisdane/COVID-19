@@ -1,9 +1,9 @@
 # International Covid-19 death predictions based on CSSEGISandData/COVID-19
 
   * upstream repo: https://github.com/CSSEGISandData/COVID-19  
-  * time of last fetch of upstream repo: **2020-04-07 07:16:15 CET** (timestamp of file `.git/refs/remotes/upstream`)  
-  * hash of last fetched commit of upstream repo: `f3dea791bf4d21064b82de32619e785a5a6cac36` (`git rev-parse upstream/master`)  
-  * last date of `COVID-19/csse_covid_19_data/time_series_covid19_*_global.csv` data: **2020-04-06**
+  * time of last fetch of upstream repo: **2020-04-08 07:06:27 CET** (timestamp of file `.git/refs/remotes/upstream`)  
+  * hash of last fetched commit of upstream repo: `1a68338bddea934490f772051121adad47bf543e` (`git rev-parse upstream/master`)  
+  * last date of `COVID-19/csse_covid_19_data/time_series_covid19_*_global.csv` data: **2020-04-07**
 
 # death rate evolution
 
@@ -14,30 +14,30 @@
 ordererd by time when cumulative number of deaths doubles (increasing)
 country | cumulative number<br>of deaths doubles in | period of<br>estimation | rsq | p | cumulative<br>deaths | cumulative<br>confirmed
 --- | --- | --- | --- | --- | --- | ---
-[Russia](#Russia) | 2.58 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.91 | < 1e-3 | 47 | 6343
-[Turkey](#Turkey) | 3.34 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.99 | < 1e-3 | 649 | 30217
-[Poland](#Poland) | 3.42 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.99 | < 1e-3 | 107 | 4413
-[United Kingdom](#United-Kingdom) | 3.51 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.99 | < 1e-3 | 5385 | 52279
-[Canada](#Canada) | 3.55 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.99 | < 1e-3 | 339 | 16563
-[US](#US) | 3.6 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.99 | < 1e-3 | 10783 | 366614
-[Sweden](#Sweden) | 3.85 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.96 | < 1e-3 | 477 | 7206
-[Romania](#Romania) | 4.01 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.95 | < 1e-3 | 176 | 4057
-[Belgium](#Belgium) | 4.01 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.98 | < 1e-3 | 1632 | 20814
-[France](#France) | 4.27 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.99 | < 1e-3 | 8926 | 98963
-[Germany](#Germany) | 4.36 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.99 | < 1e-3 | 1810 | 103374
-[Hungary](#Hungary) | 4.93 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.99 | < 1e-3 | 38 | 744
-[Norway](#Norway) | 5.03 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.98 | < 1e-3 | 76 | 5865
-[Portugal](#Portugal) | 5.4 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.99 | < 1e-3 | 311 | 11730
-[Denmark](#Denmark) | 5.43 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.99 | < 1e-3 | 187 | 4875
-[Austria](#Austria) | 5.65 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.95 | < 1e-3 | 220 | 12297
-[Netherlands](#Netherlands) | 5.74 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.98 | < 1e-3 | 1874 | 18926
-[Switzerland](#Switzerland) | 5.78 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.98 | < 1e-3 | 765 | 21657
-[Australia](#Australia) | 5.93 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.99 | < 1e-3 | 40 | 5797
-[Spain](#Spain) | 7.79 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.98 | < 1e-3 | 13341 | 136675
-[Italy](#Italy) | 12.46 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.99 | < 1e-3 | 16523 | 132547
-[Japan](#Japan) | 12.54 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.9 | < 1e-3 | 85 | 3654
-[Iran](#Iran) | 15.69 days | 2020-03-28 to<br>2020-04-06 (10 days) | 1 | < 1e-3 | 3739 | 60500
-[China](#China) | 546.76 days | 2020-03-28 to<br>2020-04-06 (10 days) | 0.99 | < 1e-3 | 3335 | 82665
+[Russia](#Russia) | 3.16 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.91 | < 1e-3 | 58 | 7497
+[Canada](#Canada) | 3.46 days | 2020-03-29 to<br>2020-04-07 (10 days) | 1 | < 1e-3 | 375 | 17872
+[Poland](#Poland) | 3.59 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.99 | < 1e-3 | 129 | 4848
+[Turkey](#Turkey) | 3.6 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.98 | < 1e-3 | 725 | 34109
+[United Kingdom](#United-Kingdom) | 3.69 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.98 | < 1e-3 | 6171 | 55949
+[US](#US) | 3.79 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.99 | < 1e-3 | 12722 | 396223
+[Sweden](#Sweden) | 3.96 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.96 | < 1e-3 | 591 | 7693
+[Belgium](#Belgium) | 4.22 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.98 | < 1e-3 | 2035 | 22194
+[France](#France) | 4.37 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.98 | < 1e-3 | 10343 | 110065
+[Romania](#Romania) | 4.53 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.94 | < 1e-3 | 197 | 4417
+[Germany](#Germany) | 4.71 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.99 | < 1e-3 | 2016 | 107663
+[Hungary](#Hungary) | 4.87 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.99 | < 1e-3 | 47 | 817
+[Norway](#Norway) | 5.28 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.98 | < 1e-3 | 89 | 6086
+[Denmark](#Denmark) | 5.6 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.98 | < 1e-3 | 203 | 5266
+[Australia](#Australia) | 5.72 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.99 | < 1e-3 | 45 | 5895
+[Portugal](#Portugal) | 5.88 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.98 | < 1e-3 | 345 | 12442
+[Netherlands](#Netherlands) | 6.27 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.98 | < 1e-3 | 2108 | 19709
+[Switzerland](#Switzerland) | 6.39 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.97 | < 1e-3 | 821 | 22253
+[Austria](#Austria) | 6.56 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.97 | < 1e-3 | 243 | 12639
+[Spain](#Spain) | 8.69 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.98 | < 1e-3 | 14045 | 141942
+[Japan](#Japan) | 10.91 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.93 | < 1e-3 | 92 | 3906
+[Italy](#Italy) | 13.62 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.98 | < 1e-3 | 17127 | 135586
+[Iran](#Iran) | 16.12 days | 2020-03-29 to<br>2020-04-07 (10 days) | 1 | < 1e-3 | 3872 | 62589
+[China](#China) | 599.02 days | 2020-03-29 to<br>2020-04-07 (10 days) | 0.96 | < 1e-3 | 3335 | 82718
 [Nepal](#Nepal) | NA | NA | NA | NA | 0 | 9
 
 # Australia
