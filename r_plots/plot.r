@@ -12,7 +12,11 @@ countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "US",
 #countries <- "Nepal"
 #countries <- "Russia"
 #countries <- "Romania"
+#countries <- c("Germany", "Romania")
 #countries <- c("Germany", "Romania", "Russia")
+#countries <- "Japan"
+#countries <- c("Germany", "United Kingdom")
+#countries <- c("Germany", "Nepal", "United Kingdom")
 
 # plot specs
 jhu_text <- "JHU" # johns hopkins university
@@ -31,13 +35,18 @@ lm_obs_col <- "blue"
 lm_obs_lty <- 1
 lm_obs_lwd <- 1
 lm_obs_pch <- 1
-lm_obs_estimate_ndays <- 10
-lm_predict_ntime <- 14
+lm_obs_estimate_ndays <- 10 # days
+lm_predict_ntime <- 14 # days
 lm_predict_interval <- "day"
 lm_predict_col <- "red"
 lm_predict_lty <- 1
 lm_predict_lwd <- 1
 lm_predict_pch <- 1
+lm_doubling_time_col <- lm_obs_col # rgb(t(col2rgb(lm_obs_col)/255), alpha=0.2)
+lm_doubling_time_lty <- NA
+lm_doubling_time_lwd <- NA
+lm_doubling_time_pch <- 4
+
 # for underlined text
 #library(arghqtl) # https://rdrr.io/github/ellisztamas/arghqtl/man/underlined.html
 
@@ -83,6 +92,10 @@ names(ts_all) <- countries
 report_all <- responses_all <- lm_list <- ts_all
 report_countries <- plotname_all <- list()
 countries <- sort(unique(countries))
+
+lm_obs_estimate_ndays <- seq.POSIXt(as.POSIXlt("1-1-1", tz="UTC"), b=paste0(lm_obs_estimate_ndays, " days"), l=2)
+lm_obs_estimate_ndays <- difftime(lm_obs_estimate_ndays[2], lm_obs_estimate_ndays[1], units="days")
+message("provided lm calculation period: ", lm_obs_estimate_ndays, " ", attributes(lm_obs_estimate_ndays)$units)
 
 for (ci in seq_along(countries)) {
 
@@ -218,12 +231,6 @@ for (ci in seq_along(countries)) {
                 ylab <- "cumulative deaths"
                 x <- ts$time
                 y <- ts$deaths
-                if (F) {
-                    if (country == "France") lm_from <- as.POSIXlt("2020-03-01", tz="UTC")
-                    if (country == "Japan") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
-                    if (country == "US") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
-                    if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC")
-                }
                 if (country == "Germany") {
                     x_rki <- rki$date
                     y_rki <- rki$deaths
@@ -237,12 +244,6 @@ for (ci in seq_along(countries)) {
                         y[which(y < 0)] <- 0
                     }
                 }
-                if (F) {
-                    if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
-                    if (country == "France") lm_from <- as.POSIXlt("2020-03-01", tz="UTC")
-                    if (country == "Japan") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
-                    if (country == "US") lm_from <- as.POSIXlt("2020-03-02", tz="UTC")
-                }
                 if (country == "Germany") {
                     x_rki <- rki$date[2:length(rki$date)]
                     y_rki <- diff(rki$deaths)
@@ -251,19 +252,6 @@ for (ci in seq_along(countries)) {
                 ylab <- "cumulative confirmed"
                 x <- ts$time
                 y <- ts$confirmed
-                if (F) {
-                    if (country == "Belgium") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
-                    if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
-                    if (country == "Canada") lm_from <- as.POSIXlt("2020-02-27", tz="UTC")
-                    if (country == "France") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
-                    if (country == "Germany") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
-                    if (country == "Italy") lm_from <- as.POSIXlt("2020-02-21", tz="UTC")
-                    if (country == "Netherlands") lm_from <- as.POSIXlt("2020-02-29", tz="UTC")
-                    if (country == "Russia") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
-                    if (country == "Sweden") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
-                    if (country == "US") lm_from <- as.POSIXlt("2020-02-26", tz="UTC") 
-                    if (country == "United Kingdom") lm_from <- as.POSIXlt("2020-02-24", tz="UTC")
-                }
                 if (country == "Germany") {
                     x_rki <- rki$date
                     y_rki <- rki$confirmed
@@ -275,27 +263,14 @@ for (ci in seq_along(countries)) {
                 if (any(y < 0, na.rm=T)) { # only explanation: someone cured AND no new reports compared to day before
                     y[which(y < 0)] <- 0
                 }
-                if (F) {
-                    if (country == "Belgium") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
-                    if (country == "China") lm_to <- as.POSIXlt("2020-02-04", tz="UTC") 
-                    if (country == "Canada") lm_from <- as.POSIXlt("2020-02-27", tz="UTC")
-                    if (country == "France") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
-                    if (country == "Germany") lm_from <- as.POSIXlt("2020-02-25", tz="UTC")
-                    if (country == "Italy") lm_from <- as.POSIXlt("2020-02-21", tz="UTC")
-                    if (country == "Netherlands") lm_from <- as.POSIXlt("2020-02-29", tz="UTC")
-                    if (country == "Russia") lm_from <- as.POSIXlt("2020-03-02", tz="UTC") 
-                    if (country == "Sweden") lm_from <- as.POSIXlt("2020-02-27", tz="UTC") 
-                    if (country == "US") lm_from <- as.POSIXlt("2020-02-26", tz="UTC") 
-                    if (country == "United Kingdom") lm_from <- as.POSIXlt("2020-02-24", tz="UTC")
-                }
                 if (country == "Germany") {
                     x_rki <- rki$date[2:length(rki$date)]
                     y_rki <- diff(rki$confirmed)
                 }
             } # which ploti 
            
-            message("\nplot ", ploti, " of country ", ci, " \"", country, 
-                    "\" plot ts data: ", ylab, " ...") 
+            message("\nplot ", ploti, "/", nplots_per_country, " of country ", ci, "/", 
+                    length(countries), " \"", country, "\" plot ts data: \"", ylab, "\" ...") 
             
             # prepare time series for exponential model
             add_lm_log_to_plot <- T # default
@@ -315,82 +290,157 @@ for (ci in seq_along(countries)) {
             
             # prepare exponential model over the last 10 days
             if (add_lm_log_to_plot) {
-                lm_to <- max(x_lm_posix, na.rm=T)
-                lm_to_ind <- which.min(abs(x_lm_posix - lm_to))
-                lm_from <- seq.POSIXt(lm_to, b=paste0("-", lm_obs_estimate_ndays-1, " days"), l=2)[2]
-                lm_from_ind <- which.min(abs(x_lm_posix - lm_from))
-                lm_from <- x_lm_posix[lm_from_ind]
-                lm_ndays <- lm_to-lm_from
-                if (attributes(lm_ndays)$units != "days") {
-                    stop("lm_ndays = ", lm_ndays, " not implemented")
-                }
-                lm_ndays <- lm_ndays + 1 
-                message("\ncalc exponential model from ", lm_from, " to ", lm_to, 
-                        " --> dt = ", lm_ndays, " ", attributes(lm_ndays)$units, " ...")
-                lm_list_ploti <- list(from=lm_from, to=lm_to, 
-                                      lm_time_range=as.numeric(lm_ndays), 
-                                      lm_time_range_unit=attributes(lm_ndays)$units)
-            
-                # expontential model
-                lm_inds <- lm_from_ind:lm_to_ind
-                #lm_inds <- seq_along(x)
-                x_lm <- x_lm[lm_inds] 
-                y_lm <- y_lm[lm_inds] 
-                message("\ncalc lm from ", x[lm_from_ind], " to ", x[lm_to_ind], " ...")
-                if (T) { # var = exp(time) <=> log(var) = time
-                    lm_log <- lm(log(y_lm) ~ x_lm) # if data is exponential: take log of data and fit against linear time
-                    x_lm_log_obs <- lm_log$model[,2]
-                    y_lm_log_obs <- exp(lm_log$fitted.values)
-                } else if (F) { # exp(var) = exp(time) <=> log(var) = log(time)
-                    lm_log <- lm(log(y_lm) ~ log(x_lm))
-                    x_lm_log_obs <- exp(lm_log$model[,2])
-                    y_lm_log_obs <- exp(lm_log$fitted.values)
-                }
-                #nls_log <- nls(log(y_lm) ~ x_lm)
+                
+                # calc lm for prior periods
+                lm_obs_estimate_n_periods <- length(x_lm_posix) - as.integer(lm_obs_estimate_ndays)
+                lm_list_ploti <- vector("list", l=lm_obs_estimate_n_periods)
+                skip_inds <- c()
+                message("find time periods for lm calculation ...")
+                for (lm_periodi in seq_len(lm_obs_estimate_n_periods)) {
+                    lm_to <- max(x_lm_posix, na.rm=T) - (lm_periodi-1)*86400 # one day less
+                    lm_to_ind <- which.min(abs(x_lm_posix - lm_to))
+                    lm_from <- seq.POSIXt(lm_to, b=paste0("-", lm_obs_estimate_ndays-1, " days"), l=2)[2]
+                    lm_from_ind <- which.min(abs(x_lm_posix - lm_from))
+                    lm_from <- as.POSIXct(x_lm_posix[lm_from_ind])
+                    names(lm_list_ploti)[lm_periodi] <- paste0(lm_from, "_to_", lm_to)
+                    message("lm period ", lm_periodi, "/", lm_obs_estimate_n_periods, 
+                            " from ", lm_from, " to ", lm_to)
+                    lm_list_ploti[[lm_periodi]]$lm_from_ind <- lm_from_ind 
+                    lm_list_ploti[[lm_periodi]]$lm_to_ind <- lm_to_ind
+                    lm_list_ploti[[lm_periodi]]$lm_from <- lm_from 
+                    lm_list_ploti[[lm_periodi]]$lm_to <- lm_to
+                    
+                    # check if lm was already calculated for this period before
+                    if (lm_periodi > 1) {
+                        if (lm_list_ploti[[lm_periodi-1]]$lm_from_ind == lm_from_ind &&
+                            lm_list_ploti[[lm_periodi-1]]$lm_to_ind == lm_to_ind) {
+                            message("lm period ", lm_periodi, "/", lm_obs_estimate_n_periods, 
+                                    " from ", lm_from, " to ", lm_to, 
+                                    " was already found in last period. skip.")
+                            skip_inds <- c(skip_inds, lm_periodi)
+                        }
+                    } # if lm_periodi > 1
+                } # for lm_periodi
 
-                # exponential model summary
-                lm_log_summary <- summary(lm_log)
-                message("\nlm_log_summary$coefficients:")
-                print(lm_log_summary$coefficients)
-                if (any(is.na(lm_log_summary$coefficients))) { # exponential model yield bad results
-                    message("\n--> model is bad")
-                    add_lm_log_to_plot <- F
-                    lm_list_ploti$doubling_time <- NA
-                } else {
-                    message("\n--> model is ok")
-                    add_lm_log_to_plot <- T
-                    lm_log_estimate <- lm_log_summary$coefficients[2,1]*ts_dt
-                    lm_log_uncert <- lm_log_summary$coefficients[2,2]*ts_dt
-                    # https://github.com/valeriupredoi/COVID-19_LINEAR/issues/6
-                    lm_log_doubling_time <- log(2)/lm_log_estimate
-                    rsq <- lm_log_summary$r.squared
-                    pvalue <- lm_log_summary$coefficients[2,4]
-                    message("exponential model estimate = ", lm_log_estimate, " +- ", lm_log_uncert, " ", 
-                            ts_dt_unit, "^-1; doubling time = ", lm_log_doubling_time, 
-                            "; r^2 = ", rsq, "; p = ", pvalue) 
-                    lm_list_ploti$estimate <- lm_log_estimate
-                    lm_list_ploti$uncertainty <- lm_log_uncert
-                    lm_list_ploti$rsq <- rsq
-                    lm_list_ploti$p <- pvalue
-                    lm_list_ploti$doubling_time <- lm_log_doubling_time
-                    lm_list_ploti$doubling_time_unit <- ts_dt_unit
+                # throw out lm calculation periods which occur more than once
+                if (length(skip_inds) > 0) {
+                    message("remove ", length(skip_inds), 
+                            " lm calculation periods which occur more than once ...")
+                    lm_list_ploti[skip_inds] <- NULL
                 }
+                if (length(lm_list_ploti) == 0) stop("this should not happen")
+
+                # throw out lm calculation periods of length < `lm_obs_estimate_ndays`
+                lm_obs_estimate_n_periods <- length(lm_list_ploti)
+                skip_inds <- c()
+                message("\ncheck ", lm_obs_estimate_n_periods, " lm calculation period lengths ...")
+                for (lm_periodi in seq_len(lm_obs_estimate_n_periods)) {
+                    lm_ndays <- difftime(lm_list_ploti[[lm_periodi]]$lm_to, 
+                                         lm_list_ploti[[lm_periodi]]$lm_from, units="days") + 1
+                    message("lm period ", lm_periodi, "/", lm_obs_estimate_n_periods, " from ", 
+                            lm_list_ploti[[lm_periodi]]$lm_from, " to ", lm_list_ploti[[lm_periodi]]$lm_to, 
+                            " (", lm_ndays, " ", attributes(lm_ndays)$units, ") ...")
+                    if (as.integer(lm_ndays) != as.integer(lm_obs_estimate_ndays)) { # both are in days here
+                        message("lm_ndays = ", lm_ndays, " ", attributes(lm_ndays)$units, 
+                                " != provided `lm_obs_estimate_ndays` = ", as.integer(lm_obs_estimate_ndays), 
+                                ". skip this period")
+                        skip_inds <- c(skip_inds, lm_periodi)
+                    } else {
+                        lm_list_ploti[[lm_periodi]]$lm_time_range <- as.integer(lm_ndays)
+                        lm_list_ploti[[lm_periodi]]$lm_time_range_unit <- attributes(lm_ndays)$units
+                    }
+                } # lm_periodi
+
+                # throw out lm calculation periods which occur more than once
+                if (length(skip_inds) > 0) {
+                    message("remove ", length(skip_inds), " lm calculation periods of different length than ", 
+                            as.integer(lm_obs_estimate_ndays), " days ...")
+                    lm_list_ploti[skip_inds] <- NULL
+                }
+                if (length(lm_list_ploti) == 0) stop("this should not happen")
+               
+                if (F) {
+                    message("\n**********************\nfor test: use only most recent lm period ...")
+                    lm_list_ploti <- lm_list_ploti[1]
+                }
+
+                # finally calc lm
+                for (lm_periodi in seq_along(lm_list_ploti)) {
+
+                    # expontential model
+                    lm_inds <- lm_list_ploti[[lm_periodi]]$lm_from_ind:lm_list_ploti[[lm_periodi]]$lm_to_ind
+                    #lm_inds <- seq_along(x)
+                    x_lm_periodi <- x_lm[lm_inds] 
+                    y_lm_periodi <- y_lm[lm_inds] 
+                    message("\n************************************\n",
+                            "calc lm ", lm_periodi, "/", length(lm_list_ploti), " from ", 
+                            x[min(lm_inds)], " to ", x[max(lm_inds)], " (", 
+                            lm_list_ploti[[lm_periodi]]$lm_time_range, " ", 
+                            lm_list_ploti[[lm_periodi]]$lm_time_range_unit, ") ...")
+                    ## if data is exponential, take log of data and fit against linear predictor (here: time):
+                    if (T) { # predictant = exp(predictor) <=> log(predictant) = predictor = time
+                        lm_log <- lm(log(y_lm_periodi) ~ x_lm_periodi) 
+                        if (lm_periodi == 1) { # for plot
+                            x_lm_log_obs <- lm_log$model[,2]
+                            y_lm_log_obs <- exp(lm_log$fitted.values)
+                        }
+                    } else if (F) { # exp(predictant) = exp(predictant) <=> log(predictant) = log(predictor)
+                        lm_log <- lm(log(y_lm_periodi) ~ log(x_lm_periodi))
+                        if (lm_periodi == 1) { # for plot
+                            x_lm_log_obs <- exp(lm_log$model[,2])
+                            y_lm_log_obs <- exp(lm_log$fitted.values)
+                        }
+                    }
+                    #nls_log <- nls(log(y_lm_periodi) ~ x_lm_periodi)
+
+                    # exponential model summary
+                    lm_log_summary <- summary(lm_log)
+                    message("\nlm_log_summary$coefficients:")
+                    print(lm_log_summary$coefficients)
+                    if (any(is.na(lm_log_summary$coefficients))) { # exponential model yield bad results
+                        message("\n--> model is bad")
+                        if (lm_periodi == 1) add_lm_log_to_plot <- F # most recent model for plot
+                        lm_list_ploti[[lm_periodi]]$doubling_time <- NA
+                    } else {
+                        message("\n--> model is ok")
+                        if (lm_periodi == 1) add_lm_log_to_plot <- T # most recent model for plot
+                        lm_log_estimate <- lm_log_summary$coefficients[2,1]*ts_dt
+                        lm_log_uncert <- lm_log_summary$coefficients[2,2]*ts_dt
+                        # https://github.com/valeriupredoi/COVID-19_LINEAR/issues/6
+                        lm_log_doubling_time <- log(2)/lm_log_estimate
+                        rsq <- lm_log_summary$r.squared
+                        pvalue <- lm_log_summary$coefficients[2,4]
+                        message("exponential model estimate = ", lm_log_estimate, " +- ", lm_log_uncert, " ", 
+                                ts_dt_unit, "^-1; doubling time = ", lm_log_doubling_time, 
+                                "; r^2 = ", rsq, "; p = ", pvalue) 
+                        lm_list_ploti[[lm_periodi]]$estimate <- lm_log_estimate
+                        lm_list_ploti[[lm_periodi]]$uncertainty <- lm_log_uncert
+                        lm_list_ploti[[lm_periodi]]$rsq <- rsq
+                        lm_list_ploti[[lm_periodi]]$p <- pvalue
+                        lm_list_ploti[[lm_periodi]]$doubling_time <- lm_log_doubling_time
+                        lm_list_ploti[[lm_periodi]]$doubling_time_unit <- ts_dt_unit
+                    
+                        # prediction for plot
+                        if (lm_periodi == 1) {
+                            message("\ncalc exponential prediction of this first lm period ", 
+                                    lm_predict_ntime, " ", lm_predict_interval, " ahead ...")
+                            x_lm_log_future <- seq.POSIXt(x[length(x)], l=lm_predict_ntime, b=lm_predict_interval)
+                            x_lm_log_future <- x_lm_log_future[-1] # remove last day of obs
+                            x_lm_log_future <- as.POSIXlt(x_lm_log_future)
+                            x_lm_log_future_lm <- as.numeric(x_lm_log_future) # input for predict 
+                            # predictor input for prediction() needs to have the same name as the predictor of the lm model
+                            x_lm_log_future_lm <- data.frame(x_lm_periodi=x_lm_log_future_lm) 
+                            lm_log_future <- predict(lm_log, newdata=x_lm_log_future_lm, interval="prediction")
+                            y_lm_log_future <- exp(lm_log_future)
+                        }
+                    } # if model is good or bad
+                } # for lm_periodi
+
             } else { # if !add_lm_log_to_plot
                 lm_list_ploti <- list(doubling_time=NA)
             } # if add_lm_log_to_plot
-            lm_list[[ci]][[ploti]] <- list(lm_list_ploti)
+            lm_list[[ci]][[ploti]] <- lm_list_ploti
             names(lm_list[[ci]])[ploti] <- ylab
-
-            # exponential prediction
-            if (add_lm_log_to_plot) {
-                x_lm_log_future <- seq.POSIXt(x[length(x)], l=lm_predict_ntime, b=lm_predict_interval)
-                x_lm_log_future <- x_lm_log_future[-1] # remove last day of obs
-                x_lm_log_future <- as.POSIXlt(x_lm_log_future)
-                x_lm_log_future_lm <- as.numeric(x_lm_log_future) # input for predict 
-                x_lm_log_future_lm <- data.frame(x_lm=x_lm_log_future_lm) 
-                lm_log_future <- predict(lm_log, newdata=x_lm_log_future_lm, interval="prediction")
-                y_lm_log_future <- exp(lm_log_future)
-            }
 
             ## prepare plot
             # xaxis
@@ -408,8 +458,8 @@ for (ci in seq_along(countries)) {
                 ts_tlablt <- ts_tlablt[-which(ts_tlablt > ts_tlimlt[2])]
             }
             ts_tatn <- as.numeric(ts_tlablt)
-            ts_tlablt <- paste0(month.abb[ts_tlablt$mon+1], " ", ts_tlablt$mday)
-            
+            ts_tlablt <- paste0(month.abb[ts_tlablt$mon+1], " ", sprintf("%02i", ts_tlablt$mday))
+
             # yaxis
             if (log == "y") y[which(y == 0)] <- NA
             if (all(is.na(y))) {
@@ -453,8 +503,8 @@ for (ci in seq_along(countries)) {
                  xpd=T, srt=90, cex=0.5)
             axis(2, at=yat, las=2, cex.axis=0.5)
             mtext(side=2, text=ylab, line=3)
-            axis(4, at=yat, las=2, cex.axis=0.5)
-            mtext(side=4, text=ylab, line=3)
+            #axis(4, at=yat, las=2, cex.axis=0.5)
+            #mtext(side=4, text=ylab, line=3)
 
             # add grid
             abline(h=yat, col="gray", lwd=0.5)
@@ -528,6 +578,47 @@ for (ci in seq_along(countries)) {
                 }
             }
 
+            # right y-axis: evolution of doubling time from exponential model 
+            if (add_lm_log_to_plot) {
+                doubling_times_x <- sapply(lm_list_ploti, "[[", "lm_to")
+                doubling_times_y <- sapply(lm_list_ploti, "[[", "doubling_time") 
+                ylab_right <- unlist(sapply(lm_list_ploti, "[[", "doubling_time_unit"))
+                if (!(all(ylab_right == "days"))) {
+                    message("\nnot all `doubling_time_unit` of lm models are \"days\".",
+                            " dont know which unit to use for right y-axis doubling time")
+                    add_right_yaxis <- F
+                } else {
+                    ylab_right <- paste0("doubling time based on the last ", as.integer(lm_obs_estimate_ndays), 
+                                         " days\n(in ", ylab_right[1], ")")
+                    add_right_yaxis <- T
+                    message("add right y-axis to plot ...")
+                }
+                if (add_right_yaxis) {
+                    if (!is.na(any(doubling_times_y == Inf))) {
+                        doubling_times_y[doubling_times_y == Inf] <- NA
+                    }
+                    if (!is.na(any(doubling_times_y == -Inf))) {
+                        doubling_times_y[doubling_times_y == -Inf] <- NA
+                    }
+                    ylim_right <- range(doubling_times_y, na.rm=T)
+                    yat_right <- pretty(ylim_right, n=10)
+                    par(new=T)
+                    plot(x, rep(1, t=length(x)), t="n",
+                         xlim=ts_tlimn, ylim=ylim_right,
+                         xlab=NA, ylab=NA, axes=F)
+                    axis(4, at=yat_right, las=2, cex.axis=0.75)
+                    mtext(side=4, text=ylab_right, line=3)
+
+                    # add doubling time
+                    points(doubling_times_x, doubling_times_y, 
+                           t="p", col=lm_doubling_time_col,
+                           #lty=lm_doubling_time_lty, lwd=lm_doubling_time_lwd,
+                           pch=lm_doubling_time_pch)
+                    #segments()
+
+                } # if add_right_yaxis
+            } # if add_lm_log_to_plot
+
             # legend
             le_pos <- "topleft"
             le_text <- jhu_text
@@ -537,21 +628,30 @@ for (ci in seq_along(countries)) {
             le_pch <- jhu_pch
             if (add_lm_log_to_plot) {
                 le_text <- c(le_text,
-                             eval(substitute(expression(paste("exponential model = exp[ (", estimate, "" %+-% "", uncert, 
-                                                              ") ", ts_dt_unit, ""^paste(-1), " " %*% " ", ts_dt_unit, 
-                                                              " ]; r = ", rsq, "; p ", p)),
-                                             list(estimate=round(lm_log_estimate, 3), uncert=round(lm_log_uncert, 3),
-                                                  ts_dt_unit=ts_dt_unit, rsq=round(sqrt(rsq), 2),
-                                                  p=ifelse(pvalue < 1e-3, "< 1e-3", paste0("= ", round(pvalue, 3)))))),
-                             eval(substitute(expression(paste("exponential prediction (doubling time = log(2)[", estimate, " ", 
-                                                              ts_dt_unit, ""^paste(-1), "]"^paste(-1), " = ", doubling_time, " ",
-                                                              ts_dt_unit, ")")),
-                                             list(estimate=round(lm_log_estimate, 3), ts_dt_unit=ts_dt_unit, 
-                                                  doubling_time=round(lm_log_doubling_time, 2)))))
-                le_col <- c(le_col, lm_obs_col, lm_predict_col)
-                le_lty <- c(le_lty, lm_obs_lty, lm_predict_lty)
-                le_lwd <- c(le_lwd, lm_obs_lwd, lm_predict_lwd)
-                le_pch <- c(le_pch, lm_obs_pch, lm_predict_pch)
+                             "exponential model:",
+                             eval(substitute(expression(paste("   N"[t], " = N"[0], " exp(b" %*% "", 
+                                                              ts_dt_unit, ") => b = ", estimate, "" %+-% "", 
+                                                              uncert, " ",  ts_dt_unit, ""^paste(-1), " (r = ", rsq, 
+                                                              ", p ", p, ")")),
+                                             list(estimate=round(lm_list_ploti[[1]]$estimate, 3), 
+                                                  uncert=round(lm_list_ploti[[1]]$uncertainty, 3),
+                                                  ts_dt_unit=ts_dt_unit, 
+                                                  rsq=round(sqrt(lm_list_ploti[[1]]$rsq), 2),
+                                                  p=ifelse(lm_list_ploti[[1]]$p < 1e-3, "< 1e-3", 
+                                                           paste0("= ", round(lm_list_ploti[[1]]$p, 3)))))),
+                             "exponential prediction:",
+                             eval(substitute(expression(paste("   2N"[0], " = N"[0], 
+                                                              " exp(b" %*% "t"["double"], 
+                                                              ") => t"["double"], " = log(2)" %*% "b"^paste(-1),
+                                                              " = ", doubling_time, " ", ts_dt_unit, ")")),
+                                             list(estimate=round(lm_list_ploti[[1]]$estimate, 3), 
+                                                  ts_dt_unit=ts_dt_unit, 
+                                                  doubling_time=round(lm_list_ploti[[1]]$doubling_time, 2)))),
+                             paste("doubling time based on the last ", as.integer(lm_obs_estimate_ndays), " days (right axis)"))
+                le_col <- c(le_col, lm_obs_col, NA, lm_predict_col, NA, lm_doubling_time_col)
+                le_lty <- c(le_lty, lm_obs_lty, NA, lm_predict_lty, NA, lm_doubling_time_lty)
+                le_lwd <- c(le_lwd, lm_obs_lwd, NA, lm_predict_lwd, NA, lm_doubling_time_lwd)
+                le_pch <- c(le_pch, lm_obs_pch, NA, lm_predict_pch, NA, lm_doubling_time_pch)
             }
             if (country == "China") le_pos <- "bottomleft"
             if (country == "Germany") {
@@ -564,7 +664,7 @@ for (ci in seq_along(countries)) {
             legend(le_pos, legend=le_text,
                    col=le_col,
                    lty=le_lty, lwd=le_lwd, pch=le_pch, 
-                   bty="n", x.intersp=0.2)
+                   bty="n", x.intersp=0.2, cex=0.85)
 
             # save plot
             dev.off()
@@ -581,7 +681,6 @@ for (ci in seq_along(countries)) {
     } # if !is.null(ts)
    
 } # for ci countries
-
 
 # plot some stuff
 if (!all(sapply(ts_all, is.null))) {
@@ -683,7 +782,6 @@ if (!all(sapply(ts_all, is.null))) {
     
 } # if ts not all null
 
-
 # update readme
 message("\nupdate readme ...")
 upstream_hash <- system("git rev-parse upstream/master", intern=T)
@@ -703,12 +801,37 @@ readme <- c("# International Covid-19 death predictions based on CSSEGISandData/
             "<img align=\"center\" width=\"1000\" src=\"plots/death_per_confirmed.png\">",
             "", "# Select country", "")
 
-# toc: available countries ordered by their deaths doubling 
+## toc: available countries ordered by their deaths doubling 
+
+## ls.str(lm_list):
+#Germany : List of 4
+# $ cumulative deaths   :List of 1
+# $ daily deaths        :List of 1
+# $ cumulative confirmed:List of 1
+# $ daily confirmed     :List of 1
+#Romania : List of 4
+# $ cumulative deaths   :List of 1
+# $ daily deaths        :List of 1
+# $ cumulative confirmed:List of 1
+# $ daily confirmed     :List of 1
+
+## ls.str(lm_list[[1]]):
+#cumulative confirmed : List of 1
+# $ :List of 63
+#cumulative deaths : List of 1
+# $ :List of 21
+#daily confirmed : List of 1
+# $ :List of 46
+#daily deaths : List of 1
+# $ :List of 21
+
 lm_time_death_double <- rep(NA, t=length(lm_list))
 names(lm_time_death_double) <- names(lm_list)
 for (ci in seq_along(lm_list)) {
-    if (!is.null(lm_list[[ci]]$"cumulative deaths")) {
-        lm_time_death_double[ci] <- lm_list[[ci]]$"cumulative deaths"[[1]]$doubling_time
+    if (!is.null(lm_list[[ci]][["cumulative deaths"]][[1]][[1]])) {
+        if (!is.na(lm_list[[ci]][["cumulative deaths"]])) { 
+            lm_time_death_double[ci] <- lm_list[[ci]][["cumulative deaths"]][[1]]$doubling_time
+        }
     }
 }
 
@@ -750,15 +873,15 @@ if (!all(is.na(lm_time_death_double))) {
         if (!is.na(lm_time_death_double[ci])) {
             tmp <- paste0(tmp, 
                           round(lm_time_death_double[ci], 2), " ",
-                          lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$doubling_time_unit, " | ", # col 2
-                          lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$from, " to<br>", 
-                          lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$to, " (",
-                          as.numeric(lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$lm_time_range), " ", 
-                          lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$lm_time_range_unit, ") | ", # col 3
-                          round(lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$rsq, 2), " | ", # col 4 
-                          ifelse(lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$p < 1e-3, 
+                          lm_list[[allinds[ci]]][["cumulative deaths"]][[1]]$doubling_time_unit, " | ", # col 2
+                          lm_list[[allinds[ci]]][["cumulative deaths"]][[1]]$lm_from, " to<br>", 
+                          lm_list[[allinds[ci]]][["cumulative deaths"]][[1]]$lm_to, " (",
+                          lm_list[[allinds[ci]]][["cumulative deaths"]][[1]]$lm_time_range, " ", 
+                          lm_list[[allinds[ci]]][["cumulative deaths"]][[1]]$lm_time_range_unit, ") | ", # col 3
+                          round(lm_list[[allinds[ci]]][["cumulative deaths"]][[1]]$rsq, 2), " | ", # col 4 
+                          ifelse(lm_list[[allinds[ci]]][["cumulative deaths"]][[1]]$p < 1e-3, 
                                  "< 1e-3",
-                                 round(lm_list[[allinds[ci]]]$"cumulative deaths"[[1]]$p, 3)), " | ") # col 5
+                                 round(lm_list[[allinds[ci]]][["cumulative deaths"]][[1]]$p, 3)), " | ") # col 5
         } else {
             tmp <- paste0(tmp, 
                           paste0(rep(paste0(lm_time_death_double[ci], " | "), t=4), collapse="")) # col 2, 3, 4, 5
@@ -783,10 +906,10 @@ if (!all(is.na(lm_time_death_double))) {
         toc <- paste0(toc, 
                       paste0("[", names(plotname_all)[ci], "](#", 
                              gsub(" ", "-", names(plotname_all)[ci]), ") ("))
-        if (!is.na(lm_list[[ci]]$"cumulative deaths"[[1]]$doubling_time)) {
+        if (!is.na(lm_list[[ci]][["cumulative deaths"]][[1]]$doubling_time)) {
             toc <- paste0(toc, 
-                          round(lm_list[[ci]]$"cumulative deaths"[[1]]$doubling_time, 2), " ", 
-                          lm_list[[ci]]$"cumulative deaths"[[1]]$doubling_time_unit)
+                          round(lm_list[[ci]][["cumulative deaths"]][[1]]$doubling_time, 2), " ", 
+                          lm_list[[ci]][["cumulative deaths"]][[1]]$doubling_time_unit)
         } else {
             toc <- paste0(toc, "NA")
         }
