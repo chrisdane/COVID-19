@@ -626,11 +626,18 @@ for (ci in seq_along(countries)) {
             le_lty <- jhu_lty
             le_lwd <- jhu_lwd
             le_pch <- jhu_pch
+            if (country == "Germany") {
+                le_text <- c(le_text, rki_text)
+                le_col <- c(le_col, rki_col)
+                le_lty <- c(le_lty, rki_lty)
+                le_lwd <- c(le_lwd, rki_lwd)
+                le_pch <- c(le_pch, rki_pch)
+            }
             if (add_lm_log_to_plot) {
                 le_text <- c(le_text,
                              "exponential model:",
                              eval(substitute(expression(paste("   N"[t], " = N"[0], " exp(b" %*% "", 
-                                                              ts_dt_unit, ") => b = ", estimate, "" %+-% "", 
+                                                              ts_dt_unit, "); b = ", estimate, "" %+-% "", 
                                                               uncert, " ",  ts_dt_unit, ""^paste(-1), " (r = ", rsq, 
                                                               ", p ", p, ")")),
                                              list(estimate=round(lm_list_ploti[[1]]$estimate, 3), 
@@ -643,7 +650,7 @@ for (ci in seq_along(countries)) {
                              eval(substitute(expression(paste("   2N"[0], " = N"[0], 
                                                               " exp(b" %*% "t"["double"], 
                                                               ") => t"["double"], " = log(2)" %*% "b"^paste(-1),
-                                                              " = ", doubling_time, " ", ts_dt_unit, ")")),
+                                                              " = ", doubling_time, " ", ts_dt_unit)),
                                              list(estimate=round(lm_list_ploti[[1]]$estimate, 3), 
                                                   ts_dt_unit=ts_dt_unit, 
                                                   doubling_time=round(lm_list_ploti[[1]]$doubling_time, 2)))),
@@ -654,13 +661,6 @@ for (ci in seq_along(countries)) {
                 le_pch <- c(le_pch, lm_obs_pch, NA, lm_predict_pch, NA, lm_doubling_time_pch)
             }
             if (country == "China") le_pos <- "bottomleft"
-            if (country == "Germany") {
-                le_text <- c(le_text, rki_text)
-                le_col <- c(le_col, rki_col)
-                le_lty <- c(le_lty, rki_lty)
-                le_lwd <- c(le_lwd, rki_lwd)
-                le_pch <- c(le_pch, rki_pch)
-            }
             legend(le_pos, legend=le_text,
                    col=le_col,
                    lty=le_lty, lwd=le_lwd, pch=le_pch, 
