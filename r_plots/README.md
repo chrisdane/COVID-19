@@ -1,7 +1,7 @@
 # International Covid-19 death predictions based on CSSEGISandData/COVID-19
 
   * upstream repo: https://github.com/CSSEGISandData/COVID-19  
-  * time of last fetch of upstream repo: **2020-04-11 09:53:07 CET** (timestamp of file `.git/refs/remotes/upstream`)  
+  * time of last fetch of upstream repo: **2020-04-11 20:01:41 CET** (timestamp of file `.git/refs/remotes/upstream`)  
   * hash of last fetched commit of upstream repo: `6e3f6284d4add1e2eba68609c1e763c99f95112f` (`git rev-parse upstream/master`)  
   * last date of `COVID-19/csse_covid_19_data/time_series_covid19_*_global.csv` data: **2020-04-10**
 
