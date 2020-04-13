@@ -588,8 +588,8 @@ for (ci in seq_along(countries)) {
                             " dont know which unit to use for right y-axis doubling time")
                     add_right_yaxis <- F
                 } else {
-                    ylab_right <- paste0("doubling time based on the last ", as.integer(lm_obs_estimate_ndays), 
-                                         " days\n(in ", ylab_right[1], ")")
+                    ylab_right <- paste0("doubling time based on the respective\nlast ", as.integer(lm_obs_estimate_ndays), 
+                                         " days (in ", ylab_right[1], ")")
                     add_right_yaxis <- T
                     message("add right y-axis to plot ...")
                 }
