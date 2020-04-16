@@ -7,7 +7,7 @@
 
 # death rate evolution
 
-<img align="center" width="1000" src="plots/death_per_confirmed.png">
+<img align="center" width="1000" src="plots/death_per_confirmed_logy.png">
 
 # Select country
 

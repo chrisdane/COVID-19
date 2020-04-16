@@ -740,9 +740,11 @@ if (!all(sapply(ts_all, is.null))) {
         xlim <- range(deaths_per_confirmed_x)
         xat <- pretty(xlim, n=50) 
         #ylim <- range(deaths_per_confirmed_y)
+        deaths_per_confirmed_min <- as.numeric(sapply(lapply(deaths_per_confirmed_y, summary), "[", "Min."))
         deaths_per_confirmed_mean <- as.numeric(sapply(lapply(deaths_per_confirmed_y, summary), "[", "Mean"))
         deaths_per_confirmed_median <- as.numeric(sapply(lapply(deaths_per_confirmed_y, summary), "[", "Median"))
-        ylim <- range(deaths_per_confirmed_mean, na.rm=T)
+        deaths_per_confirmed_3rd_qu <- as.numeric(sapply(lapply(deaths_per_confirmed_y, summary), "[", "3rd Qu."))
+        ylim <- range(deaths_per_confirmed_min, deaths_per_confirmed_3rd_qu, na.rm=T)
         yat <- pretty(ylim, n=20)
         library(RColorBrewer) # https://www.r-bloggers.com/palettes-in-r/
         cols <- brewer.pal(8, "Dark2")
@@ -754,21 +756,25 @@ if (!all(sapply(ts_all, is.null))) {
         } else if (length(cols) < length(ts_all)) {
             stop("this never happened")
         }
-        png("plots/death_per_confirmed.png",
-            width=png_specs$width, height=png_specs$height, res=png_specs$res)
+        log_death_per_confirmed <- "y" # "", "y"
+        plotname <- paste0("plots/death_per_confirmed", 
+                           ifelse(log_death_per_confirmed != "", paste0("_log", log_death_per_confirmed), ""),
+                           ".png")
+        png(plotname,
+            width=png_specs$width, height=1.5*png_specs$height, res=png_specs$res)
         par(mar=c(5.1, 6.1, 4.1, 6.1) + 0.1)
         plot(deaths_per_confirmed_x[[1]], deaths_per_confirmed_y[[1]],
-             t="n", xaxt="n", yaxt="n", log="y",
+             t="n", xaxt="n", yaxt="n", log=log_death_per_confirmed,
              xlab="days since cumulative deaths > 1", 
-             ylab="deaths/confirmed*100 (in %)",
+             ylab="(cumulative deaths)/(cumulative confirmed)*100 (in %)",
              xlim=xlim, ylim=ylim)
         axis(1, at=xat)
         axis(2, at=yat, las=2)
         axis(4, at=yat, las=2)
-        mtext(side=4, text="deaths/confirmed*100 (in %)", line=3)
+        mtext(side=4, text="(cumulative deaths)/(cumulative confirmed)*100 (in %)", line=3)
         abline(v=xat, col="gray", lwd=0.5)
         abline(h=yat, col="gray", lwd=0.5)
-        title("death rate = deaths/confirmed*100")
+        title("death rate = (cumulative deaths)/(cumulative confirmed)*100")
         for (ci in seq_along(ts_all)) {
             if (!is.null(deaths_per_confirmed_x[[ci]])) {
                 text(deaths_per_confirmed_x[[ci]], deaths_per_confirmed_y[[ci]],
@@ -798,7 +804,7 @@ readme <- c("# International Covid-19 death predictions based on CSSEGISandData/
             paste0("  * last date of `COVID-19/csse_covid_19_data/time_series_covid19_*_global.csv` data: **", 
                    max(ts_dates), "**"),
             "", "# death rate evolution", "",
-            "<img align=\"center\" width=\"1000\" src=\"plots/death_per_confirmed.png\">",
+            "<img align=\"center\" width=\"1000\" src=\"plots/death_per_confirmed_logy.png\">",
             "", "# Select country", "")
 
 ## toc: available countries ordered by their deaths doubling 
