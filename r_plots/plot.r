@@ -19,7 +19,7 @@ countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "US",
 #countries <- c("Germany", "Nepal", "United Kingdom")
 
 # plot specs
-jhu_text <- "JHU" # johns hopkins university
+jhu_text <- "JHU (left axis)" # johns hopkins university
 jhu_col <- "black"
 jhu_lty <- 1
 jhu_lwd <- 1
@@ -64,7 +64,7 @@ message("\nread rki ...")
 frki <- "rki.txt"
 rki <- read.table(frki, header=T, skip=1, stringsAsFactors=F)
 rki$date <- as.POSIXlt(rki$date, tz="UTC")
-rki_text <- "RKI"
+rki_text <- "RKI (left axis)"
 rki_col <- "darkgreen"
 rki_lty <- 1
 rki_lwd <- 1
@@ -589,7 +589,7 @@ for (ci in seq_along(countries)) {
                     add_right_yaxis <- F
                 } else {
                     ylab_right <- paste0("doubling time based on the respective\nlast ", as.integer(lm_obs_estimate_ndays), 
-                                         " days (in ", ylab_right[1], ")")
+                                         " days (in ", ylab_right[1], "; without outliers)")
                     add_right_yaxis <- T
                     message("add right y-axis to plot ...")
                 }
@@ -600,8 +600,21 @@ for (ci in seq_along(countries)) {
                     if (!is.na(any(doubling_times_y == -Inf))) {
                         doubling_times_y[doubling_times_y == -Inf] <- NA
                     }
-                    ylim_right <- range(doubling_times_y, na.rm=T)
+                    ## limits of right y-axis
+                    # remove negative doubling times through decreasing trends
+                    doubling_times_y_pos <- doubling_times_y
+                    if (any(doubling_times_y_pos < 0, na.rm=T)) {
+                        doubling_times_y_pos[doubling_times_y_pos < 0] <- NA
+                    }
+                    # remove very large positive outliers due to long constant numbers followed by a very small increase
+                    outliers <- boxplot(doubling_times_y_pos, plot=F)$out
+                    if (any(doubling_times_y_pos > min(outliers), na.rm=T)) {
+                        doubling_times_y_pos[doubling_times_y_pos > min(outliers)] <- NA
+                    }
+                    ylim_right <- range(doubling_times_y_pos, na.rm=T)
+                    if (ylim_right[1] < 0) ylim_right[1] <- 0
                     yat_right <- pretty(ylim_right, n=10)
+                    
                     par(new=T)
                     plot(x, rep(1, t=length(x)), t="n",
                          xlim=ts_tlimn, ylim=ylim_right,
@@ -635,7 +648,7 @@ for (ci in seq_along(countries)) {
             }
             if (add_lm_log_to_plot) {
                 le_text <- c(le_text,
-                             "exponential model:",
+                             "exponential model of JHU:",
                              eval(substitute(expression(paste("   N"[t], " = N"[0], " exp(b" %*% "", 
                                                               ts_dt_unit, "); b = ", estimate, "" %+-% "", 
                                                               uncert, " ",  ts_dt_unit, ""^paste(-1), " (r = ", rsq, 
@@ -646,19 +659,20 @@ for (ci in seq_along(countries)) {
                                                   rsq=round(sqrt(lm_list_ploti[[1]]$rsq), 2),
                                                   p=ifelse(lm_list_ploti[[1]]$p < 1e-3, "< 1e-3", 
                                                            paste0("= ", round(lm_list_ploti[[1]]$p, 3)))))),
-                             "exponential prediction:",
+                             "exponential prediction of JHU:",
                              eval(substitute(expression(paste("   2N"[0], " = N"[0], 
                                                               " exp(b" %*% "t"["double"], 
                                                               ") => t"["double"], " = log(2)" %*% "b"^paste(-1),
                                                               " = ", doubling_time, " ", ts_dt_unit)),
                                              list(estimate=round(lm_list_ploti[[1]]$estimate, 3), 
                                                   ts_dt_unit=ts_dt_unit, 
-                                                  doubling_time=round(lm_list_ploti[[1]]$doubling_time, 2)))),
-                             paste("doubling time based on the last ", as.integer(lm_obs_estimate_ndays), " days (right axis)"))
-                le_col <- c(le_col, lm_obs_col, NA, lm_predict_col, NA, lm_doubling_time_col)
-                le_lty <- c(le_lty, lm_obs_lty, NA, lm_predict_lty, NA, lm_doubling_time_lty)
-                le_lwd <- c(le_lwd, lm_obs_lwd, NA, lm_predict_lwd, NA, lm_doubling_time_lwd)
-                le_pch <- c(le_pch, lm_obs_pch, NA, lm_predict_pch, NA, lm_doubling_time_pch)
+                                                  doubling_time=round(lm_list_ploti[[1]]$doubling_time, 2)))), # of most recent date of current variable of current country
+                             "doubling time based on the respective",
+                             paste0("last ", as.integer(lm_obs_estimate_ndays), " days of JHU (right axis)"))
+                le_col <- c(le_col, lm_obs_col, NA, lm_predict_col, NA, lm_doubling_time_col, NA)
+                le_lty <- c(le_lty, lm_obs_lty, NA, lm_predict_lty, NA, lm_doubling_time_lty, NA)
+                le_lwd <- c(le_lwd, lm_obs_lwd, NA, lm_predict_lwd, NA, lm_doubling_time_lwd, NA)
+                le_pch <- c(le_pch, lm_obs_pch, NA, lm_predict_pch, NA, lm_doubling_time_pch, NA)
             }
             if (country == "China") le_pos <- "bottomleft"
             legend(le_pos, legend=le_text,
