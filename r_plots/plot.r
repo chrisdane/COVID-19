@@ -24,7 +24,7 @@ jhu_col <- "black"
 jhu_lty <- 1
 jhu_lwd <- 1
 jhu_pch <- 1
-png_specs <- list(width=1500, height=833, res=157)
+png_specs <- list(width=1666, height=833, res=157)
 log <- "y" # "", "y"
 yat_log_must_include <- c(0:10, seq(20, 100, b=10), seq(200, 1000, b=100), 
                           seq(2000, 10000, b=1000), seq(20000, 100000, b=10000))
@@ -87,11 +87,11 @@ if (ts_dt_unit == "days") ts_dt <- 86400 # days --> seconds
 ts_countries <- sort(unique(ts_deaths$Country.Region))
 
 ## read time series and reports
+countries <- sort(unique(countries))
 ts_all <- vector("list", l=length(countries))
 names(ts_all) <- countries
 report_all <- responses_all <- lm_list <- ts_all
 report_countries <- plotname_all <- list()
-countries <- sort(unique(countries))
 
 lm_obs_estimate_ndays <- seq.POSIXt(as.POSIXlt("1-1-1", tz="UTC"), b=paste0(lm_obs_estimate_ndays, " days"), l=2)
 lm_obs_estimate_ndays <- difftime(lm_obs_estimate_ndays[2], lm_obs_estimate_ndays[1], units="days")
@@ -458,6 +458,14 @@ for (ci in seq_along(countries)) {
                 ts_tlablt <- ts_tlablt[-which(ts_tlablt > ts_tlimlt[2])]
             }
             ts_tatn <- as.numeric(ts_tlablt)
+            sat_sun_inds <- c(7, 1)
+            # find weekends
+            ts_tat_we_inds <- NULL # default
+            if (any(!is.na(match(sat_sun_inds, ts_tlablt$wday+1)))) { 
+                ts_tat_we_inds <- match(ts_tlablt$wday+1, sat_sun_inds)
+                ts_tat_we_inds <- which(!is.na(ts_tat_we_inds))
+                ts_tat_we_lab <- weekdays(ts_tlablt[ts_tat_we_inds], abbreviate=T)
+            }
             ts_tlablt <- paste0(month.abb[ts_tlablt$mon+1], " ", sprintf("%02i", ts_tlablt$mday))
 
             # yaxis
@@ -474,7 +482,8 @@ for (ci in seq_along(countries)) {
             if (add_lm_log_to_plot) {
                 ylim <- range(ylim, y_lm_log_obs, y_lm_log_future, na.rm=T)
             }
-            ylim[2] <- ylim[2] + 0.05*diff(ylim)
+            # increase upper ylim for labels
+            ylim[2] <- ylim[2] + 10*ylim[2]
             yat <- pretty(ylim, n=30)
             if (log == "y") {
                 yat <- sort(unique(c(yat, yat_log_must_include)))
@@ -500,7 +509,12 @@ for (ci in seq_along(countries)) {
             dput(par("usr"))
             axis(1, at=ts_tatn, labels=rep("", t=length(ts_tatn)))
             text(x=ts_tatn, y=grconvertY(-0.08, from="npc"), labels=ts_tlablt, 
-                 xpd=T, srt=90, cex=0.5)
+                 xpd=T, srt=90, cex=0.45)
+            if (!is.null(ts_tat_we_inds)) { # highlight weekends
+                text(x=ts_tatn[ts_tat_we_inds], y=grconvertY(-0.08, from="npc"), 
+                     labels=ts_tlablt[ts_tat_we_inds], xpd=T, srt=90, cex=0.45,
+                     col="orange")
+            }
             axis(2, at=yat, las=2, cex.axis=0.5)
             mtext(side=2, text=ylab, line=3)
             #axis(4, at=yat, las=2, cex.axis=0.5)
@@ -608,8 +622,10 @@ for (ci in seq_along(countries)) {
                     }
                     # remove very large positive outliers due to long constant numbers followed by a very small increase
                     outliers <- boxplot(doubling_times_y_pos, plot=F)$out
-                    if (any(doubling_times_y_pos > min(outliers), na.rm=T)) {
-                        doubling_times_y_pos[doubling_times_y_pos > min(outliers)] <- NA
+                    if (length(outliers) > 0) {
+                        if (any(doubling_times_y_pos > min(outliers, na.rm=T), na.rm=T)) {
+                            doubling_times_y_pos[doubling_times_y_pos > min(outliers, na.rm=T)] <- NA
+                        }
                     }
                     ylim_right <- range(doubling_times_y_pos, na.rm=T)
                     if (ylim_right[1] < 0) ylim_right[1] <- 0
@@ -845,11 +861,14 @@ readme <- c("# International Covid-19 death predictions based on CSSEGISandData/
 #daily deaths : List of 1
 # $ :List of 21
 
+# get most recent death doubling time
 lm_time_death_double <- rep(NA, t=length(lm_list))
 names(lm_time_death_double) <- names(lm_list)
 for (ci in seq_along(lm_list)) {
-    if (!is.null(lm_list[[ci]][["cumulative deaths"]][[1]][[1]])) {
-        if (!is.na(lm_list[[ci]][["cumulative deaths"]])) { 
+    if (!all(is.na(lm_list[[ci]][["cumulative deaths"]]))) {
+        if (!is.na(lm_list[[ci]][["cumulative deaths"]][[1]]$doubling_time)) { 
+            message(countries[ci])
+            print(lm_list[[ci]][["cumulative deaths"]][[1]]$doubling_time)
             lm_time_death_double[ci] <- lm_list[[ci]][["cumulative deaths"]][[1]]$doubling_time
         }
     }
