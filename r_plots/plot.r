@@ -483,7 +483,7 @@ for (ci in seq_along(countries)) {
                 ylim <- range(ylim, y_lm_log_obs, y_lm_log_future, na.rm=T)
             }
             # increase upper ylim for labels
-            ylim[2] <- ylim[2] + 10*ylim[2]
+            ylim[2] <- ylim[2] + 5*ylim[2]
             yat <- pretty(ylim, n=30)
             if (log == "y") {
                 yat <- sort(unique(c(yat, yat_log_must_include)))
