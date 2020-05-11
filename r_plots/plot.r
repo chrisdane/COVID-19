@@ -3,7 +3,7 @@
 rm(list=ls()); graphics.off()
 
 ## which country
-countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "US", "Netherlands", "France", "Canada", "China", "Russia", "Switzerland", "Iran", "Austria", "Sweden", "Japan", "Spain", "Australia", "Norway", "Poland", "Portugal", "Romania", "Nepal", "Turkey", "Hungary", "Korea, South")
+countries <- c("Belgium", "Denmark", "Italy", "Germany", "United Kingdom", "US", "Netherlands", "France", "Canada", "China", "Russia", "Switzerland", "Iran", "Austria", "Sweden", "Japan", "Spain", "Australia", "Norway", "Poland", "Portugal", "Romania", "Nepal", "Turkey", "Hungary", "Korea, South", "Brazil")
 #countries <- "Canada"
 #countries <- "Germany"
 #countries <- "Netherlands"
@@ -46,6 +46,11 @@ lm_doubling_time_col <- lm_obs_col # rgb(t(col2rgb(lm_obs_col)/255), alpha=0.2)
 lm_doubling_time_lty <- NA
 lm_doubling_time_lwd <- NA
 lm_doubling_time_pch <- 4
+
+lm_R_col <- "black"
+lm_R_lty <- 1
+lm_R_lwd <- 1
+lm_R_pch <- 1
 
 # for underlined text
 #library(arghqtl) # https://rdrr.io/github/ellisztamas/arghqtl/man/underlined.html
@@ -699,6 +704,56 @@ for (ci in seq_along(countries)) {
             # save plot
             dev.off()
 
+            # plot reproduction factor R for germany
+            if (country == "Germany" && ylab == "cumulative confirmed" && add_lm_log_to_plot) {
+                # https://en.wikipedia.org/wiki/Basic_reproduction_number#Definitions_in_specific_cases
+                # reproduction time R = exp(log(2)/doubling_time_cases*tau)
+                # with tau the average infectious period or generation time (serial interval; the time period it takes that an infected person infects another person)
+                tau_ger <- 4 # days;
+                # source: https://www.rki.de/DE/Content/Infekt/EpidBull/Archiv/2020/17/Art_02.html (Epid. Bull. 17 | 2020 from 23/04/2020)
+                # Abb. 4 | Schätzung der effektiven Reproduktionszahl R für eine angenommene Generationszeit von 4 Tagen und die durch das
+                # Nowcasting geschätzten Anzahlen von Neuerkrankungen, auf denen die R-Schätzung beruht.
+                R_ger <- exp(log(2)/doubling_times_y*tau_ger) # all units must be days
+                ylim_R_ger <- range(R_ger, na.rm=T)
+                yat_R_ger <- pretty(ylim_R_ger, n=10)
+
+                # plot reproduction number r for germany
+                plotname <- paste0(plotpath, "/", country_fname, "_", gsub(" ", "_", ylab),
+                                   "_reproduction_number_r.png")
+                plotname_tmp[length(plotname_tmp)+1] <- plotname
+                message("\nplot ", plotname)
+                png(plotname, width=png_specs$width, height=png_specs$height, res=png_specs$res)
+                par(mar=c(5.1, 6.1, 4.1, 6.1) + 0.1)
+                plot(x, rep(1, t=length(x)), t="n",
+                     xlim=ts_tlimn, ylim=ylim_R_ger,
+                     xlab="Time", ylab=NA, xaxt="n", yaxt="n")
+                axis(1, at=ts_tatn, labels=rep("", t=length(ts_tatn)))
+                text(x=ts_tatn, y=grconvertY(-0.08, from="npc"), labels=ts_tlablt, 
+                     xpd=T, srt=90, cex=0.45)
+                if (!is.null(ts_tat_we_inds)) { # highlight weekends
+                    text(x=ts_tatn[ts_tat_we_inds], y=grconvertY(-0.08, from="npc"), 
+                         labels=ts_tlablt[ts_tat_we_inds], xpd=T, srt=90, cex=0.45,
+                         col="orange")
+                }
+                axis(2, at=yat_R_ger, las=2, cex.axis=1)
+                mtext(2, text="Reproduction factor R", line=3)
+                # add grid
+                abline(h=yat, col="gray", lwd=0.5)
+                abline(v=ts_tatn, col="gray", lwd=0.5)
+                # add title
+                title(paste0("Germany reproduction factor R = exp(log(2) / doubling_time_cumulative_confirmed * tau)\n",
+                             "with infectious period tau = ", tau_ger, " days"), cex.main=0.85)
+                # add reproduction factor R
+                points(doubling_times_x, R_ger, 
+                       t="o", col=lm_R_col,
+                       lty=lm_R_lty, lwd=lm_R_lwd,
+                       pch=lm_R_pch)
+                # add value 
+                text(doubling_times_x, R_ger, labels=paste0("   ", round(R_ger, 2)), col=lm_R_col, cex=0.5, srt=90, adj=0)
+                # save plot
+                dev.off()
+            } # if country == "Germany" && ylab == "cumulative confirmed" && add_lm_log_to_plot
+
         } # ploti
   
         plotname_all[[ci]] <- plotname_tmp
@@ -814,8 +869,8 @@ if (!all(sapply(ts_all, is.null))) {
             }
         }
         dev.off()
-    } # F
-    
+    } # ratio: deaths/confirmed*100
+
 } # if ts not all null
 
 # update readme

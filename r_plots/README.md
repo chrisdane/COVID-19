@@ -14,6 +14,7 @@
 ordererd by time when cumulative number of deaths doubles (increasing)
 country | cumulative number<br>of deaths doubles in | period of<br>estimation | rsq | p | cumulative<br>deaths | cumulative<br>confirmed
 --- | --- | --- | --- | --- | --- | ---
+[Brazil](#Brazil) | 10.75 days | 2020-05-01 to<br>2020-05-10 (10 days) | 0.99 | < 1e-3 | 11123 | 162699
 [Russia](#Russia) | 12.24 days | 2020-05-01 to<br>2020-05-10 (10 days) | 1 | < 1e-3 | 1915 | 209688
 [Canada](#Canada) | 17.68 days | 2020-05-01 to<br>2020-05-10 (10 days) | 0.99 | < 1e-3 | 4991 | 70091
 [Japan](#Japan) | 19.88 days | 2020-05-01 to<br>2020-05-10 (10 days) | 0.95 | < 1e-3 | 624 | 15777
@@ -80,6 +81,19 @@ country | cumulative number<br>of deaths doubles in | period of<br>estimation | 
 <br>
 <br>
 
+# Brazil
+[top](#Select-country)
+
+<img align="center" width="1000" src="plots/Brazil/Brazil_cumulative_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Brazil/Brazil_daily_deaths_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Brazil/Brazil_cumulative_confirmed_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Brazil/Brazil_daily_confirmed_logy.png">
+<br>
+<br>
+
 # Canada
 [top](#Select-country)
 
@@ -142,6 +156,8 @@ country | cumulative number<br>of deaths doubles in | period of<br>estimation | 
 <img align="center" width="1000" src="plots/Germany/Germany_cumulative_confirmed_logy.png">
 <br>
 <img align="center" width="1000" src="plots/Germany/Germany_daily_confirmed_logy.png">
+<br>
+<img align="center" width="1000" src="plots/Germany/Germany_cumulative_confirmed_reproduction_number_r.png">
 <br>
 <br>
 
