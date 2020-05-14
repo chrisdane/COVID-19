@@ -709,10 +709,26 @@ for (ci in seq_along(countries)) {
                 # https://en.wikipedia.org/wiki/Basic_reproduction_number#Definitions_in_specific_cases
                 # reproduction time R = exp(log(2)/doubling_time_cases*tau)
                 # with tau the average infectious period or generation time (serial interval; the time period it takes that an infected person infects another person)
-                tau_ger <- 4 # days;
-                # source: https://www.rki.de/DE/Content/Infekt/EpidBull/Archiv/2020/17/Art_02.html (Epid. Bull. 17 | 2020 from 23/04/2020)
-                # Abb. 4 | Schätzung der effektiven Reproduktionszahl R für eine angenommene Generationszeit von 4 Tagen und die durch das
-                # Nowcasting geschätzten Anzahlen von Neuerkrankungen, auf denen die R-Schätzung beruht.
+                # theory:
+                if (F) {
+                    #lipsitch et al. 2003: Transmission Dynamics and Control of Severe Acute Respiratory Syndrome
+                    # The reproductive number can be estimated as R = 1 + λv + f(1 – f)(λv)2, where λ = ln[Y(t)]/t is 
+                    # the exponential growth rate of the epidemic, calculated as the logarithm of the cumulative number 
+                    # of cases by time t since the first case divided by the time required to generate these cases from 
+                    # a single case; v is the serial interval; and f is the ratio of the mean latent period, i.e., time
+                    # from infection to onset of infectiousness, to the serial interval.                    
+                    R_theo <- exp(log(2)/doubling_time_cumulative_confirmed_theo*tau_theo)
+                    doubling_time_cumulative_confirmed_theo <- 1:200
+                    tau_theo <- 1:10
+                    R_theo_ylim <- range(R_theo)
+                    R_theo_ylim_at <- pretty(R_theo_ylim, n=20)
+                }
+                tau_ger <- 4 # days
+                             # source: https://www.rki.de/DE/Content/Infekt/EpidBull/Archiv/2020/17/Art_02.html
+                             # (Epid. Bull. 17 | 2020 from 23/04/2020)
+                             # Abb. 4 | Schätzung der effektiven Reproduktionszahl R für eine angenommene 
+                             # Generationszeit von 4 Tagen und die durch das Nowcasting geschätzten Anzahlen 
+                             # von Neuerkrankungen, auf denen die R-Schätzung beruht.
                 R_ger <- exp(log(2)/doubling_times_y*tau_ger) # all units must be days
                 ylim_R_ger <- range(R_ger, na.rm=T)
                 yat_R_ger <- pretty(ylim_R_ger, n=10)
