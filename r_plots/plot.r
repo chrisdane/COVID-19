@@ -333,7 +333,13 @@ for (ci in seq_along(countries)) {
                             " lm calculation periods which occur more than once ...")
                     lm_list_ploti[skip_inds] <- NULL
                 }
-                if (length(lm_list_ploti) == 0) stop("this should not happen")
+                if (length(lm_list_ploti) == 0) {
+                    message("removed all lm periods -> set add_lm_log_to_plot to F")
+                    add_lm_log_to_plot <- F
+                }
+            } # if add_lm_log_to_plot
+
+            if (add_lm_log_to_plot) {
 
                 # throw out lm calculation periods of length < `lm_obs_estimate_ndays`
                 lm_obs_estimate_n_periods <- length(lm_list_ploti)
@@ -362,7 +368,13 @@ for (ci in seq_along(countries)) {
                             as.integer(lm_obs_estimate_ndays), " days ...")
                     lm_list_ploti[skip_inds] <- NULL
                 }
-                if (length(lm_list_ploti) == 0) stop("this should not happen")
+                if (length(lm_list_ploti) == 0) {
+                    message("removed all lm data -> set add_lm_log_to_plot to F")
+                    add_lm_log_to_plot <- F
+                }
+            } # if add_lm_log_to_plot
+
+            if (add_lm_log_to_plot) {
                
                 if (F) {
                     message("\n**********************\nfor test: use only most recent lm period ...")
