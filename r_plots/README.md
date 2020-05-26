@@ -1,9 +1,9 @@
 # International Covid-19 death predictions based on CSSEGISandData/COVID-19
 
   * upstream repo: https://github.com/CSSEGISandData/COVID-19  
-  * time of last fetch of upstream repo: **2020-05-22 07:41:46 CET** (timestamp of file `.git/refs/remotes/upstream`)  
-  * hash of last fetched commit of upstream repo: `daa20971c8a6e25f63b3f7d009a95bdc55943dc6` (`git rev-parse upstream/master`)  
-  * last date of `COVID-19/csse_covid_19_data/time_series_covid19_*_global.csv` data: **2020-05-21**
+  * time of last fetch of upstream repo: **2020-05-26 09:07:10 CET** (timestamp of file `.git/refs/remotes/upstream`)  
+  * hash of last fetched commit of upstream repo: `8747ab05ac9c1f13647146097d6801ae0a3f6984` (`git rev-parse upstream/master`)  
+  * last date of `COVID-19/csse_covid_19_data/time_series_covid19_*_global.csv` data: **2020-05-25**
 
 # death rate evolution
 
@@ -14,33 +14,33 @@
 ordererd by time when cumulative number of deaths doubles (increasing)
 country | cumulative number<br>of deaths doubles in | period of<br>estimation | rsq | p | cumulative<br>deaths | cumulative<br>confirmed
 --- | --- | --- | --- | --- | --- | ---
-[Brazil](#Brazil) | 13.63 days | 2020-05-12 to<br>2020-05-21 (10 days) | 1 | < 1e-3 | 20047 | 310087
-[Russia](#Russia) | 16.5 days | 2020-05-12 to<br>2020-05-21 (10 days) | 1 | < 1e-3 | 3099 | 317554
-[Japan](#Japan) | 37.61 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.96 | < 1e-3 | 777 | 16424
-[Canada](#Canada) | 39.11 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.98 | < 1e-3 | 6267 | 82742
-[Poland](#Poland) | 44.65 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.97 | < 1e-3 | 972 | 20143
-[Romania](#Romania) | 45.17 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.97 | < 1e-3 | 1156 | 17585
-[Sweden](#Sweden) | 46.64 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.91 | < 1e-3 | 3871 | 32172
-[US](#US) | 46.96 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.99 | < 1e-3 | 94702 | 1577147
-[Hungary](#Hungary) | 55.29 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.99 | < 1e-3 | 473 | 3641
-[Portugal](#Portugal) | 66.48 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.99 | < 1e-3 | 1277 | 29912
-[United Kingdom](#United-Kingdom) | 66.75 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.99 | < 1e-3 | 36124 | 252246
-[Turkey](#Turkey) | 72.52 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.97 | < 1e-3 | 4249 | 153548
-[Iran](#Iran) | 86.04 days | 2020-05-12 to<br>2020-05-21 (10 days) | 1 | < 1e-3 | 7249 | 129341
-[Denmark](#Denmark) | 111.03 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.98 | < 1e-3 | 561 | 11380
-[Germany](#Germany) | 121.77 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.96 | < 1e-3 | 8203 | 179021
-[Italy](#Italy) | 129.16 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.98 | < 1e-3 | 32486 | 228006
-[France](#France) | 131.12 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.87 | < 1e-3 | 28218 | 181951
-[Belgium](#Belgium) | 138.71 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.97 | < 1e-3 | 9186 | 56235
-[Netherlands](#Netherlands) | 144.83 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.96 | < 1e-3 | 5794 | 44900
-[Spain](#Spain) | 177.47 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.95 | < 1e-3 | 27940 | 233037
-[Australia](#Australia) | 206.29 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.84 | < 1e-3 | 101 | 7095
-[Norway](#Norway) | 249.84 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.85 | < 1e-3 | 235 | 8309
-[Korea, South](#Korea,-South) | 325.32 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.92 | < 1e-3 | 264 | 11142
-[Austria](#Austria) | 386.35 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.95 | < 1e-3 | 633 | 16404
-[Switzerland](#Switzerland) | 388.49 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.99 | < 1e-3 | 1898 | 30694
-[China](#China) | 22099.48 days | 2020-05-12 to<br>2020-05-21 (10 days) | 0.73 | 0.002 | 4638 | 84063
-[Nepal](#Nepal) | NA | NA | NA | NA | 3 | 457
+[Nepal](#Nepal) | 6.03 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.8 | < 1e-3 | 4 | 682
+[Brazil](#Brazil) | 14.48 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.99 | < 1e-3 | 23473 | 374898
+[Russia](#Russia) | 16.69 days | 2020-05-16 to<br>2020-05-25 (10 days) | 1 | < 1e-3 | 3633 | 353427
+[Canada](#Canada) | 45.1 days | 2020-05-16 to<br>2020-05-25 (10 days) | 1 | < 1e-3 | 6655 | 87119
+[Japan](#Japan) | 47.73 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.99 | < 1e-3 | 830 | 16581
+[US](#US) | 56.48 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.98 | < 1e-3 | 98220 | 1662302
+[Sweden](#Sweden) | 58.73 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.97 | < 1e-3 | 4029 | 33843
+[Portugal](#Portugal) | 62.3 days | 2020-05-16 to<br>2020-05-25 (10 days) | 1 | < 1e-3 | 1330 | 30788
+[Poland](#Poland) | 63.84 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.99 | < 1e-3 | 1007 | 21631
+[Romania](#Romania) | 68.33 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.99 | < 1e-3 | 1205 | 18283
+[Hungary](#Hungary) | 70.44 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.97 | < 1e-3 | 491 | 3756
+[United Kingdom](#United-Kingdom) | 81.76 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.98 | < 1e-3 | 36996 | 262547
+[Iran](#Iran) | 84.45 days | 2020-05-16 to<br>2020-05-25 (10 days) | 1 | < 1e-3 | 7451 | 137724
+[Turkey](#Turkey) | 100.9 days | 2020-05-16 to<br>2020-05-25 (10 days) | 1 | < 1e-3 | 4369 | 157814
+[Germany](#Germany) | 126 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.97 | < 1e-3 | 8309 | 180600
+[Australia](#Australia) | 150.87 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.95 | < 1e-3 | 102 | 7126
+[Denmark](#Denmark) | 163.7 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.92 | < 1e-3 | 563 | 11586
+[Italy](#Italy) | 173.63 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.99 | < 1e-3 | 32877 | 230158
+[Belgium](#Belgium) | 190.76 days | 2020-05-16 to<br>2020-05-25 (10 days) | 1 | < 1e-3 | 9312 | 57342
+[Netherlands](#Netherlands) | 202.1 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.98 | < 1e-3 | 5849 | 45647
+[Korea, South](#Korea,-South) | 263.7 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.91 | < 1e-3 | 269 | 11225
+[Austria](#Austria) | 297.44 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.94 | < 1e-3 | 641 | 16539
+[France](#France) | 299.52 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.61 | 0.008 | 28460 | 183067
+[Switzerland](#Switzerland) | 350.74 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.99 | < 1e-3 | 1913 | 30746
+[Spain](#Spain) | 359.04 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.07 | 0.449 | 26834 | 235400
+[Norway](#Norway) | 411.09 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.86 | < 1e-3 | 235 | 8364
+[China](#China) | 2262229614422286 days | 2020-05-16 to<br>2020-05-25 (10 days) | 0.52 | 0.122 | 4638 | 84102
 
 # Australia
 [top](#Select-country)
